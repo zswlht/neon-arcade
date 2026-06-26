@@ -702,7 +702,7 @@ kbd {
     padding: 6px;
   }
   .stage-tetris #board {
-    max-height: calc(100vh - 360px);
+    max-height: calc(100vh - 260px);
     width: auto;
     max-width: 100%;
   }
