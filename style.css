@@ -624,7 +624,8 @@ kbd {
   }
   #sudoku-timer,
   #schulte-timer {
-    min-width: 100px;
+    width: 9ch;
+    min-width: 9ch;
   }
   .board-frame {
     order: -1;
@@ -704,7 +705,8 @@ kbd {
   .card .value { font-size: 14px; }
   #sudoku-timer,
   #schulte-timer {
-    min-width: 80px;
+    width: 9ch;
+    min-width: 9ch;
   }
   .board-frame { padding: 6px; }
   .board-corner { width: 16px; height: 16px; }
@@ -775,9 +777,12 @@ kbd {
 /* ========== 数独游戏 ========== */
 #sudoku-timer,
 #schulte-timer {
-  min-width: 120px;
+  width: 9ch;
+  min-width: 9ch;
   text-align: center;
+  font-family: "Press Start 2P", monospace !important;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
 }
 
 .diff-buttons {
