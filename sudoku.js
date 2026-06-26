@@ -511,13 +511,14 @@ const SudokuGame = (() => {
       });
     }
 
-    // Touch number pad
-    const numBtns = document.querySelectorAll(".sudoku-numpad .nbtn, .sudoku-numpad-inner .nbtn");
-    numBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
+    // Touch number pad - 使用事件委托
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".nbtn");
+      if (btn && (btn.closest(".sudoku-numpad") || btn.closest(".sudoku-numpad-inner"))) {
+        e.preventDefault();
         const n = parseInt(btn.dataset.num);
         placeNumber(n);
-      });
+      }
     });
 
     // Initialize empty board for display
