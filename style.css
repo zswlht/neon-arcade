@@ -645,6 +645,78 @@ kbd {
     display: flex;
   }
 
+  /* 俄罗斯方块手机端一屏布局 */
+  .stage-tetris {
+    height: calc(100vh - 160px);
+    min-height: 0;
+    gap: 6px;
+    grid-template-rows: auto auto 1fr auto;
+  }
+  .stage-tetris .panel-left {
+    order: 1;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+  .stage-tetris .panel-left .card {
+    padding: 4px 6px;
+  }
+  .stage-tetris .panel-left .card h3 {
+    font-size: 9px;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .stage-tetris .panel-left .card .value {
+    font-size: 12px;
+  }
+  .stage-tetris .panel-right {
+    order: 2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+  }
+  .stage-tetris .panel-right .card-next,
+  .stage-tetris .panel-right .card-hold {
+    padding: 4px 6px;
+  }
+  .stage-tetris .panel-right .card-next h3,
+  .stage-tetris .panel-right .card-hold h3 {
+    font-size: 9px;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .stage-tetris .panel-right .card-next canvas,
+  .stage-tetris .panel-right .card-hold canvas {
+    width: 45px;
+    height: 45px;
+    margin: 0 auto;
+  }
+  .stage-tetris .panel-right .controls {
+    display: none;
+  }
+  .stage-tetris .board-wrap {
+    order: 3;
+    min-height: 0;
+  }
+  .stage-tetris .board-frame {
+    order: 0;
+    padding: 6px;
+  }
+  .stage-tetris #board {
+    max-height: calc(100vh - 360px);
+    width: auto;
+    max-width: 100%;
+  }
+  .touch-tetris.active {
+    margin: 6px auto;
+    gap: 6px;
+  }
+  .touch-tetris .tbtn {
+    flex: 1 1 calc(33% - 6px);
+    min-width: 45px;
+    padding: 10px 4px;
+    font-size: 12px;
+  }
+
   /* 数独游戏手机端布局 */
   .stage-sudoku {
     gap: 10px;
