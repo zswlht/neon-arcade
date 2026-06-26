@@ -622,6 +622,10 @@ kbd {
   .panel-right .card .value {
     font-size: 16px;
   }
+  #sudoku-timer,
+  #schulte-timer {
+    min-width: 100px;
+  }
   .board-frame {
     order: -1;
     padding: 8px;
@@ -698,6 +702,10 @@ kbd {
   .subtitle { font-size: 11px; letter-spacing: 3px; }
   .card h3 { font-size: 10px; letter-spacing: 2px; margin-bottom: 4px; }
   .card .value { font-size: 14px; }
+  #sudoku-timer,
+  #schulte-timer {
+    min-width: 80px;
+  }
   .board-frame { padding: 6px; }
   .board-corner { width: 16px; height: 16px; }
   .game-switcher {
@@ -765,6 +773,13 @@ kbd {
 }
 
 /* ========== 数独游戏 ========== */
+#sudoku-timer,
+#schulte-timer {
+  min-width: 120px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
 .diff-buttons {
   display: flex;
   gap: 6px;
