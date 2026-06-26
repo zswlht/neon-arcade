@@ -344,6 +344,10 @@ kbd {
   .touch-controls.active {
     display: flex;
   }
+  /* 数独游戏内部数字键盘始终显示 */
+  .stage-sudoku .sudoku-numpad-inner {
+    display: flex !important;
+  }
 }
 
 .stage-tetris {
@@ -644,12 +648,14 @@ kbd {
     order: 1;
   }
   .stage-sudoku .sudoku-numpad-inner {
-    display: flex;
+    display: flex !important;
     order: 2;
     margin: 0 auto;
     padding: 0;
     max-width: 100%;
     gap: 6px;
+    position: static !important;
+    visibility: visible !important;
   }
   .stage-sudoku .sudoku-numpad-inner .nbtn {
     flex: 1 1 calc(20% - 6px);
