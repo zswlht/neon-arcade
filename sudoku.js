@@ -530,7 +530,7 @@ const SudokuGame = (() => {
     updateTimer();
   }
 
-  return { init, newGame, toggleMute };
+  return { init, newGame, toggleMute, placeNumber };
 })();
 
 document.addEventListener("DOMContentLoaded", () => {
