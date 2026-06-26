@@ -328,6 +328,10 @@
   const nextCtx = nextCanvas.getContext("2d");
   const holdCanvas = document.getElementById("hold");
   const holdCtx = holdCanvas.getContext("2d");
+  const nextMobileCanvas = document.getElementById("next-mobile");
+  const nextMobileCtx = nextMobileCanvas ? nextMobileCanvas.getContext("2d") : null;
+  const holdMobileCanvas = document.getElementById("hold-mobile");
+  const holdMobileCtx = holdMobileCanvas ? holdMobileCanvas.getContext("2d") : null;
   const muteBtn = document.getElementById("muteBtn");
 
   const scoreEl = document.getElementById("score");
@@ -636,7 +640,7 @@
     }
   }
 
-  function drawMini(context, canvas, key) {
+  function drawMini(context, canvas, key, size = MINI) {
     context.clearRect(0, 0, canvas.width, canvas.height);
     const bg = context.createLinearGradient(0, 0, 0, canvas.height);
     bg.addColorStop(0, "rgba(10,15,45,0.5)");
@@ -657,14 +661,14 @@
         }
       }
     }
-    const w = (maxC - minC + 1) * MINI;
-    const h = (maxR - minR + 1) * MINI;
-    const offX = (canvas.width - w) / 2 - minC * MINI;
-    const offY = (canvas.height - h) / 2 - minR * MINI;
+    const w = (maxC - minC + 1) * size;
+    const h = (maxR - minR + 1) * size;
+    const offX = (canvas.width - w) / 2 - minC * size;
+    const offY = (canvas.height - h) / 2 - minR * size;
     for (let r = 0; r < shape.length; r++) {
       for (let c = 0; c < shape[r].length; c++) {
         if (!shape[r][c]) continue;
-        drawCell(context, offX + c * MINI, offY + r * MINI, MINI,
+        drawCell(context, offX + c * size, offY + r * size, size,
           PIECES[key].color, PIECES[key].glow);
       }
     }
@@ -693,6 +697,8 @@
     drawBoard();
     drawMini(nextCtx, nextCanvas, nextKey);
     drawMini(holdCtx, holdCanvas, holdKey);
+    if (nextMobileCtx && nextMobileCanvas) drawMini(nextMobileCtx, nextMobileCanvas, nextKey, 12);
+    if (holdMobileCtx && holdMobileCanvas) drawMini(holdMobileCtx, holdMobileCanvas, holdKey, 12);
 
     scoreEl.textContent = score;
     levelEl.textContent = level;
@@ -884,6 +890,8 @@
   drawBoard();
   drawMini(nextCtx, nextCanvas, null);
   drawMini(holdCtx, holdCanvas, holdKey);
+  if (nextMobileCtx && nextMobileCanvas) drawMini(nextMobileCtx, nextMobileCanvas, null, 12);
+  if (holdMobileCtx && holdMobileCanvas) drawMini(holdMobileCtx, holdMobileCanvas, holdKey, 12);
   requestAnimationFrame(tick);
 
   // 首次任意点击/按键：唤醒 AudioContext（浏览器策略要求）
