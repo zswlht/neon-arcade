@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>NEON ARCADE · 霓虹街机</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+
+  <header class="top-bar">
+    <h1 class="title">
+      <span class="title-neon">NEON</span>
+      <span class="title-slash">/</span>
+      <span class="title-neon alt">ARCADE</span>
+    </h1>
+    <p class="subtitle">— 霓虹街机 · 2099 —</p>
+
+    <!-- 游戏切换栏 -->
+    <nav class="game-switcher">
+      <button class="g-btn active" data-game="tetris">
+        <span class="g-icon">▣</span> TETRIS
+      </button>
+      <button class="g-btn" data-game="g2048">
+        <span class="g-icon">✦</span> 2048
+      </button>
+      <button class="g-btn" data-game="schulte">
+        <span class="g-icon">△</span> SCHULTE
+      </button>
+    </nav>
+  </header>
+
+  <!-- ======================= 俄罗斯方块 ======================= -->
+  <main class="stage stage-tetris active" id="stage-tetris">
+    <aside class="panel panel-left">
+      <section class="card">
+        <h3>SCORE</h3>
+        <div class="value" id="score">0</div>
+      </section>
+      <section class="card">
+        <h3>LEVEL</h3>
+        <div class="value" id="level">1</div>
+      </section>
+      <section class="card">
+        <h3>LINES</h3>
+        <div class="value" id="lines">0</div>
+      </section>
+      <section class="card">
+        <h3>HIGH</h3>
+        <div class="value" id="highscore">0</div>
+      </section>
+    </aside>
+
+    <section class="board-wrap">
+      <div class="board-frame">
+        <div class="board-corner tl"></div>
+        <div class="board-corner tr"></div>
+        <div class="board-corner bl"></div>
+        <div class="board-corner br"></div>
+        <canvas id="board" width="300" height="600"></canvas>
+        <div class="overlay" id="overlay">
+          <div class="overlay-inner">
+            <h2 id="overlayTitle">PRESS START</h2>
+            <p id="overlaySubtitle">按 <kbd>ENTER</kbd> 或 点击下方开始</p>
+            <button class="btn-start" id="btnStart">▶ START GAME</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel panel-right">
+      <section class="card card-next">
+        <h3>NEXT</h3>
+        <canvas id="next" width="120" height="120"></canvas>
+      </section>
+      <section class="card card-hold">
+        <h3>HOLD</h3>
+        <canvas id="hold" width="120" height="120"></canvas>
+      </section>
+      <section class="card controls">
+        <h3>CONTROLS</h3>
+        <ul class="key-list">
+          <li><kbd>←</kbd><kbd>→</kbd><span>移动</span></li>
+          <li><kbd>↓</kbd><span>加速下降</span></li>
+          <li><kbd>↑</kbd><span>旋转</span></li>
+          <li><kbd>SPACE</kbd><span>硬降</span></li>
+          <li><kbd>C</kbd><span>暂存</span></li>
+          <li><kbd>P</kbd><span>暂停</span></li>
+          <li><kbd>M</kbd><span>静音切换</span></li>
+        </ul>
+        <button class="mute-btn" id="muteBtn">🔊 音效:开</button>
+      </section>
+    </aside>
+  </main>
+
+  <div class="touch-controls touch-tetris">
+    <button class="tbtn" data-act="left">◀</button>
+    <button class="tbtn" data-act="rotate">↻</button>
+    <button class="tbtn" data-act="right">▶</button>
+    <button class="tbtn" data-act="hold">HOLD</button>
+    <button class="tbtn" data-act="down">▼</button>
+    <button class="tbtn" data-act="drop">DROP</button>
+  </div>
+
+  <!-- ======================= 2048 ======================= -->
+  <main class="stage stage-2048" id="stage-g2048">
+    <aside class="panel panel-left">
+      <section class="card">
+        <h3>SCORE</h3>
+        <div class="value" id="g2048-score">0</div>
+      </section>
+      <section class="card">
+        <h3>BEST</h3>
+        <div class="value" id="g2048-best">0</div>
+      </section>
+      <section class="card">
+        <h3>MAX TILE</h3>
+        <div class="value" id="g2048-max">2</div>
+      </section>
+      <section class="card">
+        <h3>MOVES</h3>
+        <div class="value" id="g2048-moves">0</div>
+      </section>
+    </aside>
+
+    <section class="board-wrap">
+      <div class="board-frame">
+        <div class="board-corner tl"></div>
+        <div class="board-corner tr"></div>
+        <div class="board-corner bl"></div>
+        <div class="board-corner br"></div>
+        <canvas id="g2048-board" width="320" height="320"></canvas>
+        <div class="overlay" id="g2048-overlay">
+          <div class="overlay-inner">
+            <h2 id="g2048-title">READY?</h2>
+            <p id="g2048-subtitle">按 <kbd>ENTER</kbd> 或 点击下方开始</p>
+            <button class="btn-start" id="g2048-btn-start">▶ START GAME</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel panel-right">
+      <section class="card controls">
+        <h3>CONTROLS</h3>
+        <ul class="key-list">
+          <li><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd><span>移动方块</span></li>
+          <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>同上</span></li>
+          <li><kbd>R</kbd><span>重新开始</span></li>
+          <li><kbd>P</kbd><span>暂停</span></li>
+          <li><kbd>M</kbd><span>静音切换</span></li>
+        </ul>
+        <button class="mute-btn" id="g2048-mute-btn">🔊 音效:开</button>
+        <button class="mute-btn" id="g2048-reset-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ RESTART</button>
+      </section>
+
+      <section class="card" style="margin-top:12px;">
+        <h3>RULES</h3>
+        <p style="color: var(--text); font-size: 12px; line-height: 1.6; margin: 6px 0 0;">
+          相同数字方块合并后翻倍，达成 2048 即胜利。棋盘填满无法移动即结束。
+        </p>
+      </section>
+    </aside>
+  </main>
+
+  <!-- ======================= 舒尔特三角训练 ======================= -->
+  <main class="stage stage-schulte" id="stage-schulte" style="display:none;">
+    <aside class="panel panel-left">
+      <section class="card">
+        <h3>TIMER</h3>
+        <div class="value" id="schulte-timer" style="font-family: 'Orbitron', monospace; font-size: 22px; color: var(--neon-cyan);">00:00.00</div>
+      </section>
+      <section class="card">
+        <h3>NEXT</h3>
+        <div class="value" id="schulte-next" style="color: var(--neon-pink); font-size: 28px;">1</div>
+      </section>
+      <section class="card">
+        <h3>BEST</h3>
+        <div class="value" id="schulte-best" style="font-family: 'Orbitron', monospace; font-size: 14px; color: #ffb84d;">--:--.--</div>
+      </section>
+      <section class="card">
+        <h3>STATUS</h3>
+        <div class="value" id="schulte-status" style="font-size: 13px; color: var(--text-dim);">准备中</div>
+      </section>
+    </aside>
+
+    <section class="board-wrap">
+      <div class="board-frame">
+        <div class="board-corner tl"></div>
+        <div class="board-corner tr"></div>
+        <div class="board-corner bl"></div>
+        <div class="board-corner br"></div>
+        <canvas id="schulte-board" width="400" height="400"></canvas>
+        <div class="overlay" id="schulte-overlay">
+          <div class="overlay-inner">
+            <h2 id="schulte-title">舒尔特三角训练</h2>
+            <p id="schulte-subtitle">从 1 到 25 按顺序点击数字</p>
+            <button class="btn-start" id="schulte-btn-start">▶ 开始训练</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel panel-right">
+      <section class="card controls">
+        <h3>CONTROLS</h3>
+        <ul class="key-list">
+          <li><kbd>鼠标</kbd><span>点击三角形</span></li>
+          <li><kbd>Enter</kbd><span>开始/重新开始</span></li>
+          <li><kbd>M</kbd><span>静音切换</span></li>
+        </ul>
+        <button class="mute-btn" id="schulte-mute-btn">🔊 音效:开</button>
+        <button class="mute-btn" id="schulte-restart-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ RESTART</button>
+      </section>
+
+      <section class="card" style="margin-top:12px;">
+        <h3>RULES</h3>
+        <p style="color: var(--text); font-size: 12px; line-height: 1.7; margin: 6px 0 0;">
+          升级版舒尔特方格：数字位于三角形中。<br>
+          从 <b style="color:#22f5ff">1</b> 到 <b style="color:#22f5ff">25</b> 按序找出数字。<br>
+          <span style="color:#22ff8f">≤25秒</span> 专注力非常优秀<br>
+          <span style="color:#ff3e64">＞35秒</span> 需要多练习
+        </p>
+      </section>
+    </aside>
+  </main>
+
+  <div class="touch-controls touch-2048">
+    <button class="tbtn" data-act="up">▲</button>
+    <button class="tbtn" data-act="left">◀</button>
+    <button class="tbtn" data-act="down">▼</button>
+    <button class="tbtn" data-act="right">▶</button>
+    <button class="tbtn" data-act="reset">↺</button>
+  </div>
+
+  <footer class="foot">
+    <span id="foot-text">· 方块落下时世界会暂停呼吸 ·</span>
+  </footer>
+
+  <script src="game.js"></script>
+  <script src="g2048.js"></script>
+  <script src="schulte.js"></script>
+  <script>
+    const buttons = document.querySelectorAll(".g-btn");
+    const stages = document.querySelectorAll(".stage");
+    const touchPanels = {
+      tetris: document.querySelector(".touch-tetris"),
+      g2048: document.querySelector(".touch-2048"),
+      schulte: null
+    };
+    const footText = document.getElementById("foot-text");
+    const footMessages = {
+      tetris: "· 方块落下时世界会暂停呼吸 ·",
+      g2048: "· 每一次合并都是一次小小的数字爆炸 ·",
+      schulte: "· 专注力，是最珍贵的能力 ·"
+    };
+    const titleMap = {
+      tetris: "NEON TETRIS · 霓虹俄罗斯方块",
+      g2048: "NEON 2048 · 霓虹合成",
+      schulte: "NEON SCHULTE · 舒尔特三角训练"
+    };
+
+    function showGame(name) {
+      buttons.forEach(b => b.classList.toggle("active", b.dataset.game === name));
+      stages.forEach(s => {
+        const isActive = s.id === "stage-" + name;
+        s.classList.toggle("active", isActive);
+        s.style.display = isActive ? "" : "none";
+      });
+      Object.entries(touchPanels).forEach(([k, el]) => {
+        if (el) el.classList.toggle("active", k === name);
+      });
+      if (footText) footText.textContent = footMessages[name] || "";
+      if (titleMap[name]) document.querySelector("title").textContent = titleMap[name];
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => showGame(btn.dataset.game));
+    });
+  </script>
+</body>
+</html>
