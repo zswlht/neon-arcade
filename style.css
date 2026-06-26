@@ -664,8 +664,8 @@ kbd {
     order: 4;
   }
   /* 手机端隐藏外部的全局数独数字键盘 */
-  .touch-sudoku.sudoku-numpad.active {
-    display: none;
+  .touch-sudoku.sudoku-numpad {
+    display: none !important;
   }
 }
 

@@ -345,7 +345,8 @@
       tetris: document.querySelector(".touch-tetris"),
       g2048: document.querySelector(".touch-2048"),
       schulte: null,
-      sudoku: document.querySelector(".touch-sudoku")
+      sudoku: document.querySelector(".touch-sudoku"),
+      sudokuInner: document.querySelector(".sudoku-numpad-inner")
     };
     const footText = document.getElementById("foot-text");
     const footMessages = {
@@ -369,7 +370,14 @@
         s.style.display = isActive ? "" : "none";
       });
       Object.entries(touchPanels).forEach(([k, el]) => {
-        if (el) el.classList.toggle("active", k === name);
+        if (el) {
+          // sudokuInner 需要在显示数独游戏时也激活
+          if (k === "sudokuInner") {
+            el.classList.toggle("active", name === "sudoku");
+          } else {
+            el.classList.toggle("active", k === name);
+          }
+        }
       });
       if (footText) footText.textContent = footMessages[name] || "";
       if (titleMap[name]) document.querySelector("title").textContent = titleMap[name];
