@@ -796,6 +796,13 @@ kbd {
   font-size: 18px;
 }
 
-.sudoku-numpad-inner {
+/* 数独内部数字键盘在桌面端也隐藏，移动端通过 stage-sudoku 显示 */
+.stage-sudoku .sudoku-numpad-inner {
   display: none;
+}
+
+@media (max-width: 900px) {
+  .stage-sudoku .sudoku-numpad-inner {
+    display: flex !important;
+  }
 }
