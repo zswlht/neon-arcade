@@ -321,7 +321,20 @@ const SudokuGame = (() => {
 
   function placeNumber(n) {
     if (!running || finished) return;
-    if (selected.r < 0) return;
+    // 如果没有选中格子，自动选择第一个空格
+    if (selected.r < 0 || selected.c < 0) {
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          if (board[r][c] === 0) {
+            selected = { r, c };
+            Audio.select();
+            break;
+          }
+        }
+        if (selected.r >= 0) break;
+      }
+      if (selected.r < 0) return; // 没有空格了
+    }
     const { r, c } = selected;
     if (puzzleBoard[r][c] !== 0) return; // fixed cell
 
