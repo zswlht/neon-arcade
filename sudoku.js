@@ -524,15 +524,25 @@ const SudokuGame = (() => {
       });
     }
 
-    // Touch number pad - 使用事件委托
-    document.addEventListener("click", (e) => {
+    let lastTapTime = 0;
+    function handleNumpadTap(e) {
       const btn = e.target.closest(".nbtn");
       if (btn && (btn.closest(".sudoku-numpad") || btn.closest(".sudoku-numpad-inner"))) {
         e.preventDefault();
+        const now = Date.now();
+        if (e.type === "touchend") {
+          lastTapTime = now;
+        } else if (e.type === "click" && now - lastTapTime < 300) {
+          return;
+        }
         const n = parseInt(btn.dataset.num);
         placeNumber(n);
+        btn.style.transform = "scale(0.92)";
+        setTimeout(() => { btn.style.transform = ""; }, 100);
       }
-    });
+    }
+    document.addEventListener("click", handleNumpadTap);
+    document.addEventListener("touchend", handleNumpadTap, { passive: false });
 
     // Initialize empty board for display
     board = Array.from({ length: 9 }, () => Array(9).fill(0));
