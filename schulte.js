@@ -14,6 +14,9 @@ const SchulteGame = (() => {
   let elapsed = 0;
   let running = false;
   let finished = false;
+  let countingDown = false;
+  let countdownValue = 3;
+  let countdownStartTime = 0;
   let bestTime = null;
   let timerRAF = null;
   let flashWrong = 0;
@@ -72,6 +75,7 @@ const SchulteGame = (() => {
       resume,
       correct: () => { resume(); tone(660 + nextNum * 15, 0.08, "sine", 0.25); },
       wrong: () => { resume(); noise(0.12, 0.2); tone(160, 0.15, "square", 0.15); },
+      tick: () => { resume(); tone(880, 0.08, "sine", 0.3); },
       start: () => {
         resume();
         [440, 554, 659].forEach((f, i) => setTimeout(() => tone(f, 0.12, "triangle", 0.3), i * 80));
@@ -409,10 +413,41 @@ const SchulteGame = (() => {
       ctx.fillStyle = `rgba(255, 62, 100, ${0.15 * flashWrong})`;
       ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     }
+
+    // countdown display
+    if (countingDown) {
+      // darken background
+      ctx.fillStyle = "rgba(5, 7, 26, 0.5)";
+      ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+      // draw countdown number
+      ctx.font = `bold 120px "Orbitron", "Press Start 2P", sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#22f5ff";
+      ctx.shadowBlur = 30;
+      ctx.shadowColor = "#22f5ff";
+      ctx.fillText(String(countdownValue), CANVAS_SIZE / 2, CANVAS_SIZE / 2);
+      ctx.shadowBlur = 0;
+    }
   }
 
   // ========== Game Loop ==========
   function update() {
+    // Handle countdown
+    if (countingDown) {
+      const countdownElapsed = performance.now() - countdownStartTime;
+      const newValue = 3 - Math.floor(countdownElapsed / 1000);
+      if (newValue <= 0) {
+        countingDown = false;
+        running = true;
+        startTime = performance.now();
+      } else if (newValue !== countdownValue) {
+        countdownValue = newValue;
+        Audio.tick();
+      }
+    }
+
     if (running && !finished) {
       elapsed = performance.now() - startTime;
       updateTimerDisplay();
@@ -460,11 +495,14 @@ const SchulteGame = (() => {
     triangles = generateTriangles();
     nextNum = 1;
     elapsed = 0;
-    running = true;
+    running = false;
     finished = false;
     particles.length = 0;
     flashWrong = 0;
-    startTime = performance.now();
+    // Start countdown
+    countingDown = true;
+    countdownValue = 3;
+    countdownStartTime = performance.now();
     updateNext();
     updateTimerDisplay();
     hideOverlay();
