@@ -635,6 +635,38 @@ kbd {
   .sudoku-numpad.active {
     display: flex;
   }
+
+  /* 数独游戏手机端布局 */
+  .stage-sudoku {
+    gap: 10px;
+  }
+  .stage-sudoku .board-wrap {
+    order: 1;
+  }
+  .stage-sudoku .sudoku-numpad-inner {
+    display: flex;
+    order: 2;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 100%;
+    gap: 6px;
+  }
+  .stage-sudoku .sudoku-numpad-inner .nbtn {
+    flex: 1 1 calc(20% - 6px);
+    min-width: 40px;
+    padding: 12px 4px;
+    font-size: 16px;
+  }
+  .stage-sudoku .panel-left {
+    order: 3;
+  }
+  .stage-sudoku .panel-right {
+    order: 4;
+  }
+  /* 手机端隐藏外部的全局数独数字键盘 */
+  .touch-sudoku.sudoku-numpad.active {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
@@ -703,6 +735,12 @@ kbd {
   .panel-right .card {
     padding: 6px 8px;
   }
+  /* 数独小屏优化 */
+  .stage-sudoku .sudoku-numpad-inner .nbtn {
+    padding: 10px 2px;
+    font-size: 15px;
+    min-width: 32px;
+  }
 }
 
 /* ========== 数独游戏 ========== */
@@ -750,4 +788,8 @@ kbd {
   min-width: 48px;
   padding: 14px 6px;
   font-size: 18px;
+}
+
+.sudoku-numpad-inner {
+  display: none;
 }

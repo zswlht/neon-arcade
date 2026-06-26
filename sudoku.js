@@ -512,7 +512,7 @@ const SudokuGame = (() => {
     }
 
     // Touch number pad
-    const numBtns = document.querySelectorAll(".sudoku-numpad .nbtn");
+    const numBtns = document.querySelectorAll(".sudoku-numpad .nbtn, .sudoku-numpad-inner .nbtn");
     numBtns.forEach(btn => {
       btn.addEventListener("click", () => {
         const n = parseInt(btn.dataset.num);
