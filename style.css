@@ -631,7 +631,7 @@ kbd {
     order: -1;
     padding: 8px;
   }
-  .touch-controls {
+  .touch-controls.active {
     display: flex;
     margin: 16px auto;
     padding: 0 12px;
