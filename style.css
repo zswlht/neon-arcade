@@ -625,7 +625,7 @@ kbd {
   #sudoku-timer,
   #schulte-timer {
     width: 9ch;
-    min-width: 9ch;
+    font-size: 14px !important;
   }
   .board-frame {
     order: -1;
@@ -706,7 +706,7 @@ kbd {
   #sudoku-timer,
   #schulte-timer {
     width: 9ch;
-    min-width: 9ch;
+    font-size: 12px !important;
   }
   .board-frame { padding: 6px; }
   .board-corner { width: 16px; height: 16px; }
@@ -778,11 +778,11 @@ kbd {
 #sudoku-timer,
 #schulte-timer {
   width: 9ch;
-  min-width: 9ch;
   text-align: center;
   font-family: "Press Start 2P", monospace !important;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 1px;
+  overflow: visible;
+  white-space: nowrap;
 }
 
 .diff-buttons {
