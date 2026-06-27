@@ -81,10 +81,13 @@
       border-radius: 8px;
       box-shadow: 0 0 20px rgba(34,245,255,0.3);
       overflow: hidden;
+      max-width: calc(100vw - 20px);
     }
 
     canvas {
       display: block;
+      max-width: 100%;
+      height: auto;
     }
 
     /* 覆盖层 */
@@ -304,11 +307,20 @@
     @media (max-width: 500px) {
       h1 {
         font-size: 1.2rem;
-        margin: 10px 0 8px;
+        margin: 8px 0 5px;
+      }
+
+      .level-info {
+        margin-bottom: 5px;
+      }
+
+      .level-badge {
+        padding: 4px 10px;
+        font-size: 11px;
       }
 
       .game-area {
-        max-width: calc(100vw - 20px);
+        max-width: calc(100vw - 16px);
       }
 
       canvas {
@@ -321,8 +333,22 @@
       }
 
       .controls {
-        grid-template-columns: repeat(3, 60px);
-        grid-template-rows: repeat(2, 55px);
+        grid-template-columns: repeat(3, 55px);
+        grid-template-rows: repeat(2, 50px);
+        margin: 8px 0;
+      }
+
+      .ctrl-btn {
+        font-size: 18px;
+      }
+
+      .bottom-btns, .level-nav {
+        margin-top: 5px;
+      }
+
+      .bottom-btns .small-btn {
+        padding: 6px 10px;
+        font-size: 10px;
       }
     }
 
@@ -1342,7 +1368,7 @@
     const winSubText = document.getElementById('winSubText');
 
     // 尺寸设置
-    const CELL_SIZE = 32;
+    let CELL_SIZE = 32;
     let gridWidth = 0;
     let gridHeight = 0;
 
@@ -1392,8 +1418,14 @@
     }
 
     function resizeCanvas() {
+      // 根据屏幕宽度自适应单元格大小
+      const screenWidth = Math.min(window.innerWidth - 40, 400);
+      CELL_SIZE = Math.floor(screenWidth / gridWidth);
+      CELL_SIZE = Math.max(20, Math.min(CELL_SIZE, 32)); // 限制在20-32之间
+
       canvas.width = gridWidth * CELL_SIZE;
       canvas.height = gridHeight * CELL_SIZE;
+      draw();
     }
 
     function updateDisplay() {
@@ -1796,6 +1828,9 @@
     // 初始化
     loadLevel(0);
     setupControls();
+
+    // 窗口大小改变时重新调整画布
+    window.addEventListener('resize', resizeCanvas);
   </script>
 </body>
 </html>
