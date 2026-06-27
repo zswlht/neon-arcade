@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>霓虹扫雷</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --neon-cyan: #22f5ff;
+      --neon-pink: #ff3e64;
+      --neon-green: #22ff8f;
+      --neon-yellow: #ffb84d;
+      --neon-orange: #ff8c42;
+      --neon-purple: #b24bff;
+      --bg: #0a0a0f;
+      --bg-card: rgba(20, 20, 30, 0.95);
+      --text: #e0e0e0;
+      --text-dim: #888;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      font-family: 'Orbitron', 'Courier New', monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+      margin: 15px 0 10px;
+      letter-spacing: 3px;
+    }
+
+    /* 信息栏 */
+    .info-bar {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .info-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 15px;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .info-item h3 {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-bottom: 3px;
+      letter-spacing: 1px;
+    }
+
+    .info-item .value {
+      font-size: 20px;
+      font-weight: bold;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #mines-left { color: var(--neon-pink); }
+    #timer { color: var(--neon-yellow); }
+    #best { color: var(--neon-green); }
+
+    /* 难度选择 */
+    .difficulty-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .diff-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: inherit;
+      font-size: 11px;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .diff-btn:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
+    .diff-btn.active {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      background: rgba(34, 245, 255, 0.1);
+      box-shadow: 0 0 10px rgba(34, 245, 255, 0.2);
+    }
+
+    /* 游戏区域 */
+    .game-area {
+      position: relative;
+      background: var(--bg-card);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(34,245,255,0.3);
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    /* 覆盖层 */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 15, 0.92);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      z-index: 10;
+    }
+
+    .overlay.hidden {
+      display: none;
+    }
+
+    .overlay h2 {
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      text-shadow: 0 0 15px currentColor;
+    }
+
+    .overlay.win h2 {
+      color: var(--neon-green);
+    }
+
+    .overlay.lose h2 {
+      color: var(--neon-pink);
+    }
+
+    .overlay p {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .overlay .time-info {
+      color: var(--neon-yellow);
+      font-size: 16px;
+    }
+
+    .btn {
+      background: transparent;
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      font-family: inherit;
+      font-size: 14px;
+      padding: 10px 25px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn:hover, .btn:active {
+      background: var(--neon-cyan);
+      color: var(--bg);
+    }
+
+    .btn-secondary {
+      border-color: var(--text-dim);
+      color: var(--text-dim);
+    }
+
+    .btn-secondary:hover {
+      background: var(--text-dim);
+      color: var(--bg);
+    }
+
+    /* 底部按钮 */
+    .bottom-btns {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .small-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: inherit;
+      font-size: 11px;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .small-btn:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
+    /* 玩法说明 */
+    .how-to-play {
+      color: var(--text-dim);
+      font-size: 11px;
+      text-align: center;
+      max-width: 320px;
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+    kbd {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 10px;
+    }
+
+    /* 移动端 */
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 1.2rem;
+        margin: 10px 0 8px;
+      }
+
+      .info-item {
+        padding: 6px 12px;
+        min-width: 75px;
+      }
+
+      .info-item .value {
+        font-size: 16px;
+      }
+
+      .game-area {
+        max-width: calc(100vw - 20px);
+      }
+
+      canvas {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .how-to-play {
+        display: none;
+      }
+
+      .diff-btn {
+        padding: 5px 10px;
+        font-size: 10px;
+      }
+
+      .bottom-btns {
+        margin: 10px 0 5px;
+      }
+    }
+
+    /* 动画 */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .shake {
+      animation: shake 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <h1>霓虹扫雷</h1>
+
+  <div class="info-bar">
+    <div class="info-item">
+      <h3>剩余雷</h3>
+      <div class="value" id="mines-left">10</div>
+    </div>
+    <div class="info-item">
+      <h3>时间</h3>
+      <div class="value" id="timer">000</div>
+    </div>
+    <div class="info-item">
+      <h3>最佳</h3>
+      <div class="value" id="best">---</div>
+    </div>
+  </div>
+
+  <div class="difficulty-selector">
+    <button class="diff-btn active" data-difficulty="beginner">初级</button>
+    <button class="diff-btn" data-difficulty="intermediate">中级</button>
+    <button class="diff-btn" data-difficulty="expert">高级</button>
+  </div>
+
+  <div class="game-area" id="gameArea">
+    <canvas id="gameCanvas"></canvas>
+
+    <div class="overlay hidden" id="winOverlay">
+      <h2>🎉 胜利!</h2>
+      <p class="time-info">用时 <span id="winTime">0</span> 秒</p>
+      <p id="winMsg"></p>
+      <button class="btn" id="nextGameBtn">再来一局</button>
+    </div>
+
+    <div class="overlay hidden lose" id="loseOverlay">
+      <h2>💥 踩雷了!</h2>
+      <p>别灰心，再试一次</p>
+      <button class="btn" id="retryBtn">重新开始</button>
+    </div>
+  </div>
+
+  <div class="bottom-btns">
+    <button class="small-btn" id="resetBtn">↺ 重置</button>
+    <button class="small-btn" id="helpBtn">❓ 玩法</button>
+  </div>
+
+  <div class="how-to-play">
+    <kbd>点击</kbd> 揭开格子 | <kbd>长按</kbd> 标记旗帜 | 揭开所有安全格子获胜<br>
+    数字表示周围8格中的雷数，合理推理找出所有雷
+  </div>
+
+  <script>
+    // ==================== 配置 ====================
+    const DIFFICULTIES = {
+      beginner: { cols: 9, rows: 9, mines: 10, name: '初级' },
+      intermediate: { cols: 16, rows: 16, mines: 40, name: '中级' },
+      expert: { cols: 30, rows: 16, mines: 99, name: '高级' }
+    };
+
+    // 数字颜色
+    const NUM_COLORS = {
+      1: '#22f5ff',  // 青
+      2: '#22ff8f',  // 绿
+      3: '#ffb84d',  // 黄
+      4: '#ff8c42',  // 橙
+      5: '#ff3e64',  // 红
+      6: '#b24bff',  // 紫
+      7: '#ffffff',  // 白
+      8: '#888888'   // 灰
+    };
+
+    // ==================== 游戏状态 ====================
+    let currentDifficulty = 'beginner';
+    let cols, rows, mines;
+    let board = [];         // 0=未揭开, -1=雷, 1-8=数字
+    let revealed = [];      // 是否揭开
+    let flagged = [];       // 是否标记
+    let gameStarted = false;
+    let gameOver = false;
+    let win = false;
+    let startTime = 0;
+    let timerInterval = null;
+    let time = 0;
+
+    // 画布
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const gameArea = document.getElementById('gameArea');
+    let CELL_SIZE = 32;
+    const PADDING = 2;
+
+    // DOM
+    const minesLeftEl = document.getElementById('mines-left');
+    const timerEl = document.getElementById('timer');
+    const bestEl = document.getElementById('best');
+    const winOverlay = document.getElementById('winOverlay');
+    const loseOverlay = document.getElementById('loseOverlay');
+    const winTimeEl = document.getElementById('winTime');
+    const winMsgEl = document.getElementById('winMsg');
+
+    // ==================== 游戏逻辑 ====================
+    function initGame() {
+      const config = DIFFICULTIES[currentDifficulty];
+      cols = config.cols;
+      rows = config.rows;
+      mines = config.mines;
+
+      // 重置状态
+      gameStarted = false;
+      gameOver = false;
+      win = false;
+      time = 0;
+      clearInterval(timerInterval);
+      timerInterval = null;
+
+      // 初始化数组
+      board = [];
+      revealed = [];
+      flagged = [];
+      for (let y = 0; y < rows; y++) {
+        board[y] = [];
+        revealed[y] = [];
+        flagged[y] = [];
+        for (let x = 0; x < cols; x++) {
+          board[y][x] = 0;
+          revealed[y][x] = false;
+          flagged[y][x] = false;
+        }
+      }
+
+      // 更新显示
+      updateMinesLeft();
+      updateTimer();
+      updateBestDisplay();
+
+      // 隐藏覆盖层
+      winOverlay.classList.add('hidden');
+      loseOverlay.classList.add('hidden');
+
+      // 设置画布大小
+      resizeCanvas();
+
+      // 绘制
+      draw();
+    }
+
+    function placeMines(firstClickX, firstClickY) {
+      // 确保第一次点击安全
+      const safeZone = new Set();
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          const nx = firstClickX + dx;
+          const ny = firstClickY + dy;
+          if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+            safeZone.add(`${nx},${ny}`);
+          }
+        }
+      }
+
+      let placed = 0;
+      while (placed < mines) {
+        const x = Math.floor(Math.random() * cols);
+        const y = Math.floor(Math.random() * rows);
+
+        if (!safeZone.has(`${x},${y}`) && board[y][x] !== -1) {
+          board[y][x] = -1;
+          placed++;
+        }
+      }
+
+      // 计算数字
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (board[y][x] === -1) continue;
+
+          let count = 0;
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              if (dx === 0 && dy === 0) continue;
+              const nx = x + dx;
+              const ny = y + dy;
+              if (nx >= 0 && nx < cols && ny >= 0 && ny < rows && board[ny][nx] === -1) {
+                count++;
+              }
+            }
+          }
+          board[y][x] = count;
+        }
+      }
+    }
+
+    function reveal(x, y) {
+      if (x < 0 || x >= cols || y < 0 || y >= rows) return;
+      if (revealed[y][x] || flagged[y][x]) return;
+
+      revealed[y][x] = true;
+
+      // 踩雷
+      if (board[y][x] === -1) {
+        gameOver = true;
+        win = false;
+        revealAllMines();
+        showLose();
+        return;
+      }
+
+      // 空白格，递归展开
+      if (board[y][x] === 0) {
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            if (dx !== 0 || dy !== 0) {
+              reveal(x + dx, y + dy);
+            }
+          }
+        }
+      }
+
+      checkWin();
+      draw();
+    }
+
+    function toggleFlag(x, y) {
+      if (revealed[y][x]) return;
+
+      flagged[y][x] = !flagged[y][x];
+      updateMinesLeft();
+      draw();
+    }
+
+    function chord(x, y) {
+      // 快速展开：数字周围旗数等于数字时，自动揭开其他格
+      if (!revealed[y][x] || board[y][x] <= 0) return;
+
+      let flagCount = 0;
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          if (dx === 0 && dy === 0) continue;
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx >= 0 && nx < cols && ny >= 0 && ny < rows && flagged[ny][nx]) {
+            flagCount++;
+          }
+        }
+      }
+
+      if (flagCount === board[y][x]) {
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            if (dx === 0 && dy === 0) continue;
+            const nx = x + dx;
+            const ny = y + dy;
+            if (nx >= 0 && nx < cols && ny >= 0 && ny < rows && !revealed[ny][nx] && !flagged[ny][nx]) {
+              reveal(nx, ny);
+            }
+          }
+        }
+      }
+    }
+
+    function checkWin() {
+      let unrevealed = 0;
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (!revealed[y][x] && board[y][x] !== -1) {
+            unrevealed++;
+          }
+        }
+      }
+
+      if (unrevealed === 0) {
+        gameOver = true;
+        win = true;
+        stopTimer();
+        showWin();
+      }
+    }
+
+    function revealAllMines() {
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (board[y][x] === -1) {
+            revealed[y][x] = true;
+          }
+        }
+      }
+      draw();
+    }
+
+    // ==================== 计时器 ====================
+    function startTimer() {
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        time = Math.floor((Date.now() - startTime) / 1000);
+        updateTimer();
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function updateTimer() {
+      timerEl.textContent = String(Math.min(time, 999)).padStart(3, '0');
+    }
+
+    function updateMinesLeft() {
+      let flagCount = 0;
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (flagged[y][x]) flagCount++;
+        }
+      }
+      minesLeftEl.textContent = mines - flagCount;
+    }
+
+    function updateBestDisplay() {
+      const best = localStorage.getItem(`minesweeper_best_${currentDifficulty}`);
+      if (best) {
+        bestEl.textContent = best + 's';
+      } else {
+        bestEl.textContent = '---';
+      }
+    }
+
+    function saveBest() {
+      const key = `minesweeper_best_${currentDifficulty}`;
+      const current = localStorage.getItem(key);
+      if (!current || time < parseInt(current)) {
+        localStorage.setItem(key, time);
+        updateBestDisplay();
+      }
+    }
+
+    // ==================== UI ====================
+    function showWin() {
+      saveBest();
+      winTimeEl.textContent = time;
+
+      // 根据时间给出评价
+      let msg = '';
+      if (time < 30) {
+        msg = '🌟 神速! 非凡实力!';
+      } else if (time < 60) {
+        msg = '👏 非常棒! 继续保持!';
+      } else if (time < 120) {
+        msg = '👍 不错! 再接再厉!';
+      } else {
+        msg = '💪 过关就是胜利!';
+      }
+      winMsgEl.textContent = msg;
+
+      winOverlay.classList.remove('hidden');
+      winOverlay.classList.add('win');
+    }
+
+    function showLose() {
+      stopTimer();
+      gameArea.classList.add('shake');
+      setTimeout(() => gameArea.classList.remove('shake'), 300);
+      loseOverlay.classList.remove('hidden');
+    }
+
+    // ==================== 绘制 ====================
+    function resizeCanvas() {
+      // 根据屏幕和难度计算单元格大小
+      const maxWidth = Math.min(window.innerWidth - 40, cols * 32);
+      CELL_SIZE = Math.floor(maxWidth / cols);
+      CELL_SIZE = Math.max(18, Math.min(CELL_SIZE, 32));
+
+      canvas.width = cols * CELL_SIZE;
+      canvas.height = rows * CELL_SIZE;
+
+      gameArea.style.width = canvas.width + 'px';
+    }
+
+    function draw() {
+      ctx.fillStyle = '#0a0a0f';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          drawCell(x, y);
+        }
+      }
+    }
+
+    function drawCell(x, y) {
+      const px = x * CELL_SIZE;
+      const py = y * CELL_SIZE;
+      const size = CELL_SIZE - PADDING * 2;
+
+      if (!revealed[y][x]) {
+        // 未揭开 - 立体方块效果
+        if (flagged[y][x]) {
+          // 标记旗帜
+          ctx.fillStyle = 'rgba(34, 245, 255, 0.2)';
+          ctx.fillRect(px + PADDING, py + PADDING, size, size);
+          drawFlag(px + CELL_SIZE / 2, py + CELL_SIZE / 2);
+        } else {
+          // 普通未揭开
+          ctx.fillStyle = '#1a1a2e';
+          ctx.fillRect(px + PADDING, py + PADDING, size, size);
+
+          // 高光边
+          ctx.fillStyle = '#2a2a4e';
+          ctx.fillRect(px + PADDING, py + PADDING, size, 2);
+          ctx.fillRect(px + PADDING, py + PADDING, 2, size);
+
+          // 阴影边
+          ctx.fillStyle = '#0a0a15';
+          ctx.fillRect(px + PADDING, py + CELL_SIZE - PADDING - 2, size, 2);
+          ctx.fillRect(px + CELL_SIZE - PADDING - 2, py + PADDING, 2, size);
+        }
+      } else {
+        // 已揭开
+        if (board[y][x] === -1) {
+          // 雷
+          drawMine(px + CELL_SIZE / 2, py + CELL_SIZE / 2);
+        } else if (board[y][x] > 0) {
+          // 数字
+          ctx.fillStyle = '#0a0a15';
+          ctx.fillRect(px + PADDING, py + PADDING, size, size);
+          drawNumber(px + CELL_SIZE / 2, py + CELL_SIZE / 2, board[y][x]);
+        } else {
+          // 空白
+          ctx.fillStyle = '#0a0a15';
+          ctx.fillRect(px + PADDING, py + PADDING, size, size);
+        }
+      }
+    }
+
+    function drawNumber(x, y, num) {
+      ctx.fillStyle = NUM_COLORS[num] || '#fff';
+      ctx.shadowColor = NUM_COLORS[num] || '#fff';
+      ctx.shadowBlur = 8;
+      ctx.font = `bold ${CELL_SIZE * 0.6}px Orbitron`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(num, x, y);
+      ctx.shadowBlur = 0;
+    }
+
+    function drawFlag(x, y) {
+      const flagSize = CELL_SIZE * 0.35;
+      ctx.fillStyle = '#ffb84d';
+      ctx.shadowColor = '#ffb84d';
+      ctx.shadowBlur = 8;
+
+      // 旗杆
+      ctx.fillRect(x - flagSize * 0.5, y - flagSize * 0.8, 2, flagSize * 1.6);
+
+      // 旗面
+      ctx.beginPath();
+      ctx.moveTo(x - flagSize * 0.5 + 2, y - flagSize * 0.8);
+      ctx.lineTo(x + flagSize * 0.5, y - flagSize * 0.3);
+      ctx.lineTo(x - flagSize * 0.5 + 2, y + flagSize * 0.1);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.shadowBlur = 0;
+    }
+
+    function drawMine(x, y) {
+      const mineSize = CELL_SIZE * 0.35;
+
+      ctx.fillStyle = '#ff3e64';
+      ctx.shadowColor = '#ff3e64';
+      ctx.shadowBlur = 15;
+
+      // 圆形
+      ctx.beginPath();
+      ctx.arc(x, y, mineSize, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 光芒
+      ctx.strokeStyle = '#ff3e64';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(x + Math.cos(angle) * mineSize * 0.6, y + Math.sin(angle) * mineSize * 0.6);
+        ctx.lineTo(x + Math.cos(angle) * mineSize * 1.3, y + Math.sin(angle) * mineSize * 1.3);
+        ctx.stroke();
+      }
+
+      ctx.shadowBlur = 0;
+    }
+
+    // ==================== 事件处理 ====================
+    let touchTimer = null;
+    let touched = false;
+
+    function setupEvents() {
+      // 画布点击
+      canvas.addEventListener('click', handleClick);
+      canvas.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        handleRightClick(e);
+      });
+
+      // 触摸事件
+      canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+      canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+      canvas.addEventListener('touchmove', (e) => {
+        if (touchTimer) {
+          clearTimeout(touchTimer);
+          touchTimer = null;
+        }
+      }, { passive: false });
+
+      // 难度选择
+      document.querySelectorAll('.diff-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentDifficulty = btn.dataset.difficulty;
+          initGame();
+        });
+      });
+
+      // 按钮
+      document.getElementById('resetBtn').addEventListener('click', initGame);
+      document.getElementById('nextGameBtn').addEventListener('click', initGame);
+      document.getElementById('retryBtn').addEventListener('click', initGame);
+      document.getElementById('helpBtn').addEventListener('click', () => {
+        alert('🎮 霓虹扫雷玩法：\n\n1. 点击揭开格子\n2. 数字表示周围8格中的雷数\n3. 长按标记你认为是雷的格子\n4. 揭开所有安全格子获胜\n\n💡 提示：\n- 数字周围旗数等于数字时，可快速展开\n- 善用数字逻辑推理找出所有雷\n- 第一次点击保证安全！');
+      });
+
+      // 窗口大小改变
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        draw();
+      });
+    }
+
+    function handleClick(e) {
+      if (gameOver) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / CELL_SIZE);
+      const y = Math.floor((e.clientY - rect.top) / CELL_SIZE);
+
+      if (x < 0 || x >= cols || y < 0 || y >= rows) return;
+
+      if (!revealed[y][x]) {
+        if (!gameStarted) {
+          gameStarted = true;
+          placeMines(x, y);
+          startTimer();
+        }
+        reveal(x, y);
+      } else {
+        chord(x, y);
+      }
+    }
+
+    function handleRightClick(e) {
+      if (gameOver) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / CELL_SIZE);
+      const y = Math.floor((e.clientY - rect.top) / CELL_SIZE);
+
+      if (x < 0 || x >= cols || y < 0 || y >= rows) return;
+
+      if (!revealed[y][x]) {
+        if (!gameStarted) {
+          gameStarted = true;
+          placeMines(x, y);
+          startTimer();
+        }
+        toggleFlag(x, y);
+      }
+    }
+
+    function handleTouchStart(e) {
+      e.preventDefault();
+      touched = true;
+
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const x = Math.floor((touch.clientX - rect.left) / CELL_SIZE);
+      const y = Math.floor((touch.clientY - rect.top) / CELL_SIZE);
+
+      if (x < 0 || x >= cols || y < 0 || y >= rows) return;
+
+      // 长按标记
+      touchTimer = setTimeout(() => {
+        if (touched && !gameOver) {
+          if (!revealed[y][x]) {
+            if (!gameStarted) {
+              gameStarted = true;
+              placeMines(x, y);
+              startTimer();
+            }
+            toggleFlag(x, y);
+          }
+          touched = false;
+        }
+      }, 500);
+    }
+
+    function handleTouchEnd(e) {
+      e.preventDefault();
+
+      if (touchTimer) {
+        clearTimeout(touchTimer);
+        touchTimer = null;
+      }
+
+      if (!touched || gameOver) {
+        touched = false;
+        return;
+      }
+
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.changedTouches[0];
+      const x = Math.floor((touch.clientX - rect.left) / CELL_SIZE);
+      const y = Math.floor((touch.clientY - rect.top) / CELL_SIZE);
+
+      if (x < 0 || x >= cols || y < 0 || y >= rows) {
+        touched = false;
+        return;
+      }
+
+      if (!revealed[y][x]) {
+        if (!gameStarted) {
+          gameStarted = true;
+          placeMines(x, y);
+          startTimer();
+        }
+        reveal(x, y);
+      } else {
+        chord(x, y);
+      }
+
+      touched = false;
+    }
+
+    // ==================== 初始化 ====================
+    setupEvents();
+    initGame();
+  </script>
+</body>
+</html>
