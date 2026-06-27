@@ -669,6 +669,13 @@ kbd {
     font-size: 12px;
   }
   .stage-tetris .panel-right {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    order: 3;
+  }
+  .stage-tetris .panel-right .card-next,
+  .stage-tetris .panel-right .card-hold {
     display: none;
   }
   .stage-tetris .board-wrap {
@@ -716,7 +723,7 @@ kbd {
     height: 50px;
   }
   .stage-tetris #board {
-    max-height: calc(100vh - 280px);
+    max-height: calc(100vh - 340px);
     width: auto;
     max-width: 100%;
   }
