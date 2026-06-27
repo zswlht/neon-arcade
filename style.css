@@ -636,6 +636,9 @@ kbd {
     margin: 16px auto;
     padding: 0 12px;
   }
+  .touch-2048.active {
+    display: none !important;
+  }
   .card-next canvas,
   .card-hold canvas {
     width: 80px;
