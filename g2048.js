@@ -343,7 +343,7 @@
       won = true;
       if (!keptPlaying) {
         setTimeout(() => {
-          showOverlay("YOU WIN!", "按 R 继续挑战 或 点击下方继续游戏", "▶ KEEP PLAYING");
+          showOverlay("胜利！", "按 R 继续挑战 或 点击下方继续游戏", "▶ 继续游戏");
           Audio.win();
           keptPlaying = true;
         }, 400);
@@ -354,7 +354,7 @@
     if (emptyCells().length === 0 && !hasMergeMove()) {
       setTimeout(() => {
         gameOver = true;
-        showOverlay("GAME OVER", "最终得分: " + score, "▶ PLAY AGAIN");
+        showOverlay("游戏结束", "最终得分: " + score, "▶ 再来一局");
         Audio.over();
       }, 400);
     }
@@ -665,7 +665,7 @@
   function showOverlay(title, sub, btnLabel) {
     overlayTitle.textContent = title;
     overlaySub.innerHTML = sub;
-    btnStart.textContent = btnLabel || "▶ START";
+    btnStart.textContent = btnLabel || "▶ 开始";
     overlay.classList.add("show");
     overlay.classList.remove("hidden");
   }
@@ -702,7 +702,7 @@
     if (gameOver) return;
     paused = !paused;
     if (paused) {
-      showOverlay("PAUSED", "按 P 继续", "▶ RESUME");
+      showOverlay("暂停", "按 P 继续", "▶ 继续");
     } else {
       hideOverlay();
     }

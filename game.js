@@ -738,9 +738,9 @@
   function endGame() {
     gameOver = true;
     running = false;
-    overlayTitle.textContent = "GAME OVER";
+    overlayTitle.textContent = "游戏结束";
     overlaySub.textContent = "最终得分: " + score;
-    btnStart.textContent = "▶ PLAY AGAIN";
+    btnStart.textContent = "▶ 再来一局";
     overlay.classList.remove("hidden");
 
     Audio.stopBGM();
@@ -751,9 +751,9 @@
     if (!running || gameOver) return;
     paused = !paused;
     if (paused) {
-      overlayTitle.textContent = "PAUSED";
+      overlayTitle.textContent = "暂停";
       overlaySub.textContent = "按 P 继续";
-      btnStart.textContent = "▶ RESUME";
+      btnStart.textContent = "▶ 继续";
       overlay.classList.remove("hidden");
       Audio.pauseBGM(true);
       Audio.sfxPause();
