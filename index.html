@@ -40,19 +40,19 @@
   <main class="stage stage-tetris active" id="stage-tetris">
     <aside class="panel panel-left">
       <section class="card">
-        <h3>SCORE</h3>
+        <h3>得分</h3>
         <div class="value" id="score">0</div>
       </section>
       <section class="card">
-        <h3>LEVEL</h3>
+        <h3>等级</h3>
         <div class="value" id="level">1</div>
       </section>
       <section class="card">
-        <h3>LINES</h3>
+        <h3>行数</h3>
         <div class="value" id="lines">0</div>
       </section>
       <section class="card">
-        <h3>HIGH</h3>
+        <h3>最高</h3>
         <div class="value" id="highscore">0</div>
       </section>
     </aside>
@@ -74,11 +74,11 @@
       </div>
       <div class="mobile-side-preview">
         <div class="mobile-next-wrap">
-          <h3>NEXT</h3>
+          <h3>下一个</h3>
           <canvas id="next-mobile" width="50" height="50"></canvas>
         </div>
         <div class="mobile-hold-wrap">
-          <h3>HOLD</h3>
+          <h3>暂存</h3>
           <canvas id="hold-mobile" width="50" height="50"></canvas>
         </div>
       </div>
@@ -86,15 +86,15 @@
 
     <aside class="panel panel-right">
       <section class="card card-next">
-        <h3>NEXT</h3>
+        <h3>下一个</h3>
         <canvas id="next" width="120" height="120"></canvas>
       </section>
       <section class="card card-hold">
-        <h3>HOLD</h3>
+        <h3>暂存</h3>
         <canvas id="hold" width="120" height="120"></canvas>
       </section>
       <section class="card controls">
-        <h3>CONTROLS</h3>
+        <h3>操作说明</h3>
         <ul class="key-list">
           <li><kbd>←</kbd><kbd>→</kbd><span>移动</span></li>
           <li><kbd>↓</kbd><span>加速下降</span></li>
@@ -122,19 +122,19 @@
   <main class="stage stage-2048" id="stage-g2048">
     <aside class="panel panel-left">
       <section class="card">
-        <h3>SCORE</h3>
+        <h3>得分</h3>
         <div class="value" id="g2048-score">0</div>
       </section>
       <section class="card">
-        <h3>BEST</h3>
+        <h3>最佳</h3>
         <div class="value" id="g2048-best">0</div>
       </section>
       <section class="card">
-        <h3>MAX TILE</h3>
+        <h3>最大方块</h3>
         <div class="value" id="g2048-max">2</div>
       </section>
       <section class="card">
-        <h3>MOVES</h3>
+        <h3>步数</h3>
         <div class="value" id="g2048-moves">0</div>
       </section>
     </aside>
@@ -158,7 +158,7 @@
 
     <aside class="panel panel-right">
       <section class="card controls">
-        <h3>CONTROLS</h3>
+        <h3>操作说明</h3>
         <ul class="key-list">
           <li><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd><span>移动方块</span></li>
           <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>同上</span></li>
@@ -167,11 +167,11 @@
           <li><kbd>M</kbd><span>静音切换</span></li>
         </ul>
         <button class="mute-btn" id="g2048-mute-btn">🔊 音效:开</button>
-        <button class="mute-btn" id="g2048-reset-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ RESTART</button>
+        <button class="mute-btn" id="g2048-reset-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ 重新开始</button>
       </section>
 
       <section class="card" style="margin-top:12px;">
-        <h3>RULES</h3>
+        <h3>规则</h3>
         <p style="color: var(--text); font-size: 12px; line-height: 1.6; margin: 6px 0 0;">
           相同数字方块合并后翻倍，达成 2048 即胜利。棋盘填满无法移动即结束。
         </p>
@@ -183,19 +183,19 @@
   <main class="stage stage-schulte" id="stage-schulte" style="display:none;">
     <aside class="panel panel-left">
       <section class="card">
-        <h3>TIMER</h3>
+        <h3>计时</h3>
         <div class="value" id="schulte-timer" style="font-family: 'Orbitron', monospace; font-size: 22px; color: var(--neon-cyan);">00:00.00</div>
       </section>
       <section class="card">
-        <h3>NEXT</h3>
+        <h3>下一个</h3>
         <div class="value" id="schulte-next" style="color: var(--neon-pink); font-size: 28px;">1</div>
       </section>
       <section class="card">
-        <h3>BEST</h3>
+        <h3>最佳</h3>
         <div class="value" id="schulte-best" style="font-family: 'Orbitron', monospace; font-size: 14px; color: #ffb84d;">--:--.--</div>
       </section>
       <section class="card">
-        <h3>STATUS</h3>
+        <h3>状态</h3>
         <div class="value" id="schulte-status" style="font-size: 13px; color: var(--text-dim);">准备中</div>
       </section>
     </aside>
@@ -219,18 +219,18 @@
 
     <aside class="panel panel-right">
       <section class="card controls">
-        <h3>CONTROLS</h3>
+        <h3>操作说明</h3>
         <ul class="key-list">
           <li><kbd>鼠标</kbd><span>点击三角形</span></li>
           <li><kbd>Enter</kbd><span>开始/重新开始</span></li>
           <li><kbd>M</kbd><span>静音切换</span></li>
         </ul>
         <button class="mute-btn" id="schulte-mute-btn">🔊 音效:开</button>
-        <button class="mute-btn" id="schulte-restart-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ RESTART</button>
+        <button class="mute-btn" id="schulte-restart-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ 重新开始</button>
       </section>
 
       <section class="card" style="margin-top:12px;">
-        <h3>RULES</h3>
+        <h3>规则</h3>
         <p style="color: var(--text); font-size: 12px; line-height: 1.7; margin: 6px 0 0;">
           升级版舒尔特方格：数字位于三角形中。<br>
           从 <b style="color:#22f5ff">1</b> 到 <b style="color:#22f5ff">25</b> 按序找出数字。<br>
@@ -253,19 +253,19 @@
   <main class="stage stage-sudoku" id="stage-sudoku" style="display:none;">
     <aside class="panel panel-left">
       <section class="card">
-        <h3>TIMER</h3>
+        <h3>计时</h3>
         <div class="value" id="sudoku-timer" style="font-family: 'Orbitron', monospace; font-size: 20px; color: var(--neon-cyan);">00:00.00</div>
       </section>
       <section class="card">
-        <h3>MISTAKES</h3>
+        <h3>错误</h3>
         <div class="value" id="sudoku-mistakes" style="color: var(--neon-pink);">0</div>
       </section>
       <section class="card">
-        <h3>BEST</h3>
+        <h3>最佳</h3>
         <div class="value" id="sudoku-best" style="font-family: 'Orbitron', monospace; font-size: 13px; color: #ffb84d;">--:--.--</div>
       </section>
       <section class="card">
-        <h3>DIFFICULTY</h3>
+        <h3>难度</h3>
         <div class="diff-buttons">
           <button class="diff-btn" data-diff="easy">简单</button>
           <button class="diff-btn active" data-diff="medium">中等</button>
@@ -284,7 +284,7 @@
         <canvas id="sudoku-board" width="400" height="400"></canvas>
         <div class="overlay" id="sudoku-overlay">
           <div class="overlay-inner">
-            <h2 id="sudoku-title">NEON SUDOKU</h2>
+            <h2 id="sudoku-title">霓虹数独</h2>
             <p id="sudoku-subtitle">9×9 数独 · 经典规则</p>
             <button class="btn-start" id="sudoku-btn-start">▶ 开始游戏</button>
           </div>
@@ -307,7 +307,7 @@
 
     <aside class="panel panel-right">
       <section class="card controls">
-        <h3>CONTROLS</h3>
+        <h3>操作说明</h3>
         <ul class="key-list">
           <li><kbd>鼠标</kbd><span>选格</span></li>
           <li><kbd>1-9</kbd><span>填入数字</span></li>
@@ -315,11 +315,11 @@
           <li><kbd>M</kbd><span>静音切换</span></li>
         </ul>
         <button class="mute-btn" id="sudoku-mute-btn">🔊 音效:开</button>
-        <button class="mute-btn" id="sudoku-restart-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ RESTART</button>
+        <button class="mute-btn" id="sudoku-restart-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ 重新开始</button>
       </section>
 
       <section class="card" style="margin-top:12px;">
-        <h3>RULES</h3>
+        <h3>规则</h3>
         <p style="color: var(--text); font-size: 12px; line-height: 1.7; margin: 6px 0 0;">
           每行、每列、每个 3×3 小九宫格内，数字 1-9 各出现一次，不重复。
         </p>
