@@ -1381,24 +1381,17 @@
         grid[y] = [];
         for (let x = 0; x < maxWidth; x++) {
           const char = levelData[y][x] || ' ';
-          switch (char) {
-            case '#': grid[y][x] = 1; break;  // 墙
-            case ' ': grid[y][x] = 0; break;  // 空
-            case '.': grid[y][x] = 2; break;  // 地板
-            case '$': grid[y][x] = 3; break;  // 箱子
-            case '*': grid[y][x] = 6; break;  // 箱子在目标上
-            case '@': grid[y][x] = 5; break;  // 玩家
-            case '+': grid[y][x] = 7; break;  // 玩家在目标上
-            default: grid[y][x] = 0;
-          }
-        }
-      }
-
-      // 找到玩家位置
-      for (let y = 0; y < grid.length; y++) {
-        for (let x = 0; x < grid[y].length; x++) {
-          if (grid[y][x] === 5 || grid[y][x] === 7) {
-            playerPos = { x, y };
+          // 解析关卡字符
+          // 1=墙, 2=地板, 3=箱子, 4=目标点, 5=玩家, 6=箱子在目标上, 7=玩家在目标上
+          const num = parseInt(char);
+          if (!isNaN(num) && num >= 0 && num <= 7) {
+            grid[y][x] = num;
+            // 如果是玩家位置
+            if (num === 5 || num === 7) {
+              playerPos = { x, y };
+            }
+          } else {
+            grid[y][x] = 0; // 空格或其他字符为空
           }
         }
       }
