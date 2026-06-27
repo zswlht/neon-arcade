@@ -418,6 +418,16 @@
       clearInterval(timerInterval);
       timerInterval = null;
 
+      // 重置缩放和偏移
+      viewOffsetX = 0;
+      viewOffsetY = 0;
+      currentScale = 1;
+      isPinching = false;
+      isDragging = false;
+      if (canvas.style.transform) {
+        canvas.style.transform = '';
+      }
+
       // 初始化数组
       board = [];
       revealed = [];
@@ -797,6 +807,15 @@
     // ==================== 事件处理 ====================
     let touchTimer = null;
     let touched = false;
+    let isPinching = false;
+    let initialPinchDistance = 0;
+    let initialScale = 1;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let viewOffsetX = 0;
+    let viewOffsetY = 0;
+    let currentScale = 1;
 
     function setupEvents() {
       // 画布点击
@@ -809,12 +828,7 @@
       // 触摸事件
       canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
       canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
-      canvas.addEventListener('touchmove', (e) => {
-        if (touchTimer) {
-          clearTimeout(touchTimer);
-          touchTimer = null;
-        }
-      }, { passive: false });
+      canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
 
       // 难度选择
       document.querySelectorAll('.diff-btn').forEach(btn => {
@@ -883,29 +897,126 @@
 
     function handleTouchStart(e) {
       e.preventDefault();
-      touched = true;
 
-      const rect = canvas.getBoundingClientRect();
-      const touch = e.touches[0];
-      const x = Math.floor((touch.clientX - rect.left) / CELL_SIZE);
-      const y = Math.floor((touch.clientY - rect.top) / CELL_SIZE);
-
-      if (x < 0 || x >= cols || y < 0 || y >= rows) return;
-
-      // 长按标记
-      touchTimer = setTimeout(() => {
-        if (touched && !gameOver) {
-          if (!revealed[y][x]) {
-            if (!gameStarted) {
-              gameStarted = true;
-              placeMines(x, y);
-              startTimer();
-            }
-            toggleFlag(x, y);
-          }
-          touched = false;
+      // 双指缩放
+      if (e.touches.length === 2) {
+        isPinching = true;
+        touched = false;
+        if (touchTimer) {
+          clearTimeout(touchTimer);
+          touchTimer = null;
         }
-      }, 500);
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        initialPinchDistance = Math.sqrt(dx * dx + dy * dy);
+        initialScale = currentScale;
+        return;
+      }
+
+      // 单指操作
+      if (e.touches.length === 1 && !isPinching) {
+        touched = true;
+
+        // 如果放大了，单指拖动
+        if (currentScale > 1) {
+          isDragging = true;
+          dragStartX = e.touches[0].clientX - viewOffsetX;
+          dragStartY = e.touches[0].clientY - viewOffsetY;
+          touched = false;
+          return;
+        }
+
+        const x = getCellX(e.touches[0]);
+        const y = getCellY(e.touches[0]);
+
+        if (x < 0 || x >= cols || y < 0 || y >= rows) return;
+
+        // 长按标记
+        touchTimer = setTimeout(() => {
+          if (touched && !gameOver) {
+            if (!revealed[y][x]) {
+              if (!gameStarted) {
+                gameStarted = true;
+                placeMines(x, y);
+                startTimer();
+              }
+              toggleFlag(x, y);
+            }
+            touched = false;
+          }
+        }, 500);
+      }
+    }
+
+    function handleTouchMove(e) {
+      e.preventDefault();
+
+      if (touchTimer) {
+        clearTimeout(touchTimer);
+        touchTimer = null;
+      }
+
+      // 双指缩放
+      if (e.touches.length === 2 && isPinching) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const currentDistance = Math.sqrt(dx * dx + dy * dy);
+
+        const scale = currentDistance / initialPinchDistance;
+        const newScale = initialScale * scale;
+
+        currentScale = Math.max(1, Math.min(newScale, 2.5));
+        clampViewOffset();
+        applyTransform();
+        return;
+      }
+
+      // 单指拖动
+      if (e.touches.length === 1 && isDragging) {
+        viewOffsetX = e.touches[0].clientX - dragStartX;
+        viewOffsetY = e.touches[0].clientY - dragStartY;
+        clampViewOffset();
+        applyTransform();
+        return;
+      }
+
+      touched = false;
+    }
+
+    function applyTransform() {
+      canvas.style.transformOrigin = 'top left';
+      canvas.style.transform = `translate(${viewOffsetX}px, ${viewOffsetY}px) scale(${currentScale})`;
+    }
+
+    function getCellX(touch) {
+      const rect = canvas.getBoundingClientRect();
+      const ratio = (touch.clientX - rect.left) / rect.width;
+      return Math.floor(ratio * cols);
+    }
+
+    function getCellY(touch) {
+      const rect = canvas.getBoundingClientRect();
+      const ratio = (touch.clientY - rect.top) / rect.height;
+      return Math.floor(ratio * rows);
+    }
+
+    function clampViewOffset() {
+      if (currentScale <= 1) {
+        viewOffsetX = 0;
+        viewOffsetY = 0;
+        return;
+      }
+
+      const scaledWidth = canvas.width * currentScale;
+      const scaledHeight = canvas.height * currentScale;
+      const visibleWidth = gameArea.clientWidth;
+      const visibleHeight = gameArea.clientHeight;
+
+      const maxOffsetX = Math.max(0, scaledWidth - visibleWidth);
+      const maxOffsetY = Math.max(0, scaledHeight - visibleHeight);
+
+      viewOffsetX = Math.min(0, Math.max(viewOffsetX, -maxOffsetX));
+      viewOffsetY = Math.min(0, Math.max(viewOffsetY, -maxOffsetY));
     }
 
     function handleTouchEnd(e) {
@@ -916,15 +1027,33 @@
         touchTimer = null;
       }
 
+      // 双指缩放结束
+      if (isPinching) {
+        isPinching = false;
+        touched = false;
+        if (currentScale <= 1) {
+          currentScale = 1;
+          viewOffsetX = 0;
+          viewOffsetY = 0;
+          applyTransform();
+        }
+        return;
+      }
+
+      // 拖动结束
+      if (isDragging) {
+        isDragging = false;
+        touched = false;
+        return;
+      }
+
       if (!touched || gameOver) {
         touched = false;
         return;
       }
 
-      const rect = canvas.getBoundingClientRect();
-      const touch = e.changedTouches[0];
-      const x = Math.floor((touch.clientX - rect.left) / CELL_SIZE);
-      const y = Math.floor((touch.clientY - rect.top) / CELL_SIZE);
+      const x = getCellX(e.changedTouches[0]);
+      const y = getCellY(e.changedTouches[0]);
 
       if (x < 0 || x >= cols || y < 0 || y >= rows) {
         touched = false;
