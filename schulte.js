@@ -642,6 +642,13 @@ const SchulteGame = (() => {
     const btnRestart = document.getElementById("schulte-restart-btn");
     if (btnRestart) btnRestart.addEventListener("click", startGame);
 
+    const btnHelp = document.getElementById("schulte-help-btn");
+    if (btnHelp) {
+      btnHelp.addEventListener("click", () => {
+        alert('🎮 霓虹舒尔特玩法：\n\n📱 手机操作：\n1. 点击数字按顺序从1到25\n2. 点击"重新开始"重置游戏\n\n⌨️ 电脑操作：\n1. 鼠标点击数字\n2. Enter键开始/重新开始\n3. M键静音切换\n\n📋 游戏规则：\n- 升级版舒尔特方格：数字位于三角形中\n- 从1到25按序找出所有数字\n- ≤25秒：专注力非常优秀\n- ＞35秒：需要多练习');
+      });
+    }
+
     // keyboard
     document.addEventListener("keydown", (e) => {
       const active = document.querySelector(".stage.active");

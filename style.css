@@ -1020,3 +1020,24 @@ kbd {
     border-radius: 4px;
   }
 }
+
+.small-btn {
+  background: rgba(20, 26, 70, 0.55);
+  border: 1px solid var(--panel-border);
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.small-btn:hover {
+  border-color: rgba(34, 245, 255, 0.5);
+  color: var(--neon-cyan);
+  background: rgba(34, 245, 255, 0.08);
+  box-shadow: 0 0 10px rgba(34, 245, 255, 0.2);
+}
