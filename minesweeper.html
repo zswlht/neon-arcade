@@ -816,6 +816,9 @@
     let viewOffsetX = 0;
     let viewOffsetY = 0;
     let currentScale = 1;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const MOVE_THRESHOLD = 10;
 
     function setupEvents() {
       // 画布点击
@@ -916,14 +919,14 @@
       // 单指操作
       if (e.touches.length === 1 && !isPinching) {
         touched = true;
+        isDragging = false;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
 
-        // 如果放大了，单指拖动
+        // 如果放大了，准备拖动（但要等移动超过阈值才开始）
         if (currentScale > 1) {
-          isDragging = true;
           dragStartX = e.touches[0].clientX - viewOffsetX;
           dragStartY = e.touches[0].clientY - viewOffsetY;
-          touched = false;
-          return;
         }
 
         const x = getCellX(e.touches[0]);
@@ -951,13 +954,12 @@
     function handleTouchMove(e) {
       e.preventDefault();
 
-      if (touchTimer) {
-        clearTimeout(touchTimer);
-        touchTimer = null;
-      }
-
       // 双指缩放
       if (e.touches.length === 2 && isPinching) {
+        if (touchTimer) {
+          clearTimeout(touchTimer);
+          touchTimer = null;
+        }
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
         const currentDistance = Math.sqrt(dx * dx + dy * dy);
@@ -971,16 +973,39 @@
         return;
       }
 
-      // 单指拖动
-      if (e.touches.length === 1 && isDragging) {
-        viewOffsetX = e.touches[0].clientX - dragStartX;
-        viewOffsetY = e.touches[0].clientY - dragStartY;
-        clampViewOffset();
-        applyTransform();
-        return;
-      }
+      // 单指移动
+      if (e.touches.length === 1 && !isPinching) {
+        const moveX = e.touches[0].clientX - touchStartX;
+        const moveY = e.touches[0].clientY - touchStartY;
+        const moveDist = Math.sqrt(moveX * moveX + moveY * moveY);
 
-      touched = false;
+        // 如果放大了且移动超过阈值，进入拖动模式
+        if (currentScale > 1 && moveDist > MOVE_THRESHOLD) {
+          isDragging = true;
+          touched = false;
+          if (touchTimer) {
+            clearTimeout(touchTimer);
+            touchTimer = null;
+          }
+        }
+
+        if (isDragging) {
+          viewOffsetX = e.touches[0].clientX - dragStartX;
+          viewOffsetY = e.touches[0].clientY - dragStartY;
+          clampViewOffset();
+          applyTransform();
+          return;
+        }
+
+        // 未放大且移动超过阈值，取消点击/长按
+        if (currentScale <= 1 && moveDist > MOVE_THRESHOLD) {
+          touched = false;
+          if (touchTimer) {
+            clearTimeout(touchTimer);
+            touchTimer = null;
+          }
+        }
+      }
     }
 
     function applyTransform() {
