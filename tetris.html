@@ -53,6 +53,16 @@
         letter-spacing: 2px !important;
       }
     }
+    .title-neon {
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    .title-neon.alt {
+      animation-delay: 1.1s;
+    }
+    @keyframes pulse {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
+    }
   </style>
 </head>
 <body>
