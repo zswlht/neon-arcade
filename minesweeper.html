@@ -686,10 +686,10 @@
       const isExpert = currentDifficulty === 'expert';
 
       if (isPortrait && isExpert) {
-        // 高级难度竖屏：按高度计算，让格子更大
-        const maxHeight = window.innerHeight - 200;
-        CELL_SIZE = Math.floor(maxHeight / rows);
-        CELL_SIZE = Math.max(22, Math.min(CELL_SIZE, 32));
+        // 高级难度竖屏：按可用高度计算，确保30行完整显示
+        const availableHeight = window.innerHeight - 320; // 留出头部信息栏+底部空间
+        CELL_SIZE = Math.floor(availableHeight / rows);
+        CELL_SIZE = Math.max(18, Math.min(CELL_SIZE, 28));
       } else {
         // 其他情况按宽度计算
         const maxWidth = Math.min(window.innerWidth - 40, cols * 32);
@@ -728,18 +728,34 @@
           drawFlag(px + CELL_SIZE / 2, py + CELL_SIZE / 2);
         } else {
           // 草地效果 - 深绿底色
-          ctx.fillStyle = '#1a5c1a';
+          ctx.fillStyle = '#2a7a2a';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
 
-          // 添加草地纹理效果
-          ctx.fillStyle = '#2d7a2d';
-          ctx.fillRect(px + PADDING + 2, py + PADDING + 2, size - 4, 2);
-          ctx.fillRect(px + PADDING + 2, py + PADDING + 2, 2, size - 4);
+          // 草地高光 - 模拟草叶反光
+          ctx.fillStyle = '#4a9a3a';
+          // 左上角小草叶
+          ctx.fillRect(px + PADDING + 2, py + PADDING + 2, size * 0.3, 2);
+          ctx.fillRect(px + PADDING + 2, py + PADDING + 2, 2, size * 0.3);
 
-          // 阴影边 - 更深的绿
-          ctx.fillStyle = '#0d3d0d';
+          // 随机小草点缀（用格子位置做伪随机，保持一致）
+          if ((x * 7 + y * 13) % 3 === 0) {
+            ctx.fillStyle = '#5aaa45';
+            ctx.fillRect(px + PADDING + size * 0.5, py + PADDING + size * 0.4, 2, size * 0.3);
+          }
+          if ((x * 11 + y * 7) % 4 === 0) {
+            ctx.fillStyle = '#5aaa45';
+            ctx.fillRect(px + PADDING + size * 0.3, py + PADDING + size * 0.5, size * 0.3, 2);
+          }
+
+          // 阴影边 - 更深的绿（立体感）
+          ctx.fillStyle = '#1a4a1a';
           ctx.fillRect(px + PADDING, py + CELL_SIZE - PADDING - 2, size, 2);
           ctx.fillRect(px + CELL_SIZE - PADDING - 2, py + PADDING, 2, size);
+
+          // 内阴影（凹陷感）
+          ctx.fillStyle = 'rgba(0,0,0,0.15)';
+          ctx.fillRect(px + PADDING + 2, py + PADDING + size - 4, size - 4, 2);
+          ctx.fillRect(px + PADDING + size - 4, py + PADDING + 2, 2, size - 4);
         }
       } else {
         // 已揭开
