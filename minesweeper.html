@@ -22,7 +22,7 @@
       --neon-yellow: #ffb84d;
       --neon-orange: #ff8c42;
       --neon-purple: #b24bff;
-      --bg: #0d2d0d;
+      --bg: #0a0a15;
       --bg-card: rgba(20, 20, 30, 0.95);
       --text: #e0e0e0;
       --text-dim: #888;
@@ -704,7 +704,7 @@
     }
 
     function draw() {
-      ctx.fillStyle = '#1a3a1a';
+      ctx.fillStyle = '#0a0a18';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       for (let y = 0; y < rows; y++) {
@@ -720,57 +720,66 @@
       const size = CELL_SIZE - PADDING * 2;
 
       if (!revealed[y][x]) {
-        // 未揭开 - 绿色草坪立体方块效果
+        // 未揭开 - 霓虹玻璃方块
         if (flagged[y][x]) {
-          // 标记旗帜
-          ctx.fillStyle = 'rgba(255, 200, 50, 0.3)';
+          // 标记旗帜 - 金色边框
+          ctx.fillStyle = 'rgba(255, 180, 50, 0.15)';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
+          // 金色边框
+          ctx.strokeStyle = 'rgba(255, 180, 50, 0.6)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(px + PADDING + 0.5, py + PADDING + 0.5, size - 1, size - 1);
           drawFlag(px + CELL_SIZE / 2, py + CELL_SIZE / 2);
         } else {
-          // 草地效果 - 深绿底色
-          ctx.fillStyle = '#2a7a2a';
+          // 普通未揭开 - 霓虹玻璃质感
+          // 深色底色
+          ctx.fillStyle = '#1a1a3a';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
 
-          // 草地高光 - 模拟草叶反光
-          ctx.fillStyle = '#4a9a3a';
-          // 左上角小草叶
-          ctx.fillRect(px + PADDING + 2, py + PADDING + 2, size * 0.3, 2);
-          ctx.fillRect(px + PADDING + 2, py + PADDING + 2, 2, size * 0.3);
+          // 顶部高光渐变（上浅下深，立体凸起感）
+          const grad = ctx.createLinearGradient(px + PADDING, py + PADDING, px + PADDING, py + CELL_SIZE - PADDING);
+          grad.addColorStop(0, 'rgba(100, 100, 180, 0.3)');
+          grad.addColorStop(0.5, 'rgba(60, 60, 120, 0.15)');
+          grad.addColorStop(1, 'rgba(20, 20, 50, 0.3)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(px + PADDING, py + PADDING, size, size);
 
-          // 随机小草点缀（用格子位置做伪随机，保持一致）
-          if ((x * 7 + y * 13) % 3 === 0) {
-            ctx.fillStyle = '#5aaa45';
-            ctx.fillRect(px + PADDING + size * 0.5, py + PADDING + size * 0.4, 2, size * 0.3);
-          }
-          if ((x * 11 + y * 7) % 4 === 0) {
-            ctx.fillStyle = '#5aaa45';
-            ctx.fillRect(px + PADDING + size * 0.3, py + PADDING + size * 0.5, size * 0.3, 2);
-          }
+          // 霓虹边框（微光效果）
+          ctx.strokeStyle = 'rgba(80, 120, 200, 0.3)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(px + PADDING + 0.5, py + PADDING + 0.5, size - 1, size - 1);
 
-          // 阴影边 - 更深的绿（立体感）
-          ctx.fillStyle = '#1a4a1a';
-          ctx.fillRect(px + PADDING, py + CELL_SIZE - PADDING - 2, size, 2);
-          ctx.fillRect(px + CELL_SIZE - PADDING - 2, py + PADDING, 2, size);
+          // 左上角亮边（凸起感）
+          ctx.fillStyle = 'rgba(150, 180, 255, 0.15)';
+          ctx.fillRect(px + PADDING, py + PADDING, size, 1);
+          ctx.fillRect(px + PADDING, py + PADDING, 1, size);
 
-          // 内阴影（凹陷感）
-          ctx.fillStyle = 'rgba(0,0,0,0.15)';
-          ctx.fillRect(px + PADDING + 2, py + PADDING + size - 4, size - 4, 2);
-          ctx.fillRect(px + PADDING + size - 4, py + PADDING + 2, 2, size - 4);
+          // 右下角暗边
+          ctx.fillStyle = 'rgba(0, 0, 20, 0.3)';
+          ctx.fillRect(px + PADDING, py + CELL_SIZE - PADDING - 1, size, 1);
+          ctx.fillRect(px + CELL_SIZE - PADDING - 1, py + PADDING, 1, size);
         }
       } else {
-        // 已揭开
+        // 已揭开 - 深色凹陷
         if (board[y][x] === -1) {
           // 雷
           drawMine(px + CELL_SIZE / 2, py + CELL_SIZE / 2);
         } else if (board[y][x] > 0) {
-          // 数字 - 草地露出，露出的是深色泥土
-          ctx.fillStyle = '#3d2a1a';
+          // 数字 - 深色凹陷底
+          ctx.fillStyle = '#0d0d1a';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
+          // 内边框
+          ctx.strokeStyle = 'rgba(50, 50, 80, 0.3)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(px + PADDING + 0.5, py + PADDING + 0.5, size - 1, size - 1);
           drawNumber(px + CELL_SIZE / 2, py + CELL_SIZE / 2, board[y][x]);
         } else {
-          // 空白 - 泥土/草地已清除的感觉
-          ctx.fillStyle = '#4a3520';
+          // 空白
+          ctx.fillStyle = '#0d0d1a';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
+          ctx.strokeStyle = 'rgba(50, 50, 80, 0.2)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(px + PADDING + 0.5, py + PADDING + 0.5, size - 1, size - 1);
         }
       }
     }
