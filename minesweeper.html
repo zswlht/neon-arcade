@@ -22,7 +22,7 @@
       --neon-yellow: #ffb84d;
       --neon-orange: #ff8c42;
       --neon-purple: #b24bff;
-      --bg: #0a0a0f;
+      --bg: #0d2d0d;
       --bg-card: rgba(20, 20, 30, 0.95);
       --text: #e0e0e0;
       --text-dim: #888;
@@ -359,7 +359,7 @@
     const DIFFICULTIES = {
       beginner: { cols: 9, rows: 9, mines: 10, name: '初级' },
       intermediate: { cols: 16, rows: 16, mines: 40, name: '中级' },
-      expert: { cols: 30, rows: 16, mines: 99, name: '高级' }
+      expert: { cols: 16, rows: 30, mines: 99, name: '高级' }
     };
 
     // 数字颜色
@@ -681,9 +681,21 @@
     // ==================== 绘制 ====================
     function resizeCanvas() {
       // 根据屏幕和难度计算单元格大小
-      const maxWidth = Math.min(window.innerWidth - 40, cols * 32);
-      CELL_SIZE = Math.floor(maxWidth / cols);
-      CELL_SIZE = Math.max(18, Math.min(CELL_SIZE, 32));
+      // 手机竖屏时，高级难度(16×30)按高度计算，充分利用屏幕
+      const isPortrait = window.innerHeight > window.innerWidth;
+      const isExpert = currentDifficulty === 'expert';
+
+      if (isPortrait && isExpert) {
+        // 高级难度竖屏：按高度计算，让格子更大
+        const maxHeight = window.innerHeight - 200;
+        CELL_SIZE = Math.floor(maxHeight / rows);
+        CELL_SIZE = Math.max(22, Math.min(CELL_SIZE, 32));
+      } else {
+        // 其他情况按宽度计算
+        const maxWidth = Math.min(window.innerWidth - 40, cols * 32);
+        CELL_SIZE = Math.floor(maxWidth / cols);
+        CELL_SIZE = Math.max(18, Math.min(CELL_SIZE, 32));
+      }
 
       canvas.width = cols * CELL_SIZE;
       canvas.height = rows * CELL_SIZE;
@@ -692,7 +704,7 @@
     }
 
     function draw() {
-      ctx.fillStyle = '#0a0a0f';
+      ctx.fillStyle = '#1a3a1a';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       for (let y = 0; y < rows; y++) {
@@ -708,24 +720,24 @@
       const size = CELL_SIZE - PADDING * 2;
 
       if (!revealed[y][x]) {
-        // 未揭开 - 立体方块效果
+        // 未揭开 - 绿色草坪立体方块效果
         if (flagged[y][x]) {
           // 标记旗帜
-          ctx.fillStyle = 'rgba(34, 245, 255, 0.2)';
+          ctx.fillStyle = 'rgba(255, 200, 50, 0.3)';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
           drawFlag(px + CELL_SIZE / 2, py + CELL_SIZE / 2);
         } else {
-          // 普通未揭开
-          ctx.fillStyle = '#1a1a2e';
+          // 草地效果 - 深绿底色
+          ctx.fillStyle = '#1a5c1a';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
 
-          // 高光边
-          ctx.fillStyle = '#2a2a4e';
-          ctx.fillRect(px + PADDING, py + PADDING, size, 2);
-          ctx.fillRect(px + PADDING, py + PADDING, 2, size);
+          // 添加草地纹理效果
+          ctx.fillStyle = '#2d7a2d';
+          ctx.fillRect(px + PADDING + 2, py + PADDING + 2, size - 4, 2);
+          ctx.fillRect(px + PADDING + 2, py + PADDING + 2, 2, size - 4);
 
-          // 阴影边
-          ctx.fillStyle = '#0a0a15';
+          // 阴影边 - 更深的绿
+          ctx.fillStyle = '#0d3d0d';
           ctx.fillRect(px + PADDING, py + CELL_SIZE - PADDING - 2, size, 2);
           ctx.fillRect(px + CELL_SIZE - PADDING - 2, py + PADDING, 2, size);
         }
@@ -735,13 +747,13 @@
           // 雷
           drawMine(px + CELL_SIZE / 2, py + CELL_SIZE / 2);
         } else if (board[y][x] > 0) {
-          // 数字
-          ctx.fillStyle = '#0a0a15';
+          // 数字 - 草地露出，露出的是深色泥土
+          ctx.fillStyle = '#3d2a1a';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
           drawNumber(px + CELL_SIZE / 2, py + CELL_SIZE / 2, board[y][x]);
         } else {
-          // 空白
-          ctx.fillStyle = '#0a0a15';
+          // 空白 - 泥土/草地已清除的感觉
+          ctx.fillStyle = '#4a3520';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
         }
       }
