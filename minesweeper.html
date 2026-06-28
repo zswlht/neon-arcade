@@ -347,6 +347,7 @@
   <div class="bottom-btns">
     <button class="small-btn" id="resetBtn">↺ 重置</button>
     <button class="small-btn" id="helpBtn">❓ 玩法</button>
+    <button class="small-btn" id="soundBtn">🔊 音效</button>
   </div>
 
   <div class="how-to-play">
@@ -373,6 +374,101 @@
       7: '#ffffff',  // 白
       8: '#888888'   // 灰
     };
+
+    // ==================== 音效系统 ====================
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+
+      try {
+        const ctx = initAudio();
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        const now = ctx.currentTime;
+
+        switch(type) {
+          case 'click':
+            // 点击音效 - 清脆的"叮"
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, now);
+            osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+            osc.start(now);
+            osc.stop(now + 0.1);
+            break;
+
+          case 'flag':
+            // 标记音效 - 低沉的"咚"
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.exponentialRampToValueAtTime(200, now + 0.1);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            osc.start(now);
+            osc.stop(now + 0.15);
+            break;
+
+          case 'explode':
+            // 爆炸音效 - 沉闷的"轰"
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, now);
+            osc.frequency.exponentialRampToValueAtTime(30, now + 0.3);
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            osc.start(now);
+            osc.stop(now + 0.4);
+            break;
+
+          case 'win':
+            // 胜利音效 - 上升音阶
+            const notes = [523, 659, 784, 1047]; // C5, E5, G5, C6
+            notes.forEach((freq, i) => {
+              const o = ctx.createOscillator();
+              const g = ctx.createGain();
+              o.connect(g);
+              g.connect(ctx.destination);
+              o.type = 'sine';
+              o.frequency.setValueAtTime(freq, now + i * 0.12);
+              g.gain.setValueAtTime(0, now + i * 0.12);
+              g.gain.linearRampToValueAtTime(0.15, now + i * 0.12 + 0.02);
+              g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.12 + 0.3);
+              o.start(now + i * 0.12);
+              o.stop(now + i * 0.12 + 0.3);
+            });
+            return; // 单独处理
+
+          case 'unflag':
+            // 取消标记音效 - 短促
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(500, now);
+            osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+            osc.start(now);
+            osc.stop(now + 0.08);
+            break;
+        }
+      } catch (e) {
+        console.log('Audio error:', e);
+      }
+    }
 
     // ==================== 游戏状态 ====================
     let currentDifficulty = 'beginner';
@@ -514,10 +610,13 @@
       if (board[y][x] === -1) {
         gameOver = true;
         win = false;
+        playSound('explode');
         revealAllMines();
         showLose();
         return;
       }
+
+      playSound('click');
 
       // 空白格，递归展开
       if (board[y][x] === 0) {
@@ -538,6 +637,7 @@
       if (revealed[y][x]) return;
 
       flagged[y][x] = !flagged[y][x];
+      playSound(flagged[y][x] ? 'flag' : 'unflag');
       updateMinesLeft();
       draw();
     }
@@ -652,6 +752,7 @@
     // ==================== UI ====================
     function showWin() {
       saveBest();
+      playSound('win');
       winTimeEl.textContent = time;
 
       // 根据时间给出评价
@@ -886,6 +987,17 @@
       document.getElementById('retryBtn').addEventListener('click', initGame);
       document.getElementById('helpBtn').addEventListener('click', () => {
         alert('🎮 霓虹扫雷玩法：\n\n📱 手机操作：\n1. 点击揭开格子\n2. 长按（500ms）标记旗帜\n3. 双指捏合放大/缩小\n4. 放大后单指拖动查看\n\n⌨️ 电脑操作：\n1. 左键点击揭开\n2. 右键点击标记\n3. 点击数字快速展开\n\n📋 游戏规则：\n- 数字表示周围8格中的雷数\n- 揭开所有安全格子获胜\n- 第一次点击保证安全\n\n💡 技巧：\n- 数字周围旗数等于数字时，点击数字可快速展开\n- 善用数字逻辑推理找出所有雷');
+      });
+
+      // 音效开关
+      const soundBtn = document.getElementById('soundBtn');
+      soundBtn.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        soundBtn.textContent = soundEnabled ? '🔊 音效' : '🔇 静音';
+        soundBtn.style.color = soundEnabled ? '' : '#888';
+        if (soundEnabled) {
+          playSound('click');
+        }
       });
 
       // 窗口大小改变
