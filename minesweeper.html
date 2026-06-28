@@ -731,33 +731,33 @@
           ctx.strokeRect(px + PADDING + 0.5, py + PADDING + 0.5, size - 1, size - 1);
           drawFlag(px + CELL_SIZE / 2, py + CELL_SIZE / 2);
         } else {
-          // 普通未揭开 - 霓虹玻璃质感
-          // 深色底色
-          ctx.fillStyle = '#1a1a3a';
+          // 普通未揭开 - 霓虹玻璃质感（更亮）
+          // 底色
+          ctx.fillStyle = '#2a2a5a';
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
 
-          // 顶部高光渐变（上浅下深，立体凸起感）
+          // 渐变高光（上浅下深，立体凸起感）
           const grad = ctx.createLinearGradient(px + PADDING, py + PADDING, px + PADDING, py + CELL_SIZE - PADDING);
-          grad.addColorStop(0, 'rgba(100, 100, 180, 0.3)');
-          grad.addColorStop(0.5, 'rgba(60, 60, 120, 0.15)');
-          grad.addColorStop(1, 'rgba(20, 20, 50, 0.3)');
+          grad.addColorStop(0, 'rgba(140, 160, 255, 0.4)');
+          grad.addColorStop(0.4, 'rgba(100, 120, 220, 0.2)');
+          grad.addColorStop(1, 'rgba(40, 40, 100, 0.3)');
           ctx.fillStyle = grad;
           ctx.fillRect(px + PADDING, py + PADDING, size, size);
 
-          // 霓虹边框（微光效果）
-          ctx.strokeStyle = 'rgba(80, 120, 200, 0.3)';
+          // 霓虹边框（微发光效果）
+          ctx.strokeStyle = 'rgba(120, 150, 255, 0.5)';
           ctx.lineWidth = 1;
           ctx.strokeRect(px + PADDING + 0.5, py + PADDING + 0.5, size - 1, size - 1);
 
           // 左上角亮边（凸起感）
-          ctx.fillStyle = 'rgba(150, 180, 255, 0.15)';
-          ctx.fillRect(px + PADDING, py + PADDING, size, 1);
-          ctx.fillRect(px + PADDING, py + PADDING, 1, size);
+          ctx.fillStyle = 'rgba(180, 200, 255, 0.3)';
+          ctx.fillRect(px + PADDING, py + PADDING, size, 2);
+          ctx.fillRect(px + PADDING, py + PADDING, 2, size);
 
           // 右下角暗边
-          ctx.fillStyle = 'rgba(0, 0, 20, 0.3)';
-          ctx.fillRect(px + PADDING, py + CELL_SIZE - PADDING - 1, size, 1);
-          ctx.fillRect(px + CELL_SIZE - PADDING - 1, py + PADDING, 1, size);
+          ctx.fillStyle = 'rgba(20, 20, 60, 0.3)';
+          ctx.fillRect(px + PADDING, py + CELL_SIZE - PADDING - 2, size, 2);
+          ctx.fillRect(px + CELL_SIZE - PADDING - 2, py + PADDING, 2, size);
         }
       } else {
         // 已揭开 - 深色凹陷
