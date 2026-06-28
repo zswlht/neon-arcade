@@ -7,41 +7,53 @@
 <link rel="stylesheet" href="style.css" />
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
 <style>
-  .back-btn {
-    position: fixed;
-    top: 16px;
-    left: 16px;
-    z-index: 100;
-    padding: 10px 16px;
-    font-family: "Orbitron", sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--neon-cyan);
-    background: rgba(20, 26, 70, 0.8);
-    border: 1px solid rgba(34, 245, 255, 0.4);
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    transition: all 0.2s ease;
-    box-shadow: 0 0 12px rgba(34, 245, 255, 0.2);
-  }
-  .back-btn:hover {
-    background: rgba(34, 245, 255, 0.15);
-    transform: translateX(-2px);
-    box-shadow: 0 0 20px rgba(34, 245, 255, 0.4);
-  }
-  @media (max-width: 600px) {
     .back-btn {
-      top: 10px;
-      left: 10px;
-      padding: 8px 12px;
-      font-size: 11px;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      padding: 10px 16px;
+      font-family: "Orbitron", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--neon-cyan);
+      background: rgba(20, 26, 70, 0.8);
+      border: 1px solid rgba(34, 245, 255, 0.4);
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: all 0.2s ease;
+      box-shadow: 0 0 12px rgba(34, 245, 255, 0.2);
     }
-  }
-</style>
+    .back-btn:hover {
+      background: rgba(34, 245, 255, 0.15);
+      transform: translateX(-2px);
+      box-shadow: 0 0 20px rgba(34, 245, 255, 0.4);
+    }
+    .top-bar {
+      padding-left: 100px;
+      padding-right: 100px;
+    }
+    @media (max-width: 600px) {
+      .back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+      .top-bar {
+        padding-left: 70px;
+        padding-right: 20px;
+      }
+      .title {
+        font-size: 20px !important;
+        letter-spacing: 2px !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="grid-bg"></div>
@@ -51,9 +63,9 @@
 
   <header class="top-bar">
     <h1 class="title">
-      <span class="title-neon">NEON</span>
+      <span class="title-neon">霓虹</span>
       <span class="title-slash">/</span>
-      <span class="title-neon alt">TETRIS</span>
+      <span class="title-neon alt">俄罗斯方块</span>
     </h1>
     <p class="subtitle">— 霓虹俄罗斯方块 —</p>
   </header>
