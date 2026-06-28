@@ -741,7 +741,7 @@
     if (k === "m" || k === "M") {
       Audio.resume();
       const m = Audio.toggleMute();
-      btnMute.textContent = m ? "🔇 音效:关" : "🔊 音效:开";
+      btnMute.textContent = m ? "🔇 音效" : "🔊 音效";
       return;
     }
     if (k === "p" || k === "P") { togglePause(); return; }
