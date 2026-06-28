@@ -700,6 +700,8 @@
     if (nextMobileCtx && nextMobileCanvas) drawMini(nextMobileCtx, nextMobileCanvas, nextKey, 12);
     if (holdMobileCtx && holdMobileCanvas) drawMini(holdMobileCtx, holdMobileCanvas, holdKey, 12);
 
+    syncSideHeight();
+
     scoreEl.textContent = score;
     levelEl.textContent = level;
     linesEl.textContent = lines;
@@ -710,6 +712,15 @@
     }
 
     requestAnimationFrame(tick);
+  }
+
+  function syncSideHeight() {
+    const frame = document.querySelector(".stage-tetris .board-frame");
+    const side = document.querySelector(".stage-tetris .mobile-side-preview");
+    if (frame && side) {
+      const h = frame.offsetHeight;
+      side.style.height = h + "px";
+    }
   }
 
   // ---------- 控制 ----------
@@ -893,6 +904,10 @@
   if (nextMobileCtx && nextMobileCanvas) drawMini(nextMobileCtx, nextMobileCanvas, null, 12);
   if (holdMobileCtx && holdMobileCanvas) drawMini(holdMobileCtx, holdMobileCanvas, holdKey, 12);
   requestAnimationFrame(tick);
+
+  window.addEventListener("resize", syncSideHeight);
+  setTimeout(syncSideHeight, 100);
+  setTimeout(syncSideHeight, 500);
 
   // 首次任意点击/按键：唤醒 AudioContext（浏览器策略要求）
   document.addEventListener("pointerdown", () => Audio.resume(), { once: false });

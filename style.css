@@ -707,9 +707,9 @@ kbd {
   .stage-tetris .board-wrap {
     order: 2;
     min-height: 0;
-    display: grid;
-    grid-template-columns: auto auto;
-    align-items: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
     justify-content: center;
     gap: 12px;
     height: auto;
@@ -717,18 +717,16 @@ kbd {
   .stage-tetris .board-frame {
     padding: 6px;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-self: start;
+    flex: 0 1 auto;
   }
   .stage-tetris .mobile-side-preview {
     display: flex !important;
     flex-direction: column;
     justify-content: space-between;
     gap: 8px;
+    flex: 0 0 auto;
     padding-bottom: 0;
     min-height: 0;
-    align-self: stretch;
   }
   .stage-tetris .side-tbtn {
     width: 68px !important;
