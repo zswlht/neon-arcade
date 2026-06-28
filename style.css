@@ -939,9 +939,16 @@ kbd {
     gap: 12px;
     padding: 0 12px 30px;
   }
+  .stage-sudoku .board-frame {
+    order: 0;
+  }
+  .stage-sudoku .info-bar {
+    flex-wrap: nowrap;
+  }
   .stage-sudoku .info-item {
-    padding: 8px 12px;
-    min-width: 75px;
+    flex: 1;
+    padding: 8px 10px;
+    min-width: 0;
   }
   .stage-sudoku .info-item .value {
     font-size: 14px;
@@ -949,9 +956,14 @@ kbd {
   .stage-sudoku .info-item h3 {
     font-size: 10px;
   }
+  .stage-sudoku .difficulty-selector {
+    flex-wrap: nowrap;
+  }
   .stage-sudoku .diff-btn {
-    padding: 5px 10px;
-    font-size: 10px;
+    flex: 1;
+    padding: 6px 8px;
+    font-size: 11px;
+    letter-spacing: 1px;
   }
   .stage-sudoku .sudoku-numpad-inner {
     display: flex !important;
@@ -985,6 +997,7 @@ kbd {
   }
   .stage-sudoku .bottom-btns {
     margin: 10px 0 5px;
+    order: 5;
   }
   /* 手机端隐藏外部的全局数独数字键盘 */
   .touch-sudoku.sudoku-numpad {
