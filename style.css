@@ -801,6 +801,7 @@ kbd {
     font-size: 16px;
   }
   #sudoku-timer,
+  #sudoku-best,
   #schulte-timer {
     width: 9ch;
     font-size: 14px !important;
@@ -1031,6 +1032,7 @@ kbd {
   .card h3 { font-size: 10px; letter-spacing: 2px; margin-bottom: 4px; }
   .card .value { font-size: 14px; }
   #sudoku-timer,
+  #sudoku-best,
   #schulte-timer {
     width: 9ch;
     font-size: 12px !important;
@@ -1103,6 +1105,7 @@ kbd {
 
 /* ========== 数独游戏 ========== */
 #sudoku-timer,
+#sudoku-best,
 #schulte-timer {
   width: 9ch;
   text-align: center;
