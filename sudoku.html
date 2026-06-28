@@ -71,29 +71,22 @@
 
   <!-- ======================= 数独 ======================= -->
   <main class="stage stage-sudoku active" id="stage-sudoku">
-    <aside class="panel panel-left">
-      <section class="card">
+    <div class="info-bar">
+      <div class="info-item">
         <h3>计时</h3>
-        <div class="value" id="sudoku-timer" style="font-family: 'Orbitron', monospace; font-size: 20px; color: var(--neon-cyan);">00:00.00</div>
-      </section>
-      <section class="card">
-        <h3>错误</h3>
-        <div class="value" id="sudoku-mistakes" style="color: var(--neon-pink);">0</div>
-      </section>
-      <section class="card">
+        <div class="value" id="sudoku-timer">00:00.00</div>
+      </div>
+      <div class="info-item">
         <h3>最佳</h3>
-        <div class="value" id="sudoku-best" style="font-family: 'Orbitron', monospace; font-size: 13px; color: #ffb84d;">--:--.--</div>
-      </section>
-      <section class="card">
-        <h3>难度</h3>
-        <div class="diff-buttons">
-          <button class="diff-btn" data-diff="easy">简单</button>
-          <button class="diff-btn active" data-diff="medium">中等</button>
-          <button class="diff-btn" data-diff="hard">困难</button>
-        </div>
-        <div style="font-size:12px; color:var(--text-dim); margin-top:6px;" id="sudoku-difficulty">中等</div>
-      </section>
-    </aside>
+        <div class="value" id="sudoku-best">--:--.--</div>
+      </div>
+    </div>
+
+    <div class="difficulty-selector">
+      <button class="diff-btn" data-diff="easy">简单</button>
+      <button class="diff-btn active" data-diff="medium">中等</button>
+      <button class="diff-btn" data-diff="hard">困难</button>
+    </div>
 
     <section class="board-wrap">
       <div class="board-frame">
@@ -112,12 +105,6 @@
       </div>
     </section>
 
-    <div class="bottom-btns" style="padding: 10px 0;">
-      <button class="small-btn" id="sudoku-help-btn">❓ 玩法</button>
-      <button class="small-btn" id="sudoku-mute-btn">🔊 音效</button>
-      <button class="small-btn" id="sudoku-restart-btn">↺ 重置</button>
-    </div>
-
     <div class="sudoku-numpad-inner touch-controls">
       <button class="nbtn tbtn" data-num="1">1</button>
       <button class="nbtn tbtn" data-num="2">2</button>
@@ -129,6 +116,12 @@
       <button class="nbtn tbtn" data-num="8">8</button>
       <button class="nbtn tbtn" data-num="9">9</button>
       <button class="nbtn tbtn" data-num="0" style="color: var(--neon-pink); border-color: rgba(255,62,100,0.5);">⌫</button>
+    </div>
+
+    <div class="bottom-btns">
+      <button class="small-btn" id="sudoku-restart-btn">↺ 重置</button>
+      <button class="small-btn" id="sudoku-help-btn">❓ 玩法</button>
+      <button class="small-btn" id="sudoku-mute-btn">🔊 音效</button>
     </div>
   </main>
 

@@ -427,6 +427,142 @@ kbd {
 .stage-schulte .card .value {
   font-size: 18px;
 }
+
+/* 数独 - 单列布局（与扫雷统一风格） */
+.stage-sudoku {
+  grid-template-columns: 1fr;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 16px 30px;
+  gap: 16px;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 信息栏 - 与扫雷统一 */
+.stage-sudoku .info-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stage-sudoku .info-item {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  text-align: center;
+  min-width: 90px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow:
+    0 0 0 1px rgba(34, 245, 255, 0.1) inset,
+    0 4px 20px rgba(34, 245, 255, 0.08);
+}
+
+.stage-sudoku .info-item h3 {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(34, 245, 255, 0.5);
+}
+
+.stage-sudoku .info-item .value {
+  font-family: "Press Start 2P", monospace;
+  font-size: 18px;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow:
+    0 0 6px rgba(255, 236, 66, 0.9),
+    0 0 16px rgba(255, 236, 66, 0.4);
+  font-variant-numeric: tabular-nums;
+}
+
+#sudoku-timer {
+  color: var(--neon-yellow);
+  text-shadow:
+    0 0 6px rgba(255, 236, 66, 0.9),
+    0 0 16px rgba(255, 236, 66, 0.4);
+}
+
+#sudoku-best {
+  color: var(--neon-green);
+  text-shadow:
+    0 0 6px rgba(34, 255, 143, 0.9),
+    0 0 16px rgba(34, 255, 143, 0.4);
+}
+
+/* 难度选择 - 与扫雷统一 */
+.stage-sudoku .difficulty-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stage-sudoku .diff-btn {
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stage-sudoku .diff-btn:hover {
+  background: rgba(34, 245, 255, 0.08);
+  border-color: rgba(34, 245, 255, 0.4);
+  color: #fff;
+}
+
+.stage-sudoku .diff-btn.active {
+  background: linear-gradient(135deg, rgba(34, 245, 255, 0.2), rgba(178, 75, 255, 0.2));
+  border-color: rgba(34, 245, 255, 0.6);
+  color: #fff;
+  box-shadow: 0 0 14px rgba(34, 245, 255, 0.4), inset 0 0 10px rgba(178, 75, 255, 0.15);
+}
+
+.stage-sudoku .board-wrap {
+  width: 100%;
+}
+
+.stage-sudoku .sudoku-numpad-inner {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.stage-sudoku .sudoku-numpad-inner .nbtn {
+  flex: 1 1 calc(20% - 6px);
+  min-width: 40px;
+  min-height: 48px;
+  padding: 12px 4px;
+  font-size: 16px;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(34, 245, 255, 0.3);
+  cursor: pointer;
+  appearance: button;
+}
+
+.stage-sudoku .bottom-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 #schulte-board {
   display: block;
   width: 400px;
@@ -800,14 +936,25 @@ kbd {
 
   /* 数独游戏手机端布局 */
   .stage-sudoku {
-    gap: 10px;
+    gap: 12px;
+    padding: 0 12px 30px;
   }
-  .stage-sudoku .board-wrap {
-    order: 1;
+  .stage-sudoku .info-item {
+    padding: 8px 12px;
+    min-width: 75px;
+  }
+  .stage-sudoku .info-item .value {
+    font-size: 14px;
+  }
+  .stage-sudoku .info-item h3 {
+    font-size: 10px;
+  }
+  .stage-sudoku .diff-btn {
+    padding: 5px 10px;
+    font-size: 10px;
   }
   .stage-sudoku .sudoku-numpad-inner {
     display: flex !important;
-    order: 2;
     margin: 0 auto;
     padding: 8px 0;
     max-width: 100%;
@@ -836,11 +983,8 @@ kbd {
     transform: scale(0.95);
     background: rgba(255, 62, 100, 0.2);
   }
-  .stage-sudoku .panel-left {
-    order: 3;
-  }
-  .stage-sudoku .panel-right {
-    order: 4;
+  .stage-sudoku .bottom-btns {
+    margin: 10px 0 5px;
   }
   /* 手机端隐藏外部的全局数独数字键盘 */
   .touch-sudoku.sudoku-numpad {
@@ -984,15 +1128,9 @@ kbd {
   font-size: 18px;
 }
 
-/* 数独内部数字键盘在桌面端也隐藏，移动端通过 stage-sudoku 显示 */
+/* 数独内部数字键盘始终显示 */
 .stage-sudoku .sudoku-numpad-inner {
-  display: none;
-}
-
-@media (max-width: 900px) {
-  .stage-sudoku .sudoku-numpad-inner {
-    display: flex !important;
-  }
+  display: flex !important;
 }
 
 /* ======================= 扫雷 ======================= */
