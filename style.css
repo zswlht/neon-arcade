@@ -492,8 +492,6 @@ kbd {
 #sudoku-timer,
 #sudoku-best {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 #sudoku-timer {
@@ -961,18 +959,19 @@ kbd {
   }
   .stage-sudoku .info-item {
     flex: 1;
-    padding: 8px 6px;
+    padding: 8px 8px;
     min-width: 0;
   }
   .stage-sudoku .info-item .value {
-    font-size: 12px;
+    font-family: "Orbitron", "Segoe UI", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .stage-sudoku .info-item h3 {
-    font-size: 9px;
-    letter-spacing: 1px;
+    font-size: 10px;
+    letter-spacing: 2px;
   }
   .stage-sudoku .difficulty-selector {
     flex-wrap: nowrap;

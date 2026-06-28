@@ -420,9 +420,9 @@ const SudokuGame = (() => {
     try {
       const key = `sudoku_best_${difficulty}`;
       const best = parseInt(localStorage.getItem(key) || "0");
-      el.textContent = best > 0 ? formatTime(best) : "---";
+      el.textContent = best > 0 ? formatTime(best) : "--:--";
     } catch (e) {
-      el.textContent = "---";
+      el.textContent = "--:--";
     }
   }
 
