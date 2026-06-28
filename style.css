@@ -1041,3 +1041,10 @@ kbd {
   background: rgba(34, 245, 255, 0.08);
   box-shadow: 0 0 10px rgba(34, 245, 255, 0.2);
 }
+
+.bottom-btns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
