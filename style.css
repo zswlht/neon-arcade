@@ -711,19 +711,46 @@ kbd {
     flex-direction: row;
     align-items: flex-end;
     justify-content: center;
-    gap: 8px;
+    gap: 12px;
+    height: calc(100vh - 180px);
   }
   .stage-tetris .board-frame {
     order: 0;
     padding: 6px;
     flex: 0 1 auto;
+    align-self: flex-end;
   }
   .stage-tetris .mobile-side-preview {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
-    gap: 8px;
+    justify-content: flex-end;
+    gap: 12px;
     flex: 0 0 auto;
-    height: 100%;
+    min-height: 180px;
+    padding-bottom: 0;
+    align-self: flex-end;
+  }
+  .stage-tetris .side-tbtn {
+    width: 85px !important;
+    height: 85px !important;
+    padding: 0 !important;
+    font-family: "Orbitron", sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    letter-spacing: 3px !important;
+    border-radius: 14px !important;
+    background: rgba(20, 26, 70, 0.9) !important;
+    border: 3px solid rgba(34, 245, 255, 0.7) !important;
+    color: var(--neon-cyan) !important;
+    box-shadow: 0 0 20px rgba(34, 245, 255, 0.4) !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+    transition: all 0.1s !important;
+  }
+  .stage-tetris .side-tbtn:active {
+    background: rgba(34, 245, 255, 0.3) !important;
+    transform: scale(0.95) !important;
   }
   .stage-tetris .mobile-next-wrap,
   .stage-tetris .mobile-hold-wrap {
