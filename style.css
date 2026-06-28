@@ -755,27 +755,31 @@ kbd {
   }
   .stage-tetris .mobile-next-wrap,
   .stage-tetris .mobile-hold-wrap {
-    padding: 6px 8px;
-    background: rgba(20, 26, 70, 0.6);
-    border-radius: 8px;
-    border: 1px solid rgba(34, 245, 255, 0.3);
-    box-shadow: 0 0 10px rgba(34, 245, 255, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
+    padding: 6px 8px !important;
+    background: rgba(20, 26, 70, 0.85) !important;
+    border-radius: 10px !important;
+    border: 2px solid rgba(34, 245, 255, 0.5) !important;
+    box-shadow: 0 0 14px rgba(34, 245, 255, 0.3) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 4px !important;
   }
   .stage-tetris .mobile-next-wrap h3,
   .stage-tetris .mobile-hold-wrap h3 {
-    font-size: 10px;
-    letter-spacing: 1px;
-    color: var(--neon-cyan);
-    margin: 0;
+    font-size: 10px !important;
+    letter-spacing: 1px !important;
+    color: var(--neon-cyan) !important;
+    margin: 0 !important;
+    text-shadow: 0 0 6px rgba(34, 245, 255, 0.6) !important;
   }
   .stage-tetris .mobile-next-wrap canvas,
   .stage-tetris .mobile-hold-wrap canvas {
-    width: 50px;
-    height: 50px;
+    width: 50px !important;
+    height: 50px !important;
+    display: block !important;
+    border-radius: 6px !important;
+    background: rgba(10, 15, 45, 0.8) !important;
   }
   .stage-tetris #board {
     max-height: calc(100vh - 130px);
