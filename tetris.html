@@ -61,6 +61,22 @@
       font-weight: 900;
       letter-spacing: 2px;
     }
+    @media (max-width: 600px) {
+      .touch-tetris {
+        justify-content: space-between;
+        align-items: center;
+      }
+      .touch-tetris .tbtn {
+        flex: 0 0 auto;
+        min-width: 0;
+      }
+      .touch-tetris .btn-hold,
+      .touch-tetris .btn-drop {
+        font-size: 14px;
+        padding: 10px 16px;
+        min-width: 70px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -114,8 +130,14 @@
         </div>
       </div>
       <div class="mobile-side-preview">
-        <button class="side-tbtn tbtn" data-act="hold">HOLD</button>
-        <button class="side-tbtn tbtn" data-act="drop">DROP</button>
+        <div class="mobile-next-wrap">
+          <h3>下一个</h3>
+          <canvas id="next-mobile" width="50" height="50"></canvas>
+        </div>
+        <div class="mobile-hold-wrap">
+          <h3>暂存</h3>
+          <canvas id="hold-mobile" width="50" height="50"></canvas>
+        </div>
       </div>
     </section>
 
@@ -144,11 +166,13 @@
     </aside>
   </main>
 
-  <div class="touch-controls touch-tetris active" style="display:none;">
+  <div class="touch-controls touch-tetris active">
     <button class="tbtn" data-act="left">◀</button>
     <button class="tbtn" data-act="rotate">↻</button>
     <button class="tbtn" data-act="right">▶</button>
     <button class="tbtn" data-act="down">▼</button>
+    <button class="tbtn btn-hold" data-act="hold">HOLD</button>
+    <button class="tbtn btn-drop" data-act="drop">DROP</button>
   </div>
 
   <footer class="foot">
