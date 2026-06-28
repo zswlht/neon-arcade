@@ -473,7 +473,7 @@ const SudokuGame = (() => {
   function toggleMute() {
     const m = Audio.toggleMute();
     const btn = document.getElementById("sudoku-mute-btn");
-    if (btn) btn.textContent = m ? "🔇 音效:关" : "🔊 音效:开";
+    if (btn) btn.textContent = m ? "🔇 音效" : "🔊 音效";
   }
 
   function updateTimer() {
@@ -521,6 +521,13 @@ const SudokuGame = (() => {
         newGame(difficulty);
         const overlay = document.getElementById("sudoku-overlay");
         if (overlay) overlay.classList.add("hidden");
+      });
+    }
+
+    const helpBtn = document.getElementById("sudoku-help-btn");
+    if (helpBtn) {
+      helpBtn.addEventListener("click", () => {
+        alert('🎮 霓虹数独玩法：\n\n📱 手机操作：\n1. 点击格子选中\n2. 点击下方数字按钮填入\n3. 点击"⌫"擦除数字\n\n⌨️ 电脑操作：\n1. 鼠标点击格子选中\n2. 数字键1-9填入数字\n3. Backspace擦除\n4. M键静音切换\n\n📋 游戏规则：\n- 每行、每列、每个3×3小九宫格内\n- 数字1-9各出现一次，不重复\n- 填满所有格子即获胜');
       });
     }
 

@@ -112,6 +112,12 @@
       </div>
     </section>
 
+    <div class="bottom-btns" style="padding: 10px 0;">
+      <button class="small-btn" id="sudoku-help-btn">❓ 玩法</button>
+      <button class="small-btn" id="sudoku-mute-btn">🔊 音效</button>
+      <button class="small-btn" id="sudoku-restart-btn">↺ 重置</button>
+    </div>
+
     <div class="sudoku-numpad-inner touch-controls">
       <button class="nbtn tbtn" data-num="1">1</button>
       <button class="nbtn tbtn" data-num="2">2</button>
@@ -124,27 +130,6 @@
       <button class="nbtn tbtn" data-num="9">9</button>
       <button class="nbtn tbtn" data-num="0" style="color: var(--neon-pink); border-color: rgba(255,62,100,0.5);">⌫</button>
     </div>
-
-    <aside class="panel panel-right">
-      <section class="card controls">
-        <h3>操作说明</h3>
-        <ul class="key-list">
-          <li><kbd>鼠标</kbd><span>选格</span></li>
-          <li><kbd>1-9</kbd><span>填入数字</span></li>
-          <li><kbd>Backspace</kbd><span>擦除</span></li>
-          <li><kbd>M</kbd><span>静音切换</span></li>
-        </ul>
-        <button class="mute-btn" id="sudoku-mute-btn">🔊 音效:开</button>
-        <button class="mute-btn" id="sudoku-restart-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ 重新开始</button>
-      </section>
-
-      <section class="card" style="margin-top:12px;">
-        <h3>规则</h3>
-        <p style="color: var(--text); font-size: 12px; line-height: 1.7; margin: 6px 0 0;">
-          每行、每列、每个 3×3 小九宫格内，数字 1-9 各出现一次，不重复。
-        </p>
-      </section>
-    </aside>
   </main>
 
   <div class="touch-controls touch-sudoku sudoku-numpad">
@@ -164,6 +149,6 @@
     <span>· 填入数字，填满逻辑的迷宫 ·</span>
   </footer>
 
-  <script src="sudoku.js"></script>
+  <script src="sudoku.js?v=2"></script>
 </body>
 </html>
