@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>NEON TETRIS · 霓虹俄罗斯方块</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+<style>
+  .back-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+    padding: 10px 16px;
+    font-family: "Orbitron", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--neon-cyan);
+    background: rgba(20, 26, 70, 0.8);
+    border: 1px solid rgba(34, 245, 255, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.2s ease;
+    box-shadow: 0 0 12px rgba(34, 245, 255, 0.2);
+  }
+  .back-btn:hover {
+    background: rgba(34, 245, 255, 0.15);
+    transform: translateX(-2px);
+    box-shadow: 0 0 20px rgba(34, 245, 255, 0.4);
+  }
+  @media (max-width: 600px) {
+    .back-btn {
+      top: 10px;
+      left: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+
+  <a href="index.html" class="back-btn">← 返回</a>
+
+  <header class="top-bar">
+    <h1 class="title">
+      <span class="title-neon">NEON</span>
+      <span class="title-slash">/</span>
+      <span class="title-neon alt">TETRIS</span>
+    </h1>
+    <p class="subtitle">— 霓虹俄罗斯方块 —</p>
+  </header>
+
+  <!-- ======================= 俄罗斯方块 ======================= -->
+  <main class="stage stage-tetris active" id="stage-tetris">
+    <aside class="panel panel-left">
+      <section class="card">
+        <h3>得分</h3>
+        <div class="value" id="score">0</div>
+      </section>
+      <section class="card">
+        <h3>等级</h3>
+        <div class="value" id="level">1</div>
+      </section>
+      <section class="card">
+        <h3>行数</h3>
+        <div class="value" id="lines">0</div>
+      </section>
+      <section class="card">
+        <h3>最高</h3>
+        <div class="value" id="highscore">0</div>
+      </section>
+    </aside>
+
+    <section class="board-wrap">
+      <div class="board-frame">
+        <div class="board-corner tl"></div>
+        <div class="board-corner tr"></div>
+        <div class="board-corner bl"></div>
+        <div class="board-corner br"></div>
+        <canvas id="board" width="300" height="600"></canvas>
+        <div class="overlay" id="overlay">
+          <div class="overlay-inner">
+            <h2 id="overlayTitle">准备开始</h2>
+            <p id="overlaySubtitle">按 <kbd>ENTER</kbd> 或 点击下方开始</p>
+            <button class="btn-start" id="btnStart">▶ 开始游戏</button>
+          </div>
+        </div>
+      </div>
+      <div class="mobile-side-preview">
+        <div class="mobile-next-wrap">
+          <h3>下一个</h3>
+          <canvas id="next-mobile" width="50" height="50"></canvas>
+        </div>
+        <div class="mobile-hold-wrap">
+          <h3>暂存</h3>
+          <canvas id="hold-mobile" width="50" height="50"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel panel-right">
+      <section class="card card-next">
+        <h3>下一个</h3>
+        <canvas id="next" width="120" height="120"></canvas>
+      </section>
+      <section class="card card-hold">
+        <h3>暂存</h3>
+        <canvas id="hold" width="120" height="120"></canvas>
+      </section>
+      <section class="card controls">
+        <h3>操作说明</h3>
+        <ul class="key-list">
+          <li><kbd>←</kbd><kbd>→</kbd><span>移动</span></li>
+          <li><kbd>↓</kbd><span>加速下降</span></li>
+          <li><kbd>↑</kbd><span>旋转</span></li>
+          <li><kbd>SPACE</kbd><span>硬降</span></li>
+          <li><kbd>C</kbd><span>暂存</span></li>
+          <li><kbd>P</kbd><span>暂停</span></li>
+          <li><kbd>M</kbd><span>静音切换</span></li>
+        </ul>
+        <button class="mute-btn" id="muteBtn">🔊 音效:开</button>
+      </section>
+    </aside>
+  </main>
+
+  <div class="touch-controls touch-tetris">
+    <button class="tbtn" data-act="left">◀</button>
+    <button class="tbtn" data-act="rotate">↻</button>
+    <button class="tbtn" data-act="right">▶</button>
+    <button class="tbtn" data-act="hold">HOLD</button>
+    <button class="tbtn" data-act="down">▼</button>
+    <button class="tbtn" data-act="drop">DROP</button>
+  </div>
+
+  <footer class="foot">
+    <span>· 方块落下时世界会暂停呼吸 ·</span>
+  </footer>
+
+  <script src="game.js"></script>
+</body>
+</html>

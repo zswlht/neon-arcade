@@ -301,9 +301,45 @@
     .shake {
       animation: shake 0.3s ease-in-out;
     }
+
+    .back-btn {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      padding: 10px 16px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--neon-purple);
+      background: rgba(20, 20, 30, 0.9);
+      border: 1px solid rgba(178, 75, 255, 0.4);
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: all 0.2s ease;
+      box-shadow: 0 0 12px rgba(178, 75, 255, 0.2);
+    }
+    .back-btn:hover {
+      background: rgba(178, 75, 255, 0.15);
+      transform: translateX(-2px);
+      box-shadow: 0 0 20px rgba(178, 75, 255, 0.4);
+    }
+    @media (max-width: 500px) {
+      .back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="index.html" class="back-btn">← 返回</a>
   <h1>霓虹扫雷</h1>
 
   <div class="info-bar">

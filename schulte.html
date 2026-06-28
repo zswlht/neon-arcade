@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>NEON SCHULTE · 舒尔特三角训练</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+<style>
+  .back-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+    padding: 10px 16px;
+    font-family: "Orbitron", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--neon-yellow);
+    background: rgba(20, 26, 70, 0.8);
+    border: 1px solid rgba(255, 236, 66, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.2s ease;
+    box-shadow: 0 0 12px rgba(255, 236, 66, 0.2);
+  }
+  .back-btn:hover {
+    background: rgba(255, 236, 66, 0.15);
+    transform: translateX(-2px);
+    box-shadow: 0 0 20px rgba(255, 236, 66, 0.4);
+  }
+  @media (max-width: 600px) {
+    .back-btn {
+      top: 10px;
+      left: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+
+  <a href="index.html" class="back-btn">← 返回</a>
+
+  <header class="top-bar">
+    <h1 class="title">
+      <span class="title-neon">NEON</span>
+      <span class="title-slash">/</span>
+      <span class="title-neon alt">SCHULTE</span>
+    </h1>
+    <p class="subtitle">— 舒尔特三角训练 —</p>
+  </header>
+
+  <!-- ======================= 舒尔特三角训练 ======================= -->
+  <main class="stage stage-schulte active" id="stage-schulte">
+    <aside class="panel panel-left">
+      <section class="card">
+        <h3>计时</h3>
+        <div class="value" id="schulte-timer" style="font-family: 'Orbitron', monospace; font-size: 22px; color: var(--neon-cyan);">00:00.00</div>
+      </section>
+      <section class="card">
+        <h3>下一个</h3>
+        <div class="value" id="schulte-next" style="color: var(--neon-pink); font-size: 28px;">1</div>
+      </section>
+      <section class="card">
+        <h3>最佳</h3>
+        <div class="value" id="schulte-best" style="font-family: 'Orbitron', monospace; font-size: 14px; color: #ffb84d;">--:--.--</div>
+      </section>
+      <section class="card">
+        <h3>状态</h3>
+        <div class="value" id="schulte-status" style="font-size: 13px; color: var(--text-dim);">准备中</div>
+      </section>
+    </aside>
+
+    <section class="board-wrap">
+      <div class="board-frame">
+        <div class="board-corner tl"></div>
+        <div class="board-corner tr"></div>
+        <div class="board-corner bl"></div>
+        <div class="board-corner br"></div>
+        <canvas id="schulte-board" width="400" height="400"></canvas>
+        <div class="overlay" id="schulte-overlay">
+          <div class="overlay-inner">
+            <h2 id="schulte-title">舒尔特三角训练</h2>
+            <p id="schulte-subtitle">从 1 到 25 按顺序点击数字</p>
+            <button class="btn-start" id="schulte-btn-start">▶ 开始训练</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel panel-right">
+      <section class="card controls">
+        <h3>操作说明</h3>
+        <ul class="key-list">
+          <li><kbd>鼠标</kbd><span>点击三角形</span></li>
+          <li><kbd>Enter</kbd><span>开始/重新开始</span></li>
+          <li><kbd>M</kbd><span>静音切换</span></li>
+        </ul>
+        <button class="mute-btn" id="schulte-mute-btn">🔊 音效:开</button>
+        <button class="mute-btn" id="schulte-restart-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ 重新开始</button>
+      </section>
+
+      <section class="card" style="margin-top:12px;">
+        <h3>规则</h3>
+        <p style="color: var(--text); font-size: 12px; line-height: 1.7; margin: 6px 0 0;">
+          升级版舒尔特方格：数字位于三角形中。<br>
+          从 <b style="color:#22f5ff">1</b> 到 <b style="color:#22f5ff">25</b> 按序找出数字。<br>
+          <span style="color:#22ff8f">≤25秒</span> 专注力非常优秀<br>
+          <span style="color:#ff3e64">＞35秒</span> 需要多练习
+        </p>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="foot">
+    <span>· 专注力，是最珍贵的能力 ·</span>
+  </footer>
+
+  <script src="schulte.js"></script>
+</body>
+</html>

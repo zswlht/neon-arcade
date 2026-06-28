@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>NEON SUDOKU · 霓虹数独</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+<style>
+  .back-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+    padding: 10px 16px;
+    font-family: "Orbitron", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #22ff8f;
+    background: rgba(20, 26, 70, 0.8);
+    border: 1px solid rgba(34, 255, 143, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.2s ease;
+    box-shadow: 0 0 12px rgba(34, 255, 143, 0.2);
+  }
+  .back-btn:hover {
+    background: rgba(34, 255, 143, 0.15);
+    transform: translateX(-2px);
+    box-shadow: 0 0 20px rgba(34, 255, 143, 0.4);
+  }
+  @media (max-width: 600px) {
+    .back-btn {
+      top: 10px;
+      left: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+
+  <a href="index.html" class="back-btn">← 返回</a>
+
+  <header class="top-bar">
+    <h1 class="title">
+      <span class="title-neon">NEON</span>
+      <span class="title-slash">/</span>
+      <span class="title-neon alt">SUDOKU</span>
+    </h1>
+    <p class="subtitle">— 霓虹数独 —</p>
+  </header>
+
+  <!-- ======================= 数独 ======================= -->
+  <main class="stage stage-sudoku active" id="stage-sudoku">
+    <aside class="panel panel-left">
+      <section class="card">
+        <h3>计时</h3>
+        <div class="value" id="sudoku-timer" style="font-family: 'Orbitron', monospace; font-size: 20px; color: var(--neon-cyan);">00:00.00</div>
+      </section>
+      <section class="card">
+        <h3>错误</h3>
+        <div class="value" id="sudoku-mistakes" style="color: var(--neon-pink);">0</div>
+      </section>
+      <section class="card">
+        <h3>最佳</h3>
+        <div class="value" id="sudoku-best" style="font-family: 'Orbitron', monospace; font-size: 13px; color: #ffb84d;">--:--.--</div>
+      </section>
+      <section class="card">
+        <h3>难度</h3>
+        <div class="diff-buttons">
+          <button class="diff-btn" data-diff="easy">简单</button>
+          <button class="diff-btn active" data-diff="medium">中等</button>
+          <button class="diff-btn" data-diff="hard">困难</button>
+        </div>
+        <div style="font-size:12px; color:var(--text-dim); margin-top:6px;" id="sudoku-difficulty">中等</div>
+      </section>
+    </aside>
+
+    <section class="board-wrap">
+      <div class="board-frame">
+        <div class="board-corner tl"></div>
+        <div class="board-corner tr"></div>
+        <div class="board-corner bl"></div>
+        <div class="board-corner br"></div>
+        <canvas id="sudoku-board" width="400" height="400"></canvas>
+        <div class="overlay" id="sudoku-overlay">
+          <div class="overlay-inner">
+            <h2 id="sudoku-title">霓虹数独</h2>
+            <p id="sudoku-subtitle">9×9 数独 · 经典规则</p>
+            <button class="btn-start" id="sudoku-btn-start">▶ 开始游戏</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="sudoku-numpad-inner touch-controls">
+      <button class="nbtn tbtn" data-num="1">1</button>
+      <button class="nbtn tbtn" data-num="2">2</button>
+      <button class="nbtn tbtn" data-num="3">3</button>
+      <button class="nbtn tbtn" data-num="4">4</button>
+      <button class="nbtn tbtn" data-num="5">5</button>
+      <button class="nbtn tbtn" data-num="6">6</button>
+      <button class="nbtn tbtn" data-num="7">7</button>
+      <button class="nbtn tbtn" data-num="8">8</button>
+      <button class="nbtn tbtn" data-num="9">9</button>
+      <button class="nbtn tbtn" data-num="0" style="color: var(--neon-pink); border-color: rgba(255,62,100,0.5);">⌫</button>
+    </div>
+
+    <aside class="panel panel-right">
+      <section class="card controls">
+        <h3>操作说明</h3>
+        <ul class="key-list">
+          <li><kbd>鼠标</kbd><span>选格</span></li>
+          <li><kbd>1-9</kbd><span>填入数字</span></li>
+          <li><kbd>Backspace</kbd><span>擦除</span></li>
+          <li><kbd>M</kbd><span>静音切换</span></li>
+        </ul>
+        <button class="mute-btn" id="sudoku-mute-btn">🔊 音效:开</button>
+        <button class="mute-btn" id="sudoku-restart-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ 重新开始</button>
+      </section>
+
+      <section class="card" style="margin-top:12px;">
+        <h3>规则</h3>
+        <p style="color: var(--text); font-size: 12px; line-height: 1.7; margin: 6px 0 0;">
+          每行、每列、每个 3×3 小九宫格内，数字 1-9 各出现一次，不重复。
+        </p>
+      </section>
+    </aside>
+  </main>
+
+  <div class="touch-controls touch-sudoku sudoku-numpad">
+    <button class="nbtn tbtn" data-num="1">1</button>
+    <button class="nbtn tbtn" data-num="2">2</button>
+    <button class="nbtn tbtn" data-num="3">3</button>
+    <button class="nbtn tbtn" data-num="4">4</button>
+    <button class="nbtn tbtn" data-num="5">5</button>
+    <button class="nbtn tbtn" data-num="6">6</button>
+    <button class="nbtn tbtn" data-num="7">7</button>
+    <button class="nbtn tbtn" data-num="8">8</button>
+    <button class="nbtn tbtn" data-num="9">9</button>
+    <button class="nbtn tbtn" data-num="0" style="color: var(--neon-pink); border-color: rgba(255,62,100,0.5);">⌫</button>
+  </div>
+
+  <footer class="foot">
+    <span>· 填入数字，填满逻辑的迷宫 ·</span>
+  </footer>
+
+  <script src="sudoku.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>NEON 2048 · 霓虹合成</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+<style>
+  .back-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+    padding: 10px 16px;
+    font-family: "Orbitron", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--neon-pink);
+    background: rgba(20, 26, 70, 0.8);
+    border: 1px solid rgba(255, 62, 165, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.2s ease;
+    box-shadow: 0 0 12px rgba(255, 62, 165, 0.2);
+  }
+  .back-btn:hover {
+    background: rgba(255, 62, 165, 0.15);
+    transform: translateX(-2px);
+    box-shadow: 0 0 20px rgba(255, 62, 165, 0.4);
+  }
+  @media (max-width: 600px) {
+    .back-btn {
+      top: 10px;
+      left: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+
+  <a href="index.html" class="back-btn">← 返回</a>
+
+  <header class="top-bar">
+    <h1 class="title">
+      <span class="title-neon">NEON</span>
+      <span class="title-slash">/</span>
+      <span class="title-neon alt">2048</span>
+    </h1>
+    <p class="subtitle">— 霓虹合成 —</p>
+  </header>
+
+  <!-- ======================= 2048 ======================= -->
+  <main class="stage stage-2048 active" id="stage-g2048">
+    <aside class="panel panel-left">
+      <section class="card">
+        <h3>得分</h3>
+        <div class="value" id="g2048-score">0</div>
+      </section>
+      <section class="card">
+        <h3>最佳</h3>
+        <div class="value" id="g2048-best">0</div>
+      </section>
+      <section class="card">
+        <h3>最大方块</h3>
+        <div class="value" id="g2048-max">2</div>
+      </section>
+      <section class="card">
+        <h3>步数</h3>
+        <div class="value" id="g2048-moves">0</div>
+      </section>
+    </aside>
+
+    <section class="board-wrap">
+      <div class="board-frame">
+        <div class="board-corner tl"></div>
+        <div class="board-corner tr"></div>
+        <div class="board-corner bl"></div>
+        <div class="board-corner br"></div>
+        <canvas id="g2048-board" width="320" height="320"></canvas>
+        <div class="overlay" id="g2048-overlay">
+          <div class="overlay-inner">
+            <h2 id="g2048-title">准备好了吗？</h2>
+            <p id="g2048-subtitle">按 <kbd>ENTER</kbd> 或 点击下方开始</p>
+            <button class="btn-start" id="g2048-btn-start">▶ 开始游戏</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel panel-right">
+      <section class="card controls">
+        <h3>操作说明</h3>
+        <ul class="key-list">
+          <li><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd><span>移动方块</span></li>
+          <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>同上</span></li>
+          <li><kbd>R</kbd><span>重新开始</span></li>
+          <li><kbd>P</kbd><span>暂停</span></li>
+          <li><kbd>M</kbd><span>静音切换</span></li>
+        </ul>
+        <button class="mute-btn" id="g2048-mute-btn">🔊 音效:开</button>
+        <button class="mute-btn" id="g2048-reset-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ 重新开始</button>
+      </section>
+
+      <section class="card" style="margin-top:12px;">
+        <h3>规则</h3>
+        <p style="color: var(--text); font-size: 12px; line-height: 1.6; margin: 6px 0 0;">
+          相同数字方块合并后翻倍，达成 2048 即胜利。棋盘填满无法移动即结束。
+        </p>
+      </section>
+    </aside>
+  </main>
+
+  <div class="touch-controls touch-2048">
+    <button class="tbtn" data-act="up">▲</button>
+    <button class="tbtn" data-act="left">◀</button>
+    <button class="tbtn" data-act="down">▼</button>
+    <button class="tbtn" data-act="right">▶</button>
+    <button class="tbtn" data-act="reset">↺</button>
+  </div>
+
+  <footer class="foot">
+    <span>· 每一次合并都是一次小小的数字爆炸 ·</span>
+  </footer>
+
+  <script src="g2048.js"></script>
+</body>
+</html>
