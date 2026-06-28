@@ -489,6 +489,20 @@ kbd {
     0 0 16px rgba(255, 236, 66, 0.4);
 }
 
+#sudoku-timer,
+#sudoku-best {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#sudoku-timer {
+  color: var(--neon-yellow);
+  text-shadow:
+    0 0 6px rgba(255, 236, 66, 0.9),
+    0 0 16px rgba(255, 236, 66, 0.4);
+}
+
 #sudoku-best {
   color: var(--neon-green);
   text-shadow:
@@ -947,14 +961,18 @@ kbd {
   }
   .stage-sudoku .info-item {
     flex: 1;
-    padding: 8px 10px;
+    padding: 8px 6px;
     min-width: 0;
   }
   .stage-sudoku .info-item .value {
-    font-size: 14px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .stage-sudoku .info-item h3 {
-    font-size: 10px;
+    font-size: 9px;
+    letter-spacing: 1px;
   }
   .stage-sudoku .difficulty-selector {
     flex-wrap: nowrap;
