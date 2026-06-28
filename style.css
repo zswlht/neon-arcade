@@ -709,7 +709,7 @@ kbd {
     min-height: 0;
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: center;
     gap: 8px;
   }
@@ -723,6 +723,7 @@ kbd {
     flex-direction: column;
     gap: 8px;
     flex: 0 0 auto;
+    height: 100%;
   }
   .stage-tetris .mobile-next-wrap,
   .stage-tetris .mobile-hold-wrap {

@@ -55,24 +55,28 @@
     }
     @media (max-width: 600px) {
       .mobile-side-preview {
-        justify-content: center;
+        display: flex !important;
+        flex-direction: column;
+        justify-content: flex-end;
         gap: 10px;
+        height: 100%;
       }
       .side-tbtn {
-        width: 55px;
-        height: 55px;
+        width: 75px;
+        height: 75px;
         padding: 0;
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 900;
-        letter-spacing: 1px;
-        border-radius: 10px;
-        background: rgba(20, 26, 70, 0.8);
-        border: 1px solid rgba(34, 245, 255, 0.5);
+        letter-spacing: 2px;
+        border-radius: 12px;
+        background: rgba(20, 26, 70, 0.85);
+        border: 2px solid rgba(34, 245, 255, 0.6);
         color: var(--neon-cyan);
-        box-shadow: 0 0 12px rgba(34, 245, 255, 0.2);
+        box-shadow: 0 0 16px rgba(34, 245, 255, 0.3);
       }
       .side-tbtn:active {
-        background: rgba(34, 245, 255, 0.2);
+        background: rgba(34, 245, 255, 0.3);
+        transform: scale(0.95);
       }
     }
   </style>
@@ -128,6 +132,7 @@
         </div>
       </div>
       <div class="mobile-side-preview">
+        <div style="flex:1;"></div>
         <button class="side-tbtn tbtn" data-act="hold">HOLD</button>
         <button class="side-tbtn tbtn" data-act="drop">DROP</button>
       </div>
