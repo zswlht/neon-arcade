@@ -933,3 +933,29 @@ kbd {
     display: flex !important;
   }
 }
+
+/* ======================= 扫雷 ======================= */
+.stage-minesweeper {
+  height: calc(100vh - 180px);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.stage-minesweeper iframe {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(34, 245, 255, 0.2);
+}
+
+@media (max-width: 900px) {
+  .stage-minesweeper {
+    height: calc(100vh - 220px);
+    padding: 5px;
+  }
+
+  .stage-minesweeper iframe {
+    border-radius: 4px;
+  }
+}

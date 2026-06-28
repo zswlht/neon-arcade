@@ -33,6 +33,9 @@
       <button class="g-btn" data-game="sudoku">
         <span class="g-icon">#</span> SUDOKU
       </button>
+      <button class="g-btn" data-game="minesweeper">
+        <span class="g-icon">◈</span> MINES
+      </button>
     </nav>
   </header>
 
@@ -340,6 +343,11 @@
     <button class="nbtn tbtn" data-num="0" style="color: var(--neon-pink); border-color: rgba(255,62,100,0.5);">⌫</button>
   </div>
 
+  <!-- ======================= 扫雷 ======================= -->
+  <main class="stage stage-minesweeper" id="stage-minesweeper" style="display:none;">
+    <iframe src="minesweeper.html" width="100%" height="100%" frameborder="0" id="minesweeper-frame"></iframe>
+  </main>
+
   <footer class="foot">
     <span id="foot-text">· 方块落下时世界会暂停呼吸 ·</span>
   </footer>
@@ -356,20 +364,23 @@
       g2048: document.querySelector(".touch-2048"),
       schulte: null,
       sudoku: document.querySelector(".touch-sudoku"),
-      sudokuInner: document.querySelector(".sudoku-numpad-inner")
+      sudokuInner: document.querySelector(".sudoku-numpad-inner"),
+      minesweeper: null
     };
     const footText = document.getElementById("foot-text");
     const footMessages = {
       tetris: "· 方块落下时世界会暂停呼吸 ·",
       g2048: "· 每一次合并都是一次小小的数字爆炸 ·",
       schulte: "· 专注力，是最珍贵的能力 ·",
-      sudoku: "· 填入数字，填满逻辑的迷宫 ·"
+      sudoku: "· 填入数字，填满逻辑的迷宫 ·",
+      minesweeper: "· 每一步都是概率与直觉的博弈 ·"
     };
     const titleMap = {
       tetris: "NEON TETRIS · 霓虹俄罗斯方块",
       g2048: "NEON 2048 · 霓虹合成",
       schulte: "NEON SCHULTE · 舒尔特三角训练",
-      sudoku: "NEON SUDOKU · 霓虹数独"
+      sudoku: "NEON SUDOKU · 霓虹数独",
+      minesweeper: "NEON MINESWEEPER · 霓虹扫雷"
     };
 
     function showGame(name) {
