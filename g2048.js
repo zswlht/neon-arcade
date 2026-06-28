@@ -7,7 +7,7 @@
   "use strict";
 
   const SIZE = 4;
-  const CANVAS_SIZE = 320;
+  const CANVAS_SIZE = 400;
   const CELL = CANVAS_SIZE / SIZE;
   const PAD = 10;
 
@@ -719,8 +719,15 @@
   btnMute.addEventListener("click", () => {
     Audio.resume();
     const m = Audio.toggleMute();
-    btnMute.textContent = m ? "🔇 音效:关" : "🔊 音效:开";
+    btnMute.textContent = m ? "🔇 音效" : "🔊 音效";
   });
+
+  const btnHelp = document.getElementById("g2048-help-btn");
+  if (btnHelp) {
+    btnHelp.addEventListener("click", () => {
+      alert('🎮 霓虹2048玩法：\n\n📱 手机操作：\n1. 滑动屏幕移动方块\n2. 点击"重置"重新开始\n\n⌨️ 电脑操作：\n1. 方向键或WASD移动方块\n2. R键重新开始\n3. P键暂停\n4. M键静音切换\n\n📋 游戏规则：\n- 相同数字方块合并后翻倍\n- 达成2048即胜利\n- 棋盘填满无法移动即结束');
+    });
+  }
 
   document.addEventListener("keydown", (e) => {
     // 只在 2048 视图激活时响应

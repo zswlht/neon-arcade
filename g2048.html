@@ -96,7 +96,7 @@
         <div class="board-corner tr"></div>
         <div class="board-corner bl"></div>
         <div class="board-corner br"></div>
-        <canvas id="g2048-board" width="320" height="320"></canvas>
+        <canvas id="g2048-board" width="400" height="400"></canvas>
         <div class="overlay" id="g2048-overlay">
           <div class="overlay-inner">
             <h2 id="g2048-title">准备好了吗？</h2>
@@ -107,27 +107,13 @@
       </div>
     </section>
 
-    <aside class="panel panel-right">
-      <section class="card controls">
-        <h3>操作说明</h3>
-        <ul class="key-list">
-          <li><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd><span>移动方块</span></li>
-          <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>同上</span></li>
-          <li><kbd>R</kbd><span>重新开始</span></li>
-          <li><kbd>P</kbd><span>暂停</span></li>
-          <li><kbd>M</kbd><span>静音切换</span></li>
-        </ul>
-        <button class="mute-btn" id="g2048-mute-btn">🔊 音效:开</button>
-        <button class="mute-btn" id="g2048-reset-btn" style="margin-top:8px; color: var(--neon-cyan); border-color: rgba(34,245,255,0.5); box-shadow: 0 0 10px rgba(34,245,255,0.2);">↺ 重新开始</button>
-      </section>
+    <div class="bottom-btns" style="padding: 10px 0;">
+      <button class="small-btn" id="g2048-help-btn">❓ 玩法</button>
+      <button class="small-btn" id="g2048-mute-btn">🔊 音效</button>
+      <button class="small-btn" id="g2048-reset-btn">↺ 重置</button>
+    </div>
 
-      <section class="card" style="margin-top:12px;">
-        <h3>规则</h3>
-        <p style="color: var(--text); font-size: 12px; line-height: 1.6; margin: 6px 0 0;">
-          相同数字方块合并后翻倍，达成 2048 即胜利。棋盘填满无法移动即结束。
-        </p>
-      </section>
-    </aside>
+    <aside class="panel panel-right"></aside>
   </main>
 
   <div class="touch-controls touch-2048">
