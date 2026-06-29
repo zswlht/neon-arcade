@@ -594,7 +594,7 @@
     const DIFFICULTIES = {
       beginner: { cols: 9, rows: 9, mines: 10, name: '初级' },
       intermediate: { cols: 16, rows: 16, mines: 40, name: '中级' },
-      expert: { cols: 16, rows: 30, mines: 99, name: '高级' }
+      expert: { cols: 20, rows: 24, mines: 99, name: '高级' }
     };
 
     // 数字颜色
@@ -1015,22 +1015,17 @@
 
     // ==================== 绘制 ====================
     function resizeCanvas() {
-      // 根据屏幕和难度计算单元格大小
-      // 手机竖屏时，高级难度(16×30)按高度计算，充分利用屏幕
       const isPortrait = window.innerHeight > window.innerWidth;
       const isExpert = currentDifficulty === 'expert';
 
-      if (isPortrait && isExpert) {
-        // 高级难度竖屏：按可用高度计算，确保30行完整显示
-        const availableHeight = window.innerHeight - 320; // 留出头部信息栏+底部空间
-        CELL_SIZE = Math.floor(availableHeight / rows);
-        CELL_SIZE = Math.max(18, Math.min(CELL_SIZE, 28));
-      } else {
-        // 其他情况按宽度计算
-        const maxWidth = Math.min(window.innerWidth - 40, cols * 32);
-        CELL_SIZE = Math.floor(maxWidth / cols);
-        CELL_SIZE = Math.max(18, Math.min(CELL_SIZE, 32));
-      }
+      const maxWidth = window.innerWidth - 32;
+      const availableHeight = window.innerHeight - 300;
+
+      let sizeByWidth = Math.floor(maxWidth / cols);
+      let sizeByHeight = Math.floor(availableHeight / rows);
+
+      CELL_SIZE = Math.min(sizeByWidth, sizeByHeight);
+      CELL_SIZE = Math.max(18, Math.min(CELL_SIZE, 32));
 
       canvas.width = cols * CELL_SIZE;
       canvas.height = rows * CELL_SIZE;
