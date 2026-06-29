@@ -495,6 +495,7 @@
       let isMuted = true;
       let audioCtx = null;
       let gainNode = null;
+      let rhythmStep = 0;
 
       try {
         isMuted = localStorage.getItem('home_bgm_muted') !== 'false';
@@ -504,36 +505,99 @@
         soundIcon.textContent = isMuted ? '🔇' : '🔊';
       }
 
+      function playKick() {
+        if (!audioCtx || !gainNode || isMuted) return;
+        const osc = audioCtx.createOscillator();
+        const oscGain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.15);
+        oscGain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+        oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+        osc.connect(oscGain);
+        oscGain.connect(gainNode);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.2);
+      }
+
+      function playSnare() {
+        if (!audioCtx || !gainNode || isMuted) return;
+        const osc = audioCtx.createOscillator();
+        const oscGain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+        oscGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+        osc.connect(oscGain);
+        oscGain.connect(gainNode);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+      }
+
+      function playHiHat() {
+        if (!audioCtx || !gainNode || isMuted) return;
+        const osc = audioCtx.createOscillator();
+        const oscGain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(8000, audioCtx.currentTime);
+        oscGain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.connect(oscGain);
+        oscGain.connect(gainNode);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      }
+
+      function playMelodyNote(freq) {
+        if (!audioCtx || !gainNode || isMuted) return;
+        const osc = audioCtx.createOscillator();
+        const oscGain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        oscGain.gain.setValueAtTime(0, audioCtx.currentTime);
+        oscGain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.05);
+        oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+        osc.connect(oscGain);
+        oscGain.connect(gainNode);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.35);
+      }
+
       function initAudio() {
         if (audioCtx) return;
         try {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
           gainNode = audioCtx.createGain();
-          gainNode.gain.value = 0.04;
+          gainNode.gain.value = 0.08;
           gainNode.connect(audioCtx.destination);
 
-          const notes = [261.63, 329.63, 392, 523.25, 392, 329.63];
-          let step = 0;
+          const melody = [
+            329.63, 392, 440, 523.25,
+            493.88, 440, 392, 329.63,
+            392, 440, 493.88, 523.25,
+            493.88, 440, 392, 329.63
+          ];
+          let melodyIndex = 0;
 
-          function playNote() {
-            if (!audioCtx || !gainNode) return;
+          function playBeat() {
+            if (!audioCtx) return;
+
             if (!isMuted && audioCtx.state === 'running') {
-              const osc = audioCtx.createOscillator();
-              const oscGain = audioCtx.createGain();
-              osc.type = 'sine';
-              osc.frequency.value = notes[step];
-              oscGain.gain.setValueAtTime(0, audioCtx.currentTime);
-              oscGain.gain.linearRampToValueAtTime(0.8, audioCtx.currentTime + 0.08);
-              oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.65);
-              osc.connect(oscGain);
-              oscGain.connect(gainNode);
-              osc.start();
-              osc.stop(audioCtx.currentTime + 0.7);
+              if (rhythmStep % 4 === 0) playKick();
+              if (rhythmStep % 4 === 2) playSnare();
+              playHiHat();
+
+              if (rhythmStep % 2 === 0) {
+                playMelodyNote(melody[melodyIndex]);
+                melodyIndex = (melodyIndex + 1) % melody.length;
+              }
             }
-            step = (step + 1) % notes.length;
-            setTimeout(playNote, 650);
+
+            rhythmStep++;
+            setTimeout(playBeat, 125);
           }
-          playNote();
+
+          playBeat();
         } catch(e) {}
       }
 
