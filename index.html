@@ -29,10 +29,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px 16px;
-    gap: 24px;
+    padding: 16px 12px;
+    gap: 20px;
     background:
-      linear-gradient(180deg, var(--bg-0) 0%, #02021a 100%);
+      radial-gradient(ellipse at top, rgba(34, 245, 255, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(194, 107, 255, 0.1) 0%, transparent 50%),
+      linear-gradient(180deg, #0d1240 0%, #060828 50%, #030418 100%);
   }
 
   .home-title {
@@ -110,57 +112,57 @@
 
   .game-grid-wrap {
     position: relative;
-    padding: 10px;
-    border-radius: 14px;
+    padding: 14px;
+    border-radius: 18px;
     background:
-      linear-gradient(180deg, rgba(34, 245, 255, 0.12), rgba(194, 107, 255, 0.12));
+      linear-gradient(180deg, rgba(34, 245, 255, 0.15), rgba(194, 107, 255, 0.12));
     box-shadow:
-      0 0 0 1px rgba(34, 245, 255, 0.4) inset,
-      0 0 30px rgba(34, 245, 255, 0.2),
-      0 0 60px rgba(194, 107, 255, 0.15);
+      0 0 0 1px rgba(34, 245, 255, 0.5) inset,
+      0 0 40px rgba(34, 245, 255, 0.25),
+      0 0 80px rgba(194, 107, 255, 0.2);
   }
 
   .game-grid-wrap::before {
     content: "";
     position: absolute;
-    inset: -2px;
-    border-radius: 14px;
+    inset: -3px;
+    border-radius: 18px;
     background: linear-gradient(135deg,
-      rgba(34, 245, 255, 0.6),
-      rgba(194, 107, 255, 0.6),
-      rgba(255, 62, 165, 0.6),
-      rgba(34, 245, 255, 0.6));
-    filter: blur(6px);
-    opacity: 0.4;
+      rgba(34, 245, 255, 0.7),
+      rgba(194, 107, 255, 0.7),
+      rgba(255, 62, 165, 0.7),
+      rgba(34, 245, 255, 0.7));
+    filter: blur(8px);
+    opacity: 0.5;
     z-index: -1;
   }
 
   .game-grid-wrap::after {
     content: "";
     position: absolute;
-    inset: -2px;
-    border-radius: 14px;
+    inset: -3px;
+    border-radius: 18px;
     background: linear-gradient(135deg,
-      rgba(34, 245, 255, 0.6),
-      rgba(194, 107, 255, 0.6),
-      rgba(255, 62, 165, 0.6),
-      rgba(34, 245, 255, 0.6));
-    filter: blur(6px);
-    opacity: 0.4;
+      rgba(34, 245, 255, 0.7),
+      rgba(194, 107, 255, 0.7),
+      rgba(255, 62, 165, 0.7),
+      rgba(34, 245, 255, 0.7));
+    filter: blur(8px);
+    opacity: 0.5;
     z-index: -2;
     animation: borderFlow 6s linear infinite;
   }
 
   @keyframes borderFlow {
-    0% { filter: blur(6px) hue-rotate(0deg); }
-    100% { filter: blur(6px) hue-rotate(360deg); }
+    0% { filter: blur(8px) hue-rotate(0deg); }
+    100% { filter: blur(8px) hue-rotate(360deg); }
   }
 
   .game-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    max-width: 600px;
+    gap: 14px;
+    max-width: 560px;
     width: 100%;
   }
 
@@ -170,25 +172,25 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 22px 14px;
+    gap: 12px;
+    padding: 28px 16px;
     text-decoration: none;
     color: var(--text);
     border: none;
     cursor: pointer;
     font-family: "Orbitron", sans-serif;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 16px;
     letter-spacing: 1px;
-    border-radius: 18px;
-    background: linear-gradient(180deg, #252a4a 0%, #151a35 50%, #0c1025 100%);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #2a2f55 0%, #181d3d 50%, #0d1230 100%);
     box-shadow:
-      0 8px 0 #060810,
-      0 10px 0 #0a0d18,
-      0 12px 30px rgba(0, 0, 0, 0.6),
-      inset 0 3px 0 rgba(255, 255, 255, 0.08),
-      inset 0 -3px 0 rgba(0, 0, 0, 0.4);
-    transition: all 0.1s ease;
+      0 9px 0 #05070f,
+      0 11px 0 #080a18,
+      0 14px 35px rgba(0, 0, 0, 0.6),
+      inset 0 4px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -4px 0 rgba(0, 0, 0, 0.4);
+    transition: all 0.08s ease;
     overflow: hidden;
   }
 
@@ -196,9 +198,9 @@
     content: "";
     position: absolute;
     inset: 0;
-    border-radius: 18px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 50%);
+    border-radius: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 55%);
     pointer-events: none;
   }
 
@@ -208,43 +210,43 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 50%;
-    border-radius: 18px 18px 50% 50%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+    height: 45%;
+    border-radius: 16px 16px 40% 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%);
     pointer-events: none;
   }
 
   .game-btn:hover {
     transform: translateY(3px);
     box-shadow:
-      0 5px 0 #060810,
-      0 7px 0 #0a0d18,
-      0 9px 24px rgba(0, 0, 0, 0.5),
+      0 6px 0 #05070f,
+      0 8px 0 #080a18,
+      0 10px 25px rgba(0, 0, 0, 0.5),
       inset 0 3px 0 rgba(255, 255, 255, 0.06),
       inset 0 -3px 0 rgba(0, 0, 0, 0.3);
   }
 
   .game-btn:active {
-    transform: translateY(8px);
+    transform: translateY(9px);
     box-shadow:
-      0 0 0 #060810,
-      0 2px 8px rgba(0, 0, 0, 0.4),
-      inset 0 4px 8px rgba(0, 0, 0, 0.5),
+      0 0 0 #05070f,
+      0 3px 10px rgba(0, 0, 0, 0.4),
+      inset 0 5px 10px rgba(0, 0, 0, 0.5),
       inset 0 -2px 0 rgba(255, 255, 255, 0.02);
   }
 
   .game-btn-icon {
-    font-size: 36px;
+    font-size: 44px;
     line-height: 1;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) brightness(1.1);
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4)) brightness(1.15);
   }
 
   .game-btn-name {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 1px;
     color: #fff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   }
 
   .game-btn.tetris .game-btn-icon { color: #00f5ff; text-shadow: 0 0 20px rgba(0,245,255,0.8), 0 0 40px rgba(0,245,255,0.4); }
@@ -408,25 +410,58 @@
     </div>
   </div>
 
-  <audio id="home-bgm" loop preload="auto">
-    <source src="https://assets.mixkit.co/music/preview/mixkit-game-show-looby-loo-678.mp3" type="audio/mpeg">
-  </audio>
-
   <script>
     (function() {
-      const bgm = document.getElementById('home-bgm');
       const soundBtn = document.getElementById('home-sound-btn');
       const soundIcon = document.getElementById('sound-icon');
       let isMuted = true;
+      let audioCtx = null;
+      let oscillators = [];
+      let gainNode = null;
 
-      // 从 localStorage 读取状态
       try {
         isMuted = localStorage.getItem('home_bgm_muted') !== 'false';
       } catch(e) {}
 
       function updateSoundBtn() {
         soundIcon.textContent = isMuted ? '🔇' : '🔊';
-        bgm.muted = isMuted;
+      }
+
+      function initAudio() {
+        if (audioCtx) return;
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          gainNode = audioCtx.createGain();
+          gainNode.gain.value = 0.06;
+          gainNode.connect(audioCtx.destination);
+
+          const notes = [220, 277.18, 329.63, 392, 329.63, 277.18, 220, 164.81];
+          let step = 0;
+
+          function playNote() {
+            if (!audioCtx || !gainNode || isMuted) {
+              step = (step + 1) % notes.length;
+              setTimeout(playNote, 500);
+              return;
+            }
+            const osc = audioCtx.createOscillator();
+            const oscGain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = notes[step];
+            oscGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            oscGain.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 0.05);
+            oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+            osc.connect(oscGain);
+            oscGain.connect(gainNode);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+
+            step = (step + 1) % notes.length;
+            setTimeout(playNote, 500);
+          }
+
+          playNote();
+        } catch(e) {}
       }
 
       updateSoundBtn();
@@ -439,14 +474,16 @@
         try {
           localStorage.setItem('home_bgm_muted', String(isMuted));
         } catch(e) {}
-        if (!isMuted && bgm.paused) {
-          bgm.play().catch(function() {});
+        if (!isMuted) {
+          initAudio();
+          if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
         }
       });
 
-      // 如果不是静音，则尝试播放
       if (!isMuted) {
-        bgm.play().catch(function() {});
+        initAudio();
       }
     })();
   </script>
