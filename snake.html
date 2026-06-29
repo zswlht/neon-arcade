@@ -87,39 +87,40 @@
 
     .title {
       margin: 0;
-      font-family: "Press Start 2P", "Orbitron", monospace;
-      font-size: clamp(24px, 4vw, 42px);
-      letter-spacing: 4px;
+      font-family: "Orbitron", "PingFang SC", sans-serif;
+      font-size: clamp(32px, 8vw, 56px);
+      font-weight: 900;
+      letter-spacing: 8px;
       line-height: 1.2;
     }
 
     .title-neon {
       color: var(--neon-cyan);
       text-shadow:
-        0 0 8px rgba(34, 245, 255, 0.8),
-        0 0 22px rgba(34, 245, 255, 0.55),
-        0 0 44px rgba(34, 245, 255, 0.35);
-      animation: pulse 2.2s ease-in-out infinite;
+        0 0 4px rgba(34, 245, 255, 0.8),
+        0 0 12px rgba(34, 245, 255, 0.6),
+        0 0 24px rgba(34, 245, 255, 0.4),
+        0 0 40px rgba(34, 245, 255, 0.2);
+      animation: titleBreath 2s ease-in-out infinite;
     }
 
-    .title-neon.alt {
-      color: var(--neon-green);
-      text-shadow:
-        0 0 8px rgba(34, 255, 143, 0.8),
-        0 0 22px rgba(34, 255, 143, 0.55),
-        0 0 44px rgba(34, 255, 143, 0.35);
-      animation-delay: 1.1s;
-    }
-
-    .title-slash {
-      color: #fff;
-      margin: 0 6px;
-      opacity: 0.9;
-    }
-
-    @keyframes pulse {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.3); }
+    @keyframes titleBreath {
+      0%, 100% {
+        text-shadow:
+          0 0 4px rgba(34, 245, 255, 0.8),
+          0 0 12px rgba(34, 245, 255, 0.6),
+          0 0 24px rgba(34, 245, 255, 0.4),
+          0 0 40px rgba(34, 245, 255, 0.2);
+        opacity: 0.85;
+      }
+      50% {
+        text-shadow:
+          0 0 8px rgba(34, 245, 255, 1),
+          0 0 20px rgba(34, 245, 255, 0.8),
+          0 0 40px rgba(34, 245, 255, 0.6),
+          0 0 60px rgba(34, 245, 255, 0.4);
+        opacity: 1;
+      }
     }
 
     .subtitle {
@@ -410,7 +411,7 @@
 
   <div class="top-bar">
     <h1 class="title">
-      <span class="title-neon">贪吃</span><span class="title-slash">/</span><span class="title-neon alt">蛇</span>
+      <span class="title-neon">贪吃蛇</span>
     </h1>
     <p class="subtitle">NEON SNAKE</p>
   </div>
