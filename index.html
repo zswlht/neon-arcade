@@ -58,43 +58,43 @@
 
   .home-title .title-cn .neon-cyan {
     color: var(--neon-cyan);
-    animation: breathe-cyan 2.5s ease-in-out infinite;
+    animation: breathe-cyan 2s ease-in-out infinite;
   }
 
   .home-title .title-cn .neon-pink {
     color: var(--neon-pink);
-    animation: breathe-pink 2.5s ease-in-out infinite 1.25s;
+    animation: breathe-pink 2s ease-in-out infinite 1s;
   }
 
   @keyframes breathe-cyan {
     0%, 100% {
       text-shadow:
-        0 0 6px rgba(34, 245, 255, 0.8),
-        0 0 16px rgba(34, 245, 255, 0.5),
-        0 0 30px rgba(34, 245, 255, 0.3);
+        0 0 4px rgba(34, 245, 255, 0.7),
+        0 0 10px rgba(34, 245, 255, 0.4),
+        0 0 18px rgba(34, 245, 255, 0.2);
     }
     50% {
       text-shadow:
-        0 0 12px rgba(34, 245, 255, 1),
-        0 0 28px rgba(34, 245, 255, 0.8),
-        0 0 50px rgba(34, 245, 255, 0.5),
-        0 0 80px rgba(34, 245, 255, 0.3);
+        0 0 8px rgba(34, 245, 255, 0.9),
+        0 0 18px rgba(34, 245, 255, 0.6),
+        0 0 32px rgba(34, 245, 255, 0.35),
+        0 0 50px rgba(34, 245, 255, 0.2);
     }
   }
 
   @keyframes breathe-pink {
     0%, 100% {
       text-shadow:
-        0 0 6px rgba(255, 62, 165, 0.8),
-        0 0 16px rgba(255, 62, 165, 0.5),
-        0 0 30px rgba(255, 62, 165, 0.3);
+        0 0 4px rgba(255, 62, 165, 0.7),
+        0 0 10px rgba(255, 62, 165, 0.4),
+        0 0 18px rgba(255, 62, 165, 0.2);
     }
     50% {
       text-shadow:
-        0 0 12px rgba(255, 62, 165, 1),
-        0 0 28px rgba(255, 62, 165, 0.8),
-        0 0 50px rgba(255, 62, 165, 0.5),
-        0 0 80px rgba(255, 62, 165, 0.3);
+        0 0 8px rgba(255, 62, 165, 0.9),
+        0 0 18px rgba(255, 62, 165, 0.6),
+        0 0 32px rgba(255, 62, 165, 0.35),
+        0 0 50px rgba(255, 62, 165, 0.2);
     }
   }
 
@@ -416,8 +416,8 @@
       const soundIcon = document.getElementById('sound-icon');
       let isMuted = true;
       let audioCtx = null;
-      let oscillators = [];
       let gainNode = null;
+      let isPlaying = false;
 
       try {
         isMuted = localStorage.getItem('home_bgm_muted') !== 'false';
@@ -432,35 +432,36 @@
         try {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
           gainNode = audioCtx.createGain();
-          gainNode.gain.value = 0.06;
+          gainNode.gain.value = 0.04;
           gainNode.connect(audioCtx.destination);
 
-          const notes = [220, 277.18, 329.63, 392, 329.63, 277.18, 220, 164.81];
+          // C大调柔和琶音循环
+          const notes = [261.63, 329.63, 392, 523.25, 392, 329.63];
           let step = 0;
 
           function playNote() {
-            if (!audioCtx || !gainNode || isMuted) {
-              step = (step + 1) % notes.length;
-              setTimeout(playNote, 500);
-              return;
+            if (!audioCtx || !gainNode) return;
+
+            if (!isMuted && audioCtx.state === 'running') {
+              const osc = audioCtx.createOscillator();
+              const oscGain = audioCtx.createGain();
+              osc.type = 'sine';
+              osc.frequency.value = notes[step];
+              oscGain.gain.setValueAtTime(0, audioCtx.currentTime);
+              oscGain.gain.linearRampToValueAtTime(0.8, audioCtx.currentTime + 0.08);
+              oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.65);
+              osc.connect(oscGain);
+              oscGain.connect(gainNode);
+              osc.start();
+              osc.stop(audioCtx.currentTime + 0.7);
             }
-            const osc = audioCtx.createOscillator();
-            const oscGain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.value = notes[step];
-            oscGain.gain.setValueAtTime(0, audioCtx.currentTime);
-            oscGain.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 0.05);
-            oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
-            osc.connect(oscGain);
-            oscGain.connect(gainNode);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.5);
 
             step = (step + 1) % notes.length;
-            setTimeout(playNote, 500);
+            setTimeout(playNote, 650);
           }
 
           playNote();
+          isPlaying = true;
         } catch(e) {}
       }
 
