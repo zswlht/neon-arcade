@@ -28,6 +28,35 @@
     transition: all 0.2s ease;
     box-shadow: 0 0 12px rgba(255, 236, 66, 0.2);
   }
+  .schulte-next-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px 20px;
+  }
+  .schulte-next-display .next-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px rgba(34, 245, 255, 0.5);
+  }
+  .schulte-next-display .next-num {
+    font-family: "Orbitron", sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--neon-pink);
+    text-shadow:
+      0 0 8px rgba(255, 62, 165, 0.8),
+      0 0 20px rgba(255, 62, 165, 0.5);
+    min-width: 40px;
+    text-align: center;
+  }
+  @media (max-width: 600px) {
+    .schulte-next-display .next-num {
+      font-size: 22px;
+    }
+  }
   .back-btn:hover {
     background: rgba(255, 236, 66, 0.15);
     transform: translateX(-2px);
@@ -70,25 +99,22 @@
   </header>
 
   <!-- ======================= 舒尔特三角训练 ======================= -->
-  <main class="stage stage-schulte active" id="stage-schulte">
-    <aside class="panel panel-left">
-      <section class="card">
+  <main class="stage stage-sudoku active" id="stage-schulte">
+    <div class="info-bar">
+      <div class="info-item">
         <h3>计时</h3>
-        <div class="value" id="schulte-timer" style="font-family: 'Orbitron', monospace; font-size: 22px; color: var(--neon-cyan);">00:00.00</div>
-      </section>
-      <section class="card">
-        <h3>下一个</h3>
-        <div class="value" id="schulte-next" style="color: var(--neon-pink); font-size: 28px;">1</div>
-      </section>
-      <section class="card">
+        <div class="value" id="schulte-timer">00:00.00</div>
+      </div>
+      <div class="info-item">
         <h3>最佳</h3>
-        <div class="value" id="schulte-best" style="font-family: 'Orbitron', monospace; font-size: 14px; color: #ffb84d;">--:--.--</div>
-      </section>
-      <section class="card">
-        <h3>状态</h3>
-        <div class="value" id="schulte-status" style="font-size: 13px; color: var(--text-dim);">准备中</div>
-      </section>
-    </aside>
+        <div class="value" id="schulte-best">--:--.--</div>
+      </div>
+    </div>
+
+    <div class="schulte-next-display">
+      <span class="next-label">下一个</span>
+      <span class="next-num" id="schulte-next">1</span>
+    </div>
 
     <section class="board-wrap">
       <div class="board-frame">
