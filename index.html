@@ -28,230 +28,281 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 10px 16px;
-    gap: 18px;
+    justify-content: flex-start;
+    padding: 24px 16px 16px;
+    gap: 24px;
     background:
-      radial-gradient(ellipse 80% 60% at 50% 30%, rgba(34, 245, 255, 0.22) 0%, transparent 60%),
-      radial-gradient(ellipse 80% 50% at 50% 70%, rgba(194, 107, 255, 0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 20% 50%, rgba(255, 62, 165, 0.1) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 50%, rgba(34, 255, 143, 0.08) 0%, transparent 60%),
-      linear-gradient(180deg, #151a50 0%, #0a0e35 35%, #05071e 70%, #030415 100%);
+      radial-gradient(ellipse 100% 50% at 50% 0%, rgba(34, 245, 255, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 40% at 50% 100%, rgba(194, 107, 255, 0.12) 0%, transparent 50%),
+      linear-gradient(180deg, #12184a 0%, #080c30 40%, #040620 80%, #020314 100%);
   }
 
-  .home-title {
+  /* 霓虹招牌 */
+  .arcade-sign {
     text-align: center;
+    position: relative;
   }
 
-  .home-title h1 {
+  .arcade-sign h1 {
     font-family: "Orbitron", sans-serif;
-    font-size: clamp(32px, 8vw, 56px);
+    font-size: clamp(28px, 7vw, 48px);
     font-weight: 900;
-    letter-spacing: 6px;
-    line-height: 1.1;
+    letter-spacing: 8px;
+    line-height: 1;
     margin: 0;
-  }
-
-  .home-title .title-cn {
     color: #fff;
   }
 
-  .home-title .title-cn .neon-cyan {
+  .arcade-sign .neon-cyan {
     color: var(--neon-cyan);
-    animation: breathe-cyan 2s ease-in-out infinite;
+    animation: signGlow 2s ease-in-out infinite;
   }
 
-  .home-title .title-cn .neon-pink {
+  .arcade-sign .neon-pink {
     color: var(--neon-pink);
-    animation: breathe-pink 2s ease-in-out infinite 1s;
+    animation: signGlow 2s ease-in-out infinite 1s;
   }
 
-  @keyframes breathe-cyan {
+  @keyframes signGlow {
     0%, 100% {
       text-shadow:
-        0 0 4px rgba(34, 245, 255, 0.7),
-        0 0 10px rgba(34, 245, 255, 0.4),
-        0 0 18px rgba(34, 245, 255, 0.2);
+        0 0 4px currentColor,
+        0 0 12px currentColor,
+        0 0 24px currentColor,
+        0 0 40px currentColor;
+      opacity: 0.85;
     }
     50% {
       text-shadow:
-        0 0 8px rgba(34, 245, 255, 0.9),
-        0 0 18px rgba(34, 245, 255, 0.6),
-        0 0 32px rgba(34, 245, 255, 0.35),
-        0 0 50px rgba(34, 245, 255, 0.2);
+        0 0 8px currentColor,
+        0 0 20px currentColor,
+        0 0 40px currentColor,
+        0 0 60px currentColor;
+      opacity: 1;
     }
   }
 
-  @keyframes breathe-pink {
-    0%, 100% {
-      text-shadow:
-        0 0 4px rgba(255, 62, 165, 0.7),
-        0 0 10px rgba(255, 62, 165, 0.4),
-        0 0 18px rgba(255, 62, 165, 0.2);
-    }
-    50% {
-      text-shadow:
-        0 0 8px rgba(255, 62, 165, 0.9),
-        0 0 18px rgba(255, 62, 165, 0.6),
-        0 0 32px rgba(255, 62, 165, 0.35),
-        0 0 50px rgba(255, 62, 165, 0.2);
-    }
-  }
-
-  .home-subtitle {
-    margin-top: 10px;
+  .arcade-sign .sign-sub {
+    margin-top: 8px;
     color: var(--text-dim);
-    letter-spacing: 4px;
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 6px;
   }
 
-  .game-grid-wrap {
-    position: relative;
-    padding: 20px;
-    border-radius: 22px;
+  /* 机台区域 */
+  .arcade-floor {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
     width: 100%;
-    max-width: 580px;
-    background:
-      linear-gradient(180deg, rgba(34, 245, 255, 0.18), rgba(194, 107, 255, 0.15));
+    max-width: 900px;
+    flex: 1;
+    padding-bottom: 8px;
+  }
+
+  /* 街机机台 */
+  .arcade-machine {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 140px;
+    height: 380px;
+    text-decoration: none;
+    color: var(--text);
+    border-radius: 16px 16px 8px 8px;
+    background: linear-gradient(180deg, #1e2448 0%, #151a38 30%, #0d1130 70%, #080c24 100%);
     box-shadow:
-      0 0 0 2px rgba(34, 245, 255, 0.5) inset,
-      0 0 60px rgba(34, 245, 255, 0.3),
-      0 0 120px rgba(194, 107, 255, 0.2);
+      0 20px 0 #040614,
+      0 22px 0 #06081c,
+      0 24px 40px rgba(0, 0, 0, 0.7),
+      inset 0 2px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.15s ease;
+    overflow: hidden;
   }
 
-  .game-grid-wrap::before {
+  .arcade-machine::before {
     content: "";
     position: absolute;
-    inset: -4px;
-    border-radius: 22px;
-    background: linear-gradient(135deg,
-      rgba(34, 245, 255, 0.8),
-      rgba(194, 107, 255, 0.8),
-      rgba(255, 62, 165, 0.8),
-      rgba(34, 245, 255, 0.8));
-    filter: blur(12px);
-    opacity: 0.5;
-    z-index: -1;
+    inset: 0;
+    border-radius: 16px 16px 8px 8px;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+    z-index: 2;
   }
 
-  .game-grid-wrap::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    border-radius: 22px;
-    background: linear-gradient(135deg,
-      rgba(34, 245, 255, 0.8),
-      rgba(194, 107, 255, 0.8),
-      rgba(255, 62, 165, 0.8),
-      rgba(34, 245, 255, 0.8));
-    filter: blur(12px);
-    opacity: 0.5;
-    z-index: -2;
-    animation: borderFlow 6s linear infinite;
-  }
-
-  @keyframes borderFlow {
-    0% { filter: blur(12px) hue-rotate(0deg); }
-    100% { filter: blur(12px) hue-rotate(360deg); }
-  }
-
-  .game-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    width: 100%;
-  }
-
-  .game-btn {
+  /* 机台顶部灯条 */
+  .machine-top {
+    height: 8px;
+    border-radius: 16px 16px 0 0;
     position: relative;
+    overflow: hidden;
+  }
+
+  .machine-top::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    animation: topLight 1.5s ease-in-out infinite;
+  }
+
+  @keyframes topLight {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  .arcade-machine.tetris .machine-top { background: rgba(0, 245, 255, 0.6); box-shadow: 0 0 12px rgba(0, 245, 255, 0.4); }
+  .arcade-machine.tetris .machine-top::after { background: rgba(0, 245, 255, 0.4); }
+  .arcade-machine.g2048 .machine-top { background: rgba(255, 92, 176, 0.6); box-shadow: 0 0 12px rgba(255, 92, 176, 0.4); }
+  .arcade-machine.g2048 .machine-top::after { background: rgba(255, 92, 176, 0.4); }
+  .arcade-machine.schulte .machine-top { background: rgba(255, 224, 102, 0.6); box-shadow: 0 0 12px rgba(255, 224, 102, 0.4); }
+  .arcade-machine.schulte .machine-top::after { background: rgba(255, 224, 102, 0.4); }
+  .arcade-machine.sudoku .machine-top { background: rgba(64, 255, 159, 0.6); box-shadow: 0 0 12px rgba(64, 255, 159, 0.4); }
+  .arcade-machine.sudoku .machine-top::after { background: rgba(64, 255, 159, 0.4); }
+  .arcade-machine.minesweeper .machine-top { background: rgba(208, 112, 255, 0.6); box-shadow: 0 0 12px rgba(208, 112, 255, 0.4); }
+  .arcade-machine.minesweeper .machine-top::after { background: rgba(208, 112, 255, 0.4); }
+
+  /* 机台屏幕 */
+  .machine-screen {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    padding: 32px 16px;
-    text-decoration: none;
-    color: var(--text);
-    border: none;
-    cursor: pointer;
-    font-family: "Orbitron", sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    letter-spacing: 1px;
-    border-radius: 20px;
-    background: linear-gradient(180deg, #303560 0%, #1c2045 50%, #10142e 100%);
+    gap: 16px;
+    margin: 10px;
+    border-radius: 10px;
+    background:
+      radial-gradient(ellipse at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
     box-shadow:
-      0 10px 0 #05070f,
-      0 12px 0 #080a18,
-      0 16px 40px rgba(0, 0, 0, 0.6),
-      inset 0 4px 0 rgba(255, 255, 255, 0.08),
-      inset 0 -5px 0 rgba(0, 0, 0, 0.4);
-    transition: all 0.08s ease;
-    overflow: hidden;
+      inset 0 2px 8px rgba(0, 0, 0, 0.5),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    position: relative;
   }
 
-  .game-btn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.12);
-    background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 55%);
-    pointer-events: none;
-  }
-
-  .game-btn::after {
+  .machine-screen::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 45%;
-    border-radius: 20px 20px 40% 40%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    height: 30%;
+    border-radius: 10px 10px 50% 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 100%);
     pointer-events: none;
   }
 
-  .game-btn:hover {
-    transform: translateY(4px);
-    box-shadow:
-      0 6px 0 #05070f,
-      0 8px 0 #080a18,
-      0 10px 28px rgba(0, 0, 0, 0.5),
-      inset 0 3px 0 rgba(255, 255, 255, 0.06),
-      inset 0 -4px 0 rgba(0, 0, 0, 0.3);
-  }
-
-  .game-btn:active {
-    transform: translateY(10px);
-    box-shadow:
-      0 0 0 #05070f,
-      0 4px 12px rgba(0, 0, 0, 0.4),
-      inset 0 6px 12px rgba(0, 0, 0, 0.5),
-      inset 0 -2px 0 rgba(255, 255, 255, 0.02);
-  }
-
-  .game-btn-icon {
-    font-size: 52px;
+  .machine-icon {
+    font-size: 44px;
     line-height: 1;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4)) brightness(1.15);
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
   }
 
-  .game-btn-name {
-    font-size: 16px;
+  .machine-name {
+    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     color: #fff;
-    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+    writing-mode: horizontal-tb;
   }
 
-  .game-btn.tetris .game-btn-icon { color: #00f5ff; text-shadow: 0 0 20px rgba(0,245,255,0.8), 0 0 40px rgba(0,245,255,0.4); }
-  .game-btn.g2048 .game-btn-icon { color: #ff5cb0; text-shadow: 0 0 20px rgba(255,92,176,0.8), 0 0 40px rgba(255,92,176,0.4); }
-  .game-btn.schulte .game-btn-icon { color: #ffe066; text-shadow: 0 0 20px rgba(255,224,102,0.8), 0 0 40px rgba(255,224,102,0.4); }
-  .game-btn.sudoku .game-btn-icon { color: #40ff9f; text-shadow: 0 0 20px rgba(64,255,159,0.8), 0 0 40px rgba(64,255,159,0.4); }
-  .game-btn.minesweeper .game-btn-icon { color: #d070ff; text-shadow: 0 0 20px rgba(208,112,255,0.8), 0 0 40px rgba(208,112,255,0.4); }
+  .arcade-machine.tetris .machine-icon { color: #00f5ff; text-shadow: 0 0 16px rgba(0, 245, 255, 0.7); }
+  .arcade-machine.g2048 .machine-icon { color: #ff5cb0; text-shadow: 0 0 16px rgba(255, 92, 176, 0.7); }
+  .arcade-machine.schulte .machine-icon { color: #ffe066; text-shadow: 0 0 16px rgba(255, 224, 102, 0.7); }
+  .arcade-machine.sudoku .machine-icon { color: #40ff9f; text-shadow: 0 0 16px rgba(64, 255, 159, 0.7); }
+  .arcade-machine.minesweeper .machine-icon { color: #d070ff; text-shadow: 0 0 16px rgba(208, 112, 255, 0.7); }
 
+  /* 机台底部控制面板 */
+  .machine-panel {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 12px;
+    background: linear-gradient(180deg, #0a0e28 0%, #06081c 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 0 0 8px 8px;
+  }
+
+  .panel-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #2a3055, #1a2040);
+    box-shadow:
+      0 3px 0 #080a18,
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .panel-stick {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #3a4060, #1a2040);
+    box-shadow:
+      0 3px 0 #080a18,
+      inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+  }
+
+  .panel-stick::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  /* 机台hover效果 */
+  .arcade-machine:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 26px 0 #040614,
+      0 28px 0 #06081c,
+      0 30px 50px rgba(0, 0, 0, 0.6),
+      inset 0 2px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .arcade-machine:hover .machine-screen {
+    box-shadow:
+      inset 0 2px 8px rgba(0, 0, 0, 0.4),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.05),
+      0 0 20px rgba(255, 255, 255, 0.05);
+  }
+
+  .arcade-machine:active {
+    transform: translateY(-2px);
+    box-shadow:
+      0 22px 0 #040614,
+      0 24px 0 #06081c,
+      0 26px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  /* 地板光效 */
+  .floor-glow {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 800px;
+    height: 60px;
+    background: radial-gradient(ellipse at center, rgba(34, 245, 255, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 底部 */
   .home-footer {
     display: flex;
     align-items: center;
@@ -259,7 +310,7 @@
     color: var(--text-dim);
     font-size: 11px;
     letter-spacing: 3px;
-    opacity: 0.7;
+    opacity: 0.6;
   }
 
   .sound-btn {
@@ -282,81 +333,68 @@
 
   .sound-btn:hover {
     background: rgba(34, 245, 255, 0.1);
-    box-shadow:
-      0 1px 0 rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05),
-      0 0 10px rgba(34, 245, 255, 0.3);
   }
 
   .sound-btn:active {
     transform: translateY(2px);
-    box-shadow:
-      0 0 0 rgba(0, 0, 0, 0.3),
-      inset 0 1px 2px rgba(0, 0, 0, 0.3);
   }
 
-  .sound-btn span {
-    line-height: 1;
-  }
-
-  @media (max-width: 480px) {
+  /* 移动端 */
+  @media (max-width: 768px) {
     .home-page {
-      gap: 14px;
-      padding: 8px 12px;
+      padding: 16px 12px 12px;
+      gap: 16px;
     }
-    .home-title h1 {
-      letter-spacing: 3px;
-      font-size: clamp(36px, 12vw, 48px);
+    .arcade-sign h1 {
+      letter-spacing: 4px;
+      font-size: clamp(24px, 10vw, 36px);
     }
-    .home-subtitle {
-      font-size: 11px;
-      letter-spacing: 2px;
-    }
-    .game-grid-wrap {
-      padding: 14px;
-      border-radius: 18px;
-    }
-    .game-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .game-btn {
-      padding: 22px 12px;
-      gap: 10px;
-      font-size: 15px;
-      border-radius: 16px;
-      box-shadow:
-        0 7px 0 #05070f,
-        0 9px 0 #080a18,
-        0 12px 28px rgba(0, 0, 0, 0.5),
-        inset 0 3px 0 rgba(255, 255, 255, 0.07),
-        inset 0 -4px 0 rgba(0, 0, 0, 0.35);
-    }
-    .game-btn:hover {
-      transform: translateY(3px);
-      box-shadow:
-        0 4px 0 #05070f,
-        0 6px 0 #080a18,
-        0 8px 18px rgba(0, 0, 0, 0.4),
-        inset 0 2px 0 rgba(255, 255, 255, 0.05),
-        inset 0 -3px 0 rgba(0, 0, 0, 0.25);
-    }
-    .game-btn:active {
-      transform: translateY(7px);
-      box-shadow:
-        0 0 0 #05070f,
-        0 2px 8px rgba(0, 0, 0, 0.35),
-        inset 0 4px 8px rgba(0, 0, 0, 0.45);
-    }
-    .game-btn-icon {
-      font-size: 40px;
-    }
-    .game-btn-name {
-      font-size: 14px;
-    }
-    .home-footer {
+    .arcade-sign .sign-sub {
       font-size: 10px;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
+    }
+    .arcade-floor {
+      gap: 8px;
+      flex-wrap: wrap;
+      align-content: flex-end;
+      padding-bottom: 4px;
+    }
+    .arcade-machine {
+      width: calc(33.33% - 6px);
+      min-width: 90px;
+      max-width: 120px;
+      height: 280px;
+    }
+    .machine-icon {
+      font-size: 32px;
+    }
+    .machine-name {
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+    .machine-panel {
+      height: 44px;
+    }
+    .panel-btn {
+      width: 20px;
+      height: 20px;
+    }
+    .panel-stick {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .arcade-machine {
+      width: calc(50% - 4px);
+      height: 240px;
+    }
+    .machine-icon {
+      font-size: 28px;
+    }
+    .machine-name {
+      font-size: 10px;
     }
   }
 </style>
@@ -366,47 +404,87 @@
   <div class="scanlines"></div>
 
   <div class="home-page">
-    <div class="home-title">
-      <h1 class="title-cn">
+    <div class="arcade-sign">
+      <h1>
         <span class="neon-cyan">霓</span><span class="neon-pink">虹</span>街机
       </h1>
-      <p class="home-subtitle">— 选择游戏 开始挑战 —</p>
+      <p class="sign-sub">NEON ARCADE · 2099</p>
     </div>
 
-    <div class="game-grid-wrap">
-      <div class="game-grid">
-        <a href="tetris.html" class="game-btn tetris">
-          <div class="game-btn-icon">▣</div>
-          <div class="game-btn-name">俄罗斯方块</div>
-        </a>
+    <div class="arcade-floor">
+      <div class="floor-glow"></div>
 
-        <a href="g2048.html" class="game-btn g2048">
-          <div class="game-btn-icon">✦</div>
-          <div class="game-btn-name">2048 合成</div>
-        </a>
+      <a href="tetris.html" class="arcade-machine tetris">
+        <div class="machine-top"></div>
+        <div class="machine-screen">
+          <div class="machine-icon">▣</div>
+          <div class="machine-name">俄罗斯方块</div>
+        </div>
+        <div class="machine-panel">
+          <div class="panel-stick"></div>
+          <div class="panel-btn"></div>
+          <div class="panel-btn"></div>
+        </div>
+      </a>
 
-        <a href="schulte.html" class="game-btn schulte">
-          <div class="game-btn-icon">△</div>
-          <div class="game-btn-name">舒尔特</div>
-        </a>
+      <a href="g2048.html" class="arcade-machine g2048">
+        <div class="machine-top"></div>
+        <div class="machine-screen">
+          <div class="machine-icon">✦</div>
+          <div class="machine-name">2048</div>
+        </div>
+        <div class="machine-panel">
+          <div class="panel-stick"></div>
+          <div class="panel-btn"></div>
+          <div class="panel-btn"></div>
+        </div>
+      </a>
 
-        <a href="sudoku.html" class="game-btn sudoku">
-          <div class="game-btn-icon">#</div>
-          <div class="game-btn-name">数独</div>
-        </a>
+      <a href="schulte.html" class="arcade-machine schulte">
+        <div class="machine-top"></div>
+        <div class="machine-screen">
+          <div class="machine-icon">△</div>
+          <div class="machine-name">舒尔特</div>
+        </div>
+        <div class="machine-panel">
+          <div class="panel-stick"></div>
+          <div class="panel-btn"></div>
+          <div class="panel-btn"></div>
+        </div>
+      </a>
 
-        <a href="minesweeper.html" class="game-btn minesweeper">
-          <div class="game-btn-icon">◈</div>
-          <div class="game-btn-name">扫雷</div>
-        </a>
-      </div>
+      <a href="sudoku.html" class="arcade-machine sudoku">
+        <div class="machine-top"></div>
+        <div class="machine-screen">
+          <div class="machine-icon">#</div>
+          <div class="machine-name">数独</div>
+        </div>
+        <div class="machine-panel">
+          <div class="panel-stick"></div>
+          <div class="panel-btn"></div>
+          <div class="panel-btn"></div>
+        </div>
+      </a>
+
+      <a href="minesweeper.html" class="arcade-machine minesweeper">
+        <div class="machine-top"></div>
+        <div class="machine-screen">
+          <div class="machine-icon">◈</div>
+          <div class="machine-name">扫雷</div>
+        </div>
+        <div class="machine-panel">
+          <div class="panel-stick"></div>
+          <div class="panel-btn"></div>
+          <div class="panel-btn"></div>
+        </div>
+      </a>
     </div>
 
     <div class="home-footer">
       <button class="sound-btn" id="home-sound-btn" title="背景音乐">
         <span id="sound-icon">🔊</span>
       </button>
-      NEON ARCADE · 2099
+      <span>选择一个机台开始游戏</span>
     </div>
   </div>
 
@@ -417,7 +495,6 @@
       let isMuted = true;
       let audioCtx = null;
       let gainNode = null;
-      let isPlaying = false;
 
       try {
         isMuted = localStorage.getItem('home_bgm_muted') !== 'false';
@@ -435,13 +512,11 @@
           gainNode.gain.value = 0.04;
           gainNode.connect(audioCtx.destination);
 
-          // C大调柔和琶音循环
           const notes = [261.63, 329.63, 392, 523.25, 392, 329.63];
           let step = 0;
 
           function playNote() {
             if (!audioCtx || !gainNode) return;
-
             if (!isMuted && audioCtx.state === 'running') {
               const osc = audioCtx.createOscillator();
               const oscGain = audioCtx.createGain();
@@ -455,13 +530,10 @@
               osc.start();
               osc.stop(audioCtx.currentTime + 0.7);
             }
-
             step = (step + 1) % notes.length;
             setTimeout(playNote, 650);
           }
-
           playNote();
-          isPlaying = true;
         } catch(e) {}
       }
 
