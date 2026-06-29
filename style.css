@@ -490,18 +490,22 @@ kbd {
 }
 
 #sudoku-timer,
-#sudoku-best {
+#sudoku-best,
+#schulte-timer,
+#schulte-best {
   white-space: nowrap;
 }
 
-#sudoku-timer {
+#sudoku-timer,
+#schulte-timer {
   color: var(--neon-yellow);
   text-shadow:
     0 0 6px rgba(255, 236, 66, 0.9),
     0 0 16px rgba(255, 236, 66, 0.4);
 }
 
-#sudoku-best {
+#sudoku-best,
+#schulte-best {
   color: var(--neon-green);
   text-shadow:
     0 0 6px rgba(34, 255, 143, 0.9),
@@ -802,7 +806,8 @@ kbd {
   }
   #sudoku-timer,
   #sudoku-best,
-  #schulte-timer {
+  #schulte-timer,
+  #schulte-best {
     width: 9ch;
     font-size: 14px !important;
   }
@@ -1033,7 +1038,8 @@ kbd {
   .card .value { font-size: 14px; }
   #sudoku-timer,
   #sudoku-best,
-  #schulte-timer {
+  #schulte-timer,
+  #schulte-best {
     width: 9ch;
     font-size: 12px !important;
   }
@@ -1106,7 +1112,8 @@ kbd {
 /* ========== 数独游戏 ========== */
 #sudoku-timer,
 #sudoku-best,
-#schulte-timer {
+#schulte-timer,
+#schulte-best {
   width: 9ch;
   text-align: center;
   font-family: "Press Start 2P", monospace !important;
