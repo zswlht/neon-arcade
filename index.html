@@ -160,7 +160,11 @@
   .arcade-machine.sudoku .machine-top { background: rgba(64, 255, 159, 0.6); box-shadow: 0 0 12px rgba(64, 255, 159, 0.4); }
   .arcade-machine.sudoku .machine-top::after { background: rgba(64, 255, 159, 0.4); }
   .arcade-machine.minesweeper .machine-top { background: rgba(208, 112, 255, 0.6); box-shadow: 0 0 12px rgba(208, 112, 255, 0.4); }
-  .arcade-machine.minesweeper .machine-top::after { background: rgba(208, 112, 255, 0.4); }
+.arcade-machine.minesweeper .machine-top::after { background: rgba(208, 112, 255, 0.4); }
+.arcade-machine.snake .machine-top { background: rgba(255, 140, 66, 0.6); box-shadow: 0 0 12px rgba(255, 140, 66, 0.4); }
+.arcade-machine.snake .machine-top::after { background: rgba(255, 140, 66, 0.4); }
+.arcade-machine.sokoban .machine-top { background: rgba(128, 255, 128, 0.6); box-shadow: 0 0 12px rgba(128, 255, 128, 0.4); }
+.arcade-machine.sokoban .machine-top::after { background: rgba(128, 255, 128, 0.4); }
 
   /* 机台屏幕 */
   .machine-screen {
@@ -210,10 +214,12 @@
   }
 
   .arcade-machine.tetris .machine-icon { color: #00f5ff; text-shadow: 0 0 16px rgba(0, 245, 255, 0.7); }
-  .arcade-machine.g2048 .machine-icon { color: #ff5cb0; text-shadow: 0 0 16px rgba(255, 92, 176, 0.7); }
-  .arcade-machine.schulte .machine-icon { color: #ffe066; text-shadow: 0 0 16px rgba(255, 224, 102, 0.7); }
-  .arcade-machine.sudoku .machine-icon { color: #40ff9f; text-shadow: 0 0 16px rgba(64, 255, 159, 0.7); }
-  .arcade-machine.minesweeper .machine-icon { color: #d070ff; text-shadow: 0 0 16px rgba(208, 112, 255, 0.7); }
+.arcade-machine.g2048 .machine-icon { color: #ff5cb0; text-shadow: 0 0 16px rgba(255, 92, 176, 0.7); }
+.arcade-machine.schulte .machine-icon { color: #ffe066; text-shadow: 0 0 16px rgba(255, 224, 102, 0.7); }
+.arcade-machine.sudoku .machine-icon { color: #40ff9f; text-shadow: 0 0 16px rgba(64, 255, 159, 0.7); }
+.arcade-machine.minesweeper .machine-icon { color: #d070ff; text-shadow: 0 0 16px rgba(208, 112, 255, 0.7); }
+.arcade-machine.snake .machine-icon { color: #ff8c42; text-shadow: 0 0 16px rgba(255, 140, 66, 0.7); }
+.arcade-machine.sokoban .machine-icon { color: #80ff80; text-shadow: 0 0 16px rgba(128, 255, 128, 0.7); }
 
   /* 机台底部控制面板 */
   .machine-panel {
@@ -471,6 +477,32 @@
         <div class="machine-screen">
           <div class="machine-icon">◈</div>
           <div class="machine-name">扫雷</div>
+        </div>
+        <div class="machine-panel">
+          <div class="panel-stick"></div>
+          <div class="panel-btn"></div>
+          <div class="panel-btn"></div>
+        </div>
+      </a>
+
+      <a href="snake.html" class="arcade-machine snake">
+        <div class="machine-top"></div>
+        <div class="machine-screen">
+          <div class="machine-icon">◍</div>
+          <div class="machine-name">贪吃蛇</div>
+        </div>
+        <div class="machine-panel">
+          <div class="panel-stick"></div>
+          <div class="panel-btn"></div>
+          <div class="panel-btn"></div>
+        </div>
+      </a>
+
+      <a href="sokoban.html" class="arcade-machine sokoban">
+        <div class="machine-top"></div>
+        <div class="machine-screen">
+          <div class="machine-icon">⬜</div>
+          <div class="machine-name">推箱子</div>
         </div>
         <div class="machine-panel">
           <div class="panel-stick"></div>
