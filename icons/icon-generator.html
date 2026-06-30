@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PWA 图标生成器</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Orbitron", sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0a0a18 100%);
+    color: #fff;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+  h1 {
+    text-align: center;
+    color: #22f5ff;
+    text-shadow: 0 0 20px rgba(34, 245, 255, 0.5);
+    margin-bottom: 10px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #888;
+    margin-bottom: 40px;
+  }
+  .upload-area {
+    border: 3px dashed #22f5ff;
+    border-radius: 16px;
+    padding: 60px 40px;
+    text-align: center;
+    margin-bottom: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(34, 245, 255, 0.05);
+  }
+  .upload-area:hover {
+    background: rgba(34, 245, 255, 0.1);
+    box-shadow: 0 0 30px rgba(34, 245, 255, 0.2);
+  }
+  .upload-area input { display: none; }
+  .upload-icon { font-size: 48px; margin-bottom: 16px; }
+  .upload-text { color: #22f5ff; }
+  .preview { display: none; }
+  .preview.active { display: block; }
+  .preview img {
+    max-width: 200px;
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(34, 245, 255, 0.3);
+    margin-bottom: 30px;
+  }
+  .sizes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+  .size-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .size-item canvas {
+    background: #0a0a18;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .size-name {
+    font-size: 14px;
+    color: #22f5ff;
+    margin-bottom: 8px;
+  }
+  .size-btn {
+    background: linear-gradient(135deg, #22f5ff, #00a8cc);
+    color: #0a0a18;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+  .size-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(34, 245, 255, 0.5);
+  }
+  .download-all {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #ff3ea5, #c26bff);
+    color: #fff;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+  .download-all:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(255, 62, 165, 0.5);
+  }
+  .instructions {
+    margin-top: 40px;
+    padding: 24px;
+    background: rgba(34, 245, 255, 0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(34, 245, 255, 0.2);
+  }
+  .instructions h3 {
+    color: #22f5ff;
+    margin-bottom: 16px;
+  }
+  .instructions ol {
+    padding-left: 24px;
+    line-height: 2;
+    color: #ccc;
+  }
+  .instructions code {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #ffec42;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>PWA 图标生成器</h1>
+    <p class="subtitle">上传你的图标或 logo，自动生成所有需要的尺寸</p>
+
+    <div class="upload-area" id="uploadArea">
+      <input type="file" id="fileInput" accept="image/*" />
+      <div class="upload-icon">🎮</div>
+      <p class="upload-text">点击上传图片，或拖拽到此处</p>
+    </div>
+
+    <div class="preview" id="preview">
+      <img id="previewImg" alt="预览" />
+      <div class="sizes" id="sizes"></div>
+      <button class="download-all" id="downloadAll">下载所有尺寸</button>
+    </div>
+
+    <div class="instructions">
+      <h3>使用说明</h3>
+      <ol>
+        <li>上传一张正方形图片（建议 512x512 或更大）</li>
+        <li>系统会自动生成所有需要的尺寸</li>
+        <li>点击"下载所有尺寸"按钮下载 zip 包</li>
+        <li>解压后将所有图片放到项目的 <code>icons/</code> 文件夹</li>
+        <li>提交代码并推送到 GitHub</li>
+      </ol>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const previewImg = document.getElementById('previewImg');
+    const sizesContainer = document.getElementById('sizes');
+    const downloadAllBtn = document.getElementById('downloadAll');
+
+    const SIZES = [72, 96, 128, 144, 152, 192, 384, 512];
+    let originalImage = null;
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.style.background = 'rgba(34, 245, 255, 0.15)';
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.style.background = 'rgba(34, 245, 255, 0.05)';
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.style.background = 'rgba(34, 245, 255, 0.05)';
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        loadImage(file);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        loadImage(file);
+      }
+    });
+
+    function loadImage(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          originalImage = img;
+          previewImg.src = e.target.result;
+          preview.classList.add('active');
+          generateSizes();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function generateSizes() {
+      sizesContainer.innerHTML = '';
+
+      SIZES.forEach(size => {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        // 绘制圆角矩形背景
+        const radius = size * 0.15;
+        ctx.fillStyle = '#0a0a18';
+        ctx.beginPath();
+        ctx.moveTo(radius, 0);
+        ctx.lineTo(size - radius, 0);
+        ctx.quadraticCurveTo(size, 0, size, radius);
+        ctx.lineTo(size, size - radius);
+        ctx.quadraticCurveTo(size, size, size - radius, size);
+        ctx.lineTo(radius, size);
+        ctx.quadraticCurveTo(0, size, 0, size - radius);
+        ctx.lineTo(0, radius);
+        ctx.quadraticCurveTo(0, 0, radius, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        // 绘制图标（居中填满）
+        const minDim = Math.min(img.width, img.height);
+        const sx = (img.width - minDim) / 2;
+        const sy = (img.height - minDim) / 2;
+        ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+
+        const item = document.createElement('div');
+        item.className = 'size-item';
+        item.innerHTML = `
+          <div class="size-name">${size}x${size}</div>
+          <button class="size-btn" data-size="${size}">下载</button>
+        `;
+        item.querySelector('button').addEventListener('click', () => downloadSingle(size));
+        sizesContainer.appendChild(item);
+        item.insertBefore(canvas, item.firstChild);
+      });
+    }
+
+    function downloadSingle(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      const radius = size * 0.15;
+      ctx.fillStyle = '#0a0a18';
+      ctx.beginPath();
+      ctx.moveTo(radius, 0);
+      ctx.lineTo(size - radius, 0);
+      ctx.quadraticCurveTo(size, 0, size, radius);
+      ctx.lineTo(size, size - radius);
+      ctx.quadraticCurveTo(size, size, size - radius, size);
+      ctx.lineTo(radius, size);
+      ctx.quadraticCurveTo(0, size, 0, size - radius);
+      ctx.lineTo(0, radius);
+      ctx.quadraticCurveTo(0, 0, radius, 0);
+      ctx.closePath();
+      ctx.fill();
+
+      const minDim = Math.min(originalImage.width, originalImage.height);
+      const sx = (originalImage.width - minDim) / 2;
+      const sy = (originalImage.height - minDim) / 2;
+      ctx.drawImage(originalImage, sx, sy, minDim, minDim, 0, 0, size, size);
+
+      const link = document.createElement('a');
+      link.download = `icon-${size}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    downloadAllBtn.addEventListener('click', async () => {
+      const zip = new JSZip();
+      const folder = zip.folder('icons');
+
+      for (const size of SIZES) {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        const radius = size * 0.15;
+        ctx.fillStyle = '#0a0a18';
+        ctx.beginPath();
+        ctx.moveTo(radius, 0);
+        ctx.lineTo(size - radius, 0);
+        ctx.quadraticCurveTo(size, 0, size, radius);
+        ctx.lineTo(size, size - radius);
+        ctx.quadraticCurveTo(size, size, size - radius, size);
+        ctx.lineTo(radius, size);
+        ctx.quadraticCurveTo(0, size, 0, size - radius);
+        ctx.lineTo(0, radius);
+        ctx.quadraticCurveTo(0, 0, radius, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        const minDim = Math.min(originalImage.width, originalImage.height);
+        const sx = (originalImage.width - minDim) / 2;
+        const sy = (originalImage.height - minDim) / 2;
+        ctx.drawImage(originalImage, sx, sy, minDim, minDim, 0, 0, size, size);
+
+        const dataUrl = canvas.toDataURL('image/png');
+        const base64 = dataUrl.split(',')[1];
+        folder.file(`icon-${size}.png`, base64, { base64: true });
+      }
+
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const link = document.createElement('a');
+      link.download = 'pwa-icons.zip';
+      link.href = URL.createObjectURL(blob);
+      link.click();
+    });
+  </script>
+</body>
+</html>

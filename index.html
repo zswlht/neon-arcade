@@ -4,6 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>霓虹街机 · Neon Arcade</title>
+<meta name="description" content="俄罗斯方块、2048、舒尔特、数独、扫雷、贪吃蛇 - 复古霓虹风格的街机游戏合集" />
+<meta name="theme-color" content="#0a0a18" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="霓虹街机" />
+<link rel="manifest" href="manifest.json" />
 <link rel="stylesheet" href="style.css?v=6" />
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
 <style>
@@ -639,6 +645,21 @@
         initAudio();
       }
     })();
+  </script>
+
+  <!-- PWA Service Worker 注册 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('SW 注册成功:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('SW 注册失败:', error);
+          });
+      });
+    }
   </script>
 </body>
 </html>
