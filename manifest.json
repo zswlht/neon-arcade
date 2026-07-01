@@ -2,7 +2,7 @@
   "name": "霓虹街机 - 6款经典游戏合集",
   "short_name": "霓虹街机",
   "description": "俄罗斯方块、2048、舒尔特、数独、扫雷、贪吃蛇 - 复古霓虹风格的街机游戏合集",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0a18",
@@ -65,22 +65,19 @@
       "name": "贪吃蛇",
       "short_name": "贪吃蛇",
       "description": "经典贪吃蛇游戏",
-      "url": "/snake.html",
-      "icons": [{ "src": "icons/snake-96.png", "sizes": "96x96" }]
+      "url": "./snake.html"
     },
     {
       "name": "扫雷",
       "short_name": "扫雷",
       "description": "经典扫雷游戏",
-      "url": "/minesweeper.html",
-      "icons": [{ "src": "icons/minesweeper-96.png", "sizes": "96x96" }]
+      "url": "./minesweeper.html"
     },
     {
       "name": "数独",
       "short_name": "数独",
       "description": "霓虹数独",
-      "url": "/sudoku.html",
-      "icons": [{ "src": "icons/sudoku-96.png", "sizes": "96x96" }]
+      "url": "./sudoku.html"
     }
   ]
 }

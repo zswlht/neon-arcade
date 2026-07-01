@@ -1,31 +1,28 @@
-const CACHE_NAME = 'neon-arcade-v1';
+const CACHE_NAME = 'neon-arcade-v2';
+const BASE = self.location.pathname.replace('/service-worker.js', '');
+
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/tetris.html',
-  '/2048.html',
-  '/schulte.html',
-  '/sudoku.html',
-  '/minesweeper.html',
-  '/snake.html',
-  '/style.css',
-  '/manifest.json',
+  './',
+  './index.html',
+  './tetris.html',
+  './2048.html',
+  './schulte.html',
+  './sudoku.html',
+  './minesweeper.html',
+  './snake.html',
+  './style.css',
+  './manifest.json',
   'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap'
 ];
 
-// 安装事件 - 缓存静态资源
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[SW] 缓存静态资源');
-        return cache.addAll(STATIC_ASSETS);
-      })
+      .then((cache) => cache.addAll(STATIC_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
-// 激活事件 - 清理旧缓存
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -38,23 +35,19 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 请求拦截 - 缓存优先策略
 self.addEventListener('fetch', (event) => {
-  // 跳过非GET请求
   if (event.request.method !== 'GET') return;
 
-  // 跳过跨域请求
-  if (!event.request.url.startsWith(self.location.origin) && 
-      !event.request.url.startsWith('https://fonts.googleapis.com') &&
-      !event.request.url.startsWith('https://fonts.gstatic.com')) {
-    return;
-  }
+  const isSameOrigin = event.request.url.startsWith(self.location.origin);
+  const isGoogleFonts = event.request.url.startsWith('https://fonts.googleapis.com') ||
+                        event.request.url.startsWith('https://fonts.gstatic.com');
+
+  if (!isSameOrigin && !isGoogleFonts) return;
 
   event.respondWith(
     caches.match(event.request)
       .then((cachedResponse) => {
         if (cachedResponse) {
-          // 返回缓存，同时更新缓存（后台更新）
           event.waitUntil(
             fetch(event.request)
               .then((response) => {
@@ -68,11 +61,9 @@ self.addEventListener('fetch', (event) => {
           return cachedResponse;
         }
 
-        // 没有缓存，从网络获取
         return fetch(event.request)
           .then((response) => {
-            // 缓存有效的响应
-            if (response.ok && event.request.url.startsWith(self.location.origin)) {
+            if (response.ok && isSameOrigin) {
               const responseClone = response.clone();
               caches.open(CACHE_NAME)
                 .then((cache) => cache.put(event.request, responseClone));
@@ -80,21 +71,19 @@ self.addEventListener('fetch', (event) => {
             return response;
           })
           .catch(() => {
-            // 网络失败且没有缓存，返回离线页面
             if (event.request.mode === 'navigate') {
-              return caches.match('/index.html');
+              return caches.match('./index.html');
             }
           });
       })
   );
 });
 
-// 推送通知（可选功能）
 self.addEventListener('push', (event) => {
   const options = {
     body: event.data ? event.data.text() : '来一局游戏吧！',
-    icon: '/icons/icon-192.png',
-    badge: '/icons/icon-72.png',
+    icon: './icons/icon-192.png',
+    badge: './icons/icon-72.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
@@ -111,13 +100,12 @@ self.addEventListener('push', (event) => {
   );
 });
 
-// 通知点击处理
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
   if (event.action === 'play') {
     event.waitUntil(
-      clients.openWindow('/index.html')
+      clients.openWindow('./index.html')
     );
   }
 });
